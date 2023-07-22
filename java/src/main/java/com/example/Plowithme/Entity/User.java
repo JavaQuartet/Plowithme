@@ -7,14 +7,14 @@ import org.hibernate.service.spi.InjectService;
 
 @Entity
 @Table(name = "User")
-@Getter
-@Setter
+@Getter @Setter
 public class User {
 
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
 
     @Column
     private String user_email;
