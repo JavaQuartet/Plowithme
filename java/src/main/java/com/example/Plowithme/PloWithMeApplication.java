@@ -8,7 +8,6 @@ public class PloWithMeApplication {
 public static void main(String[] args) {
 		SpringApplication.run(PloWithMeApplication.class, args);
 
-
 	}
 
 }
