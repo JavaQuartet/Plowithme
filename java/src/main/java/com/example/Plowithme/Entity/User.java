@@ -1,30 +1,36 @@
 package com.example.Plowithme.Entity;
-
+import com.example.Plowithme.Entity.Region;
+//import com.example.Plowithme.Entity.Board;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.service.spi.InjectService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "User")
 @Getter @Setter
 public class User {
 
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
-    private String username;
 
-    @Column
-    private String user_email;
+    private String email;
+    private String password;
+    private String name;
+    private LocalDateTime create_date; //임시
+    private String birth;
+    private String profile_image;
+    private String role;
 
-    @Column
-    private String user_password;
+    @Embedded
+    private Region region;
 
-    @Column
-    private String user_name;
+    //게시글
+//    @OneToMany(mappedBy = "member")
+//    private List<Board> boards = new ArrayList<>();
+//
 
-    @Column
-    private String user_location;
 }
