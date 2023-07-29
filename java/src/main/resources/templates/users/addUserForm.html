@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>회원 등록</title>
+</head>
+<body>
+
+<div class="container">
+    <h4>회원 가입</h4>
+    <form action="" th:action th:object="${userForm}" method="post">
+
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+        </div>
+
+        <div>
+            <label for="email">로그인 ID</label>
+            <input type="text" id="email" th:field="*{email}" class="form-control"
+                   >
+            <div th:errors="*{email}" />
+        </div>
+
+        <div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" th:field="*{password}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{password}" />
+        </div>
+
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" th:field="*{name}">
+
+        </div>
+
+        <div>
+            <lebel for="birth">생일</lebel>
+            <input type="text" id="birth" th:field="*{birth}">
+        </div>
+
+        <div >
+            <label th:for="address">주소</label>
+            <input type="text" th:field="*{address}" >
+        </div>
+
+
+        <div>
+            <div>
+                <button type="submit" th:onclick="|location.href= '@{/login}'|">회원 가입</button>
+            </div>
+
+            <div>
+                <button onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/login}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -2,33 +2,47 @@ package com.example.Plowithme.Repository;
 
 import com.example.Plowithme.Entity.User;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
-
-    @PersistenceContext
     private final EntityManager em;
 
-    public void save(User user) {
+    //등록
+    public User save(User user) {
+        log.info("save: user={}", user);
         em.persist(user);
+        return user;
     }
 
-    public user findOne(Long id) {
+    //단건 조회
+    public User findOne(Long id) {
         return em.find(User.class, id);
     }
 
-    public List<user> findAll() {
-        return em.createQuery("select m from user m", user.class)
+    //리스트 조회
+    public List<User> findAll() {
+        return em.createQuery("select m from User m", User.class)
                 .getResultList();
+    }
+    //이메일 조회
+    public Optional<User> findByEmail(String email) {
+        return findAll().stream()
+                .filter(m -> m.getEmail().equals(email))
+                .findFirst();
     }
 
-    public List<user> findByName(String name) {
-        return em.createQuery("select m from user m where m.name = :name", user.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
+//    //삭제
+//    public User delete(User user){
+//        em.remove(user);
+//        return user;
+//    }
+
 }
