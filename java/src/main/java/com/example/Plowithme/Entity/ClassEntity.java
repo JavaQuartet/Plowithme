@@ -18,19 +18,19 @@ public class ClassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String title;
 
-    @Column(nullable = false)
+    @Column
     private int member;
 
-    @Column(nullable = false)
+    @Column
     private int status;
 
-    @Column(nullable = false)
+    @Column
     private String start_region;
 
-    @Column(nullable = false)
+    @Column
     private String end_region;
 
     @Column
@@ -61,5 +61,21 @@ public class ClassEntity {
     @CreationTimestamp
     @Column()
     private LocalDateTime end_date;
+
+    //모임 수정
+    public static ClassEntity toUpdateEntity(ClassDTO classDTO){
+        ClassEntity classEntity = new ClassEntity();
+
+        classEntity.setId(classDTO.getId());
+        classEntity.setTitle(classDTO.getTitle());
+        classEntity.setMember(classDTO.getMember());
+        classEntity.setStatus(classDTO.getStatus());
+        classEntity.setStart_region(classDTO.getStart_region());
+        classEntity.setEnd_region(classDTO.getEnd_region());
+        classEntity.setDescription(classDTO.getDescription());
+
+        classEntity.setNotice(classEntity.getNotice());
+        return classEntity;
+    }
 
 }

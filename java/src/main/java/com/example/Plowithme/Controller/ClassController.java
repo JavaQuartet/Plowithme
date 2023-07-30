@@ -26,7 +26,7 @@ public class ClassController {
     public String saveForm(){return "ClassSave";}
     
     @PostMapping("")
-    public String save(@ModelAttribute ClassDTO classDTO, Model model){
+    public String save(@ModelAttribute ClassDTO classDTO, Model model){// 만든 모임 저장, Class페이지로 이동
         System.out.println("classDTO = " + classDTO);
         classService.save(classDTO);
         List<ClassDTO> classDTOList = classService.findAll();
@@ -34,29 +34,44 @@ public class ClassController {
         return "Class";
     }
 
-    @GetMapping("/class_detail")// 모임 세부정보 화면
-    public String class_detail(Model model){
-        return "ClassDetail";
-    }
 
-
-/*    @PostMapping("/{id}")
-    public String save2(@ModelAttribute ClassDTO classDTO , Model model){ // 모임 내부 설정 변경
+    // 수정 필요
+    /*@PostMapping("/{id}")
+    public String save2(@ModelAttribute ClassDTO classDTO , Model model){ // 공지 설정
         System.out.println("classDTO = " + classDTO);
         classService.save(classDTO);
-        model.addAttribute("board", classDTO);
+        model.addAttribute("class", classDTO);
         return "ClassDetail";
     }*/
 
+
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-   /*
-            해당 게시글의 조회수를 하나 올리고
-            게시글 데이터를 가져와서 detail.html에 출력
-         */
-        /*classService.updateHits(id);*/
+    public String findById(@PathVariable Long id, Model model) {// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
         model.addAttribute("class", classDTO);
         return "ClassDetail";
+    }
+
+    // 모임 수정
+    @GetMapping("/class_update/{id}")
+    public String ClassUpdateForm(@PathVariable Long id, Model model){
+        ClassDTO classDTO = classService.findById(id);
+        model.addAttribute("classUpdate", classDTO);
+        return "ClassUpdate";
+    }
+
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute ClassDTO classDTO, Model model) {
+        ClassDTO Class = classService.update(classDTO);
+        model.addAttribute("class", Class);
+        return "ClassDetail";
+//        return "redirect:/board/" + boardDTO.getId();
+    }
+
+    //모임 삭제
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        classService.delete(id);
+        return "redirect:/Class";
     }
 }

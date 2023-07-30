@@ -44,4 +44,17 @@ public class ClassService {
             return null;
         }
     }
+
+
+    //모임 수정
+    public ClassDTO update(ClassDTO classDTO) {
+        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO);
+        classRepository.save(classEntity);
+        return findById(classDTO.getId());
+    }
+
+    //모임 삭제
+    public void delete(Long id) {
+        classRepository.deleteById(id);
+    }
 }
