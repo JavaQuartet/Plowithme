@@ -1,30 +1,55 @@
 package com.example.Plowithme.Entity;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.service.spi.InjectService;
+import org.springframework.data.annotation.CreatedDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter @Setter
 @Table(name = "User")
-@Getter
-@Setter
 public class User {
 
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
     @Column
-    private String user_email;
+    private String email;
 
     @Column
-    private String user_password;
+    private String password;
 
     @Column
-    private String user_name;
+    private String name;
 
     @Column
-    private String user_location;
+    @CreatedDate
+    private LocalDateTime create_date;
+
+    @Column
+    private String birth;
+
+    @Column
+    private String profile_image;
+
+    @Column
+    private String role;
+
+    @Column
+    private String region;
+
+//  지역 깊이 나눌건지에 따라 추가할 것
+//    @Embedded
+//    private Region region;
+
+    //게시글과 연관관계 생성 - User 엔티티 코드
+//    @OneToMany(mappedBy = "user")
+//    private List<Board> boards = new ArrayList<>();
+//
+    //Board 엔티티에 추가해야하는 연관관계 코드 참고하세욥~~~
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
+//
 }
