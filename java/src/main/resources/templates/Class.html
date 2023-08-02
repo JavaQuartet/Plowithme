@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>모임</title>
+</head>
+<body>
+<table>
+  <h2>모임</h2>
+    <tr>
+        <th>id</th>
+        <th>title</th>
+        <th>member</th>
+        <th>status</th>
+        <th>description</th>
+        <th>inst_date</th>
+    </tr>
+  <tr th:each="class: ${classList}">
+      <td th:text="${class.id}"></td>
+      <td><a th:href="@{|/Class/${class.id}|}" th:text="${class.title}"></a></td>
+      <!--<td th:text="${class.member}"></td>-->
+      <td><a th:href="@{|/Class/${class.id}|}" th:text="${class.member}"></a></td>
+      <td th:text="${class.status}"></td>
+      <td th:text="${class.description}"></td>
+      <td th:text="*{#temporals.format(class.inst_date, 'yyyy-MM-dd')}"></td>
+  </tr>
+  <button onclick="make_class()">모임 만들기</button>
+</table>
+</body>
+<script>
+
+  const make_class = () => {
+    location.href = "/Class/class_save";
+  }
+</script>
+</html>

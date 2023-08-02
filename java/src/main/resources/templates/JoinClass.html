@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>참여모임 상세페이지</title>
+</head>
+<body>
+<table>
+  <tr>
+    <th>id</th>
+    <td th:text="${class.id}"></td>
+  </tr>
+  <tr>
+    <th>title</th>
+    <td th:text="${class.title}"></td>
+  </tr>
+  <tr th:if="${class.fileAttached == 1}">
+    <th>image</th>
+    <td><img th:src="@{|/upload/${class.storedFileName}|}" alt=""></td>
+  </tr>
+  <tr>
+    <th>member</th>
+    <td th:text="${class.member}"></td>
+  </tr>
+  <tr>
+    <th>status</th>
+    <td th:text="${class.status}"></td>
+  </tr>
+  <tr>
+    <th>start</th>
+    <td th:text="${class.start_region}"></td>
+  </tr>
+  <tr>
+    <th>end</th>
+    <td th:text="${class.end_region}"></td>
+  </tr>
+  <tr>
+    <th>start_date</th>
+    <td th:text="${class.start_date}"></td>
+  </tr>
+  <tr>
+    <th>end_date</th>
+    <td th:text="${class.end_date}"></td>
+  </tr>
+  <tr>
+    <th>description</th>
+    <td th:text="${class.description}"></td>
+    <form th:action="@{|/Class/${class.id}|}" method="post">
+      <textarea name="notice" cols="30" rows="10"></textarea> <br>
+      <input type="submit" value="공지 등록" >
+    </form>
+  </tr>
+</table>
+<button onclick="updateReq()">수정</button>
+<button onclick="deleteReq()">삭제</button>
+<button onclick="joinReq()">참여취소</button>
+<button onclick="Class_Req()">나가기</button>
+</body>
+<script>
+  const updateReq = () => {
+    console.log("수정 요청");
+    const id = [[${class.id}]];
+    location.href = "/Class/class_update/" + id;
+  }
+  const deleteReq = () => {
+    console.log("삭제 요청");
+    const id = [[${class.id}]];
+    location.href = "/Class/delete/" + id;
+  }
+  const Class_Req = () => {
+    location.href = "/Class";
+  }
+
+  const joinReq = () => {
+    location.href = "/Class/" + id;
+  }
+</script>
+</html>
