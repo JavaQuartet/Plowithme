@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -26,12 +27,12 @@ public class ClassController {
     public String saveForm(){return "ClassSave";}
     
     @PostMapping("")
-    public String save(@ModelAttribute ClassDTO classDTO, Model model){// 만든 모임 저장, Class페이지로 이동
+    public String save(@ModelAttribute ClassDTO classDTO, Model model) throws IOException {// 만든 모임 저장, Class페이지로 이동
         System.out.println("classDTO = " + classDTO);
         classService.save(classDTO);
         List<ClassDTO> classDTOList = classService.findAll();
         model.addAttribute("classList", classDTOList);
-        return "Class";
+        return  "redirect:/Class";
     }
 
 
@@ -73,5 +74,14 @@ public class ClassController {
     public String delete(@PathVariable Long id) {
         classService.delete(id);
         return "redirect:/Class";
+    }
+
+    @GetMapping("/join/{id}")// 참여한 모임 상세페이지 if문 사용해서 합치기
+    public String joinclass(@PathVariable Long id, Model model){
+
+        classService.updatestatus(id);
+        ClassDTO classDTO = classService.findById(id);
+        model.addAttribute("class", classDTO);
+        return "JoinClass";
     }
 }

@@ -14,6 +14,10 @@
         <th>title</th>
         <td th:text="${class.title}"></td>
     </tr>
+    <tr th:if="${class.fileAttached == 1}">
+        <th>image</th>
+        <td><img th:src="@{|/upload/${class.storedFileName}|}" alt=""></td>
+    </tr>
     <tr>
         <th>member</th>
         <td th:text="${class.member}"></td>
@@ -48,7 +52,8 @@
     </tr>
 </table>
   <button onclick="updateReq()">수정</button>
-<button onclick="deleteReq()">삭제</button>
+  <button onclick="deleteReq()">삭제</button>
+  <button onclick="joinReq()">참여하기</button>
   <button onclick="Class_Req()">나가기</button>
 </body>
 <script>
@@ -64,6 +69,11 @@
     }
     const Class_Req = () => {
         location.href = "/Class";
+    }
+
+    const joinReq = () => {
+        const id = [[${class.id}]];
+        location.href = "/Class/join/" + id;
     }
 </script>
 </html>

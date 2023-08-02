@@ -2,6 +2,7 @@ package com.example.Plowithme.dto;
 
 import com.example.Plowithme.Entity.ClassEntity;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +24,15 @@ public class ClassDTO {
     private String start_region; //출발 위치
     private String end_region; //도착 위치
     private String description;
-    private LocalDateTime start_date;
-    private LocalDateTime end_date;
+    private String start_date;
+    private String end_date;
+
+    private MultipartFile classFile; // save.html -> Controller 파일 담는 용도
+    private String originalFileName; // 원본 파일 이름
+    private String storedFileName; // 서버 저장용 파일 이름
+    private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
+
+    private int classjoined; // 모임 참여 여부(참여 1, 미참여 0)
 
 
     // 모임 상세 페이지에서 사용
@@ -40,6 +48,8 @@ public class ClassDTO {
         classDTO.setStart_region(classEntity.getStart_region());
         classDTO.setEnd_region(classEntity.getEnd_region());
         classDTO.setDescription(classEntity.getDescription());
+        classDTO.setStart_date(classEntity.getStart_date());
+        classDTO.setEnd_date(classEntity.getEnd_date());
         return classDTO;
     }
 }
