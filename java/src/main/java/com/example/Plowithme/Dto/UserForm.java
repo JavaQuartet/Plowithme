@@ -7,19 +7,20 @@ import lombok.Data;
 @Data
 public class UserForm {
 
-    @NotEmpty
+    @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
 
-    @NotEmpty
+    @NotEmpty(message = "이름을 입력해주세요.")
     private String name;
 
-    @NotEmpty
-    private String address;
+    @NotEmpty(message = "주소를 입력해주세요.")
+    private String region;
 
-    @NotEmpty
+
+    @NotEmpty(message = "생일을 입력해주세요.")
     private String birth;
 
 }

@@ -39,10 +39,14 @@ public class UserRepository {
                 .findFirst();
     }
 
-//    //삭제
-//    public User delete(User user){
-//        em.remove(user);
-//        return user;
-//    }
+
+
+    //삭제
+    public User delete(User user) {
+        log.info("delete: user={}", user);
+        em.remove(user);
+        return user;
+    }
+
 
 }

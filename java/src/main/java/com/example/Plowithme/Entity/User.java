@@ -2,41 +2,58 @@ package com.example.Plowithme.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
+@Table(name = "User")
 public class User {
 
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
+
     @Column
     private String email;
+
     @Column
     private String password;
+
     @Column
     private String name;
+
     @Column
-    private LocalDateTime create_date; //임시
+    private String nickname;
+
+    @Column
+    @CreatedDate
+    private LocalDateTime create_date;
+
     @Column
     private String birth;
+
     @Column
     private String profile_image;
+
     @Column
     private String role;
+
     @Column
     private String region;
 
+//  지역 깊이 나눌건지에 따라 추가할 것
 //    @Embedded
 //    private Region region;
 
-    //게시글
-//    @OneToMany(mappedBy = "member")
+    //게시글과 연관관계 생성 - User 엔티티 코드
+//    @OneToMany(mappedBy = "user")
 //    private List<Board> boards = new ArrayList<>();
+//
+    //Board 엔티티에 추가해야하는 연관관계 코드 참고하세욥~~~
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 //
 
 }
