@@ -1,6 +1,8 @@
-package com.example.Plowithme.Dto;
+package com.example.Plowithme.dto;
 
 import java.time.LocalDateTime;
+
+import com.example.Plowithme.Entity.BoardEntity;
 import lombok.*;
 
 //DTO(Data Transfer Object), VO, Bean.
@@ -11,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor  //모든 필드를 매개변수로 하는 생성자
 @ToString
 public class BoardDto {
-    private Long postId;
+    private int postId;
     private String postTitle;
     private String postContents;
     private String postCategory;
@@ -19,6 +21,19 @@ public class BoardDto {
     private String postImagePath;
     private LocalDateTime postCreateDate;
     private LocalDateTime postUpdateDate;
-    //private int portHits; >>조회수
+    private int postHits; //조회수
+
+    public static  BoardDto toboardDto(BoardEntity boardEntity) {
+        BoardDto boardDto = new BoardDto();
+        boardDto.setPostId(boardEntity.getPostId());
+        boardDto.setPostTitle(boardEntity.getPostTitle());
+        boardDto.setPostContents(boardEntity.getPostContents());
+        boardDto.setPostCategory(boardEntity.getPostCategory());
+        boardDto.setPostHits(boardEntity.getPostHits());
+        boardDto.setPostCreateDate(boardEntity.getPostCreateDate());
+        boardDto.setPostUpdateDate(boardEntity.getPostUpdateDate());
+        return boardDto;
+
+    }
 
 }

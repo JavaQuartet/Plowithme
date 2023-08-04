@@ -1,6 +1,6 @@
 package com.example.Plowithme.Entity;
 
-import com.example.Plowithme.Dto.BoardDto;
+import com.example.Plowithme.dto.BoardDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,16 +40,22 @@ public class BoardEntity extends BaseEntity {
     @Column
     private String postImagePath;
 
+    @Column
+    private int postHits;
+
     //엔티티 객체를 객체로 만들어서 호출하는 게 아닌 그냥 클래스 메소드로 정의
-    public static BoardEntity toBoardEntity(BoardDto boardDto) {
+    public static BoardEntity toSaveEntity(BoardDto boardDto) {
         BoardEntity boardEntity=new BoardEntity();
         boardEntity.setPostTitle(boardDto.getPostTitle());
         boardEntity.setPostContents(boardDto.getPostContents());
         boardEntity.setPostCategory(boardDto.getPostCategory());
         boardEntity.setPostImage(boardDto.getPostImage());
         boardEntity.setPostImagePath(boardDto.getPostImagePath());
+        boardEntity.setPostHits(boardDto.getPostHits());
         //dto에 담긴 것을 entity로 넘김(변환)
         //에러가 나거나 값이 생각한 값이 아니면 이 부분에서 문제가 있을 가능성 큼
         return boardEntity;
     }
+
+
 }
