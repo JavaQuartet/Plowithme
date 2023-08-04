@@ -81,8 +81,8 @@ public class UserController {
     public String editProfileForm(@PathVariable("userId") Long userId, Model model) {
         User user = (User) userService.findOne(userId);
         EditProfileForm form = new EditProfileForm();
-        form.setNickname((form.getNickname());
-        form.setProfile_image((form.getProfile_image()));
+        form.setNickname(form.getNickname());
+        form.setProfile_image(form.getProfile_image());
         model.addAttribute("form", form);
         return "users/editProfileFrom";
     }
