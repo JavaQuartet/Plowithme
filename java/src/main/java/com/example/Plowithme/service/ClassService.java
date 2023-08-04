@@ -79,5 +79,6 @@ public class ClassService {
     //모임 삭제
     public void delete(Long id) {
         classRepository.deleteById(id);
+        classFileRepository.deleteById(id);
     }
 }

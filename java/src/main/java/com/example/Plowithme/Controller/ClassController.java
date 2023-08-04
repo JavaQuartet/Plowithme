@@ -49,8 +49,15 @@ public class ClassController {
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model) {// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
-        model.addAttribute("class", classDTO);
-        return "ClassDetail";
+        if(classDTO.getClassjoined() == 0){
+            model.addAttribute("class", classDTO);
+            return "ClassDetail";
+        }else{
+            classService.updatestatus(id);
+            model.addAttribute("class", classDTO);
+            return "JoinClass";
+        }
+
     }
 
     // 모임 수정
@@ -65,7 +72,7 @@ public class ClassController {
     public String update(@ModelAttribute ClassDTO classDTO, Model model) {
         ClassDTO Class = classService.update(classDTO);
         model.addAttribute("class", Class);
-        return "ClassDetail";
+        return "JoinClass";
 //        return "redirect:/board/" + boardDTO.getId();
     }
 
@@ -74,14 +81,5 @@ public class ClassController {
     public String delete(@PathVariable Long id) {
         classService.delete(id);
         return "redirect:/Class";
-    }
-
-    @GetMapping("/join/{id}")// 참여한 모임 상세페이지 if문 사용해서 합치기
-    public String joinclass(@PathVariable Long id, Model model){
-
-        classService.updatestatus(id);
-        ClassDTO classDTO = classService.findById(id);
-        model.addAttribute("class", classDTO);
-        return "JoinClass";
     }
 }

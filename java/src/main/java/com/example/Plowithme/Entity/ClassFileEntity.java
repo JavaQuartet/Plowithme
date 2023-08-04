@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "class_file_table")
 public class ClassFileEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,4 @@ public class ClassFileEntity {
         classFileEntity.setClassEntity(classEntity);
         return classFileEntity;
     }
-
-
 }

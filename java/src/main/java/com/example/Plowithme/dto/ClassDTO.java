@@ -44,12 +44,14 @@ public class ClassDTO {
         classDTO.setId(classEntity.getId());
         classDTO.setTitle(classEntity.getTitle());
         classDTO.setMember(classEntity.getMember());
-        classDTO.setStatus(1);
+        classDTO.setStatus(classEntity.getStatus());
         classDTO.setStart_region(classEntity.getStart_region());
         classDTO.setEnd_region(classEntity.getEnd_region());
         classDTO.setDescription(classEntity.getDescription());
         classDTO.setStart_date(classEntity.getStart_date());
         classDTO.setEnd_date(classEntity.getEnd_date());
+        classDTO.setNotion(classEntity.getNotice());
+        classDTO.setClassjoined(classEntity.getClassjoined());
         return classDTO;
     }
 }

@@ -36,14 +36,11 @@ public class ClassEntity{
     @Column
     private String description; // 모임 설명
 
-
     @Column
     private String notice; // 공지
 
-
     @Column()
     private String start_date; // 시작 시간
-
 
     @Column()
     private String end_date; // 도착 시간
@@ -54,6 +51,23 @@ public class ClassEntity{
     @Column
     private int classjoined; // 1 or 0
 
+/*    @Column
+    private String originalFileName;
+
+    @Column
+    private String storedFileName;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private ClassEntity classEntity;
+
+    public static ClassFileEntity toClassFileEntity(ClassEntity classEntity, String originalFileName, String storedFileName){
+        ClassFileEntity classFileEntity = new ClassFileEntity();
+        classFileEntity.setOriginalFileName(originalFileName);
+        classFileEntity.setStoredFileName(storedFileName);
+        classFileEntity.setClassEntity(classEntity);
+        return classFileEntity;
+    }*/
 
     public static ClassEntity toSaveEntity(ClassDTO classDTO){
         ClassEntity classEntity = new ClassEntity();
@@ -110,7 +124,7 @@ public class ClassEntity{
         classEntity.setStart_date(classDTO.getStart_date());
         classEntity.setStart_date(classDTO.getEnd_date());
         classEntity.setNotice(classEntity.getNotice());
+        classEntity.setClassjoined(1); // 참여함
         return classEntity;
     }
-
 }
