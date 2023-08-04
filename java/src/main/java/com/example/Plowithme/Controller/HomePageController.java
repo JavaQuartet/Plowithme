@@ -1,7 +1,7 @@
 package com.example.Plowithme.Controller;
 import com.example.Plowithme.Entity.SessionConst;
 import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
+import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

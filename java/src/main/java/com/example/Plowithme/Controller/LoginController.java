@@ -1,8 +1,8 @@
 package com.example.Plowithme.Controller;
-import com.example.Plowithme.Dto.LoginForm;
+import com.example.Plowithme.dto.LoginForm;
 import com.example.Plowithme.Entity.SessionConst;
 import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Service.UserService;
+import com.example.Plowithme.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

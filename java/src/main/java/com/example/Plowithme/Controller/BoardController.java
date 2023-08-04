@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,7 +37,7 @@ public class BoardController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("/Board/list")
     public String findAll(Model model) {
        //db에서 전체 게시글 데이터를 가져와서 list.html에 보여준다
        List<BoardDto> boardDtoList=boardService.findAll();
@@ -48,4 +45,15 @@ public class BoardController {
        return "BoardList";
     }
 
+    @GetMapping("/Board/list/{id}")
+    public String findByPostId(@PathVariable int postId, Model model) {
+        /*
+        해당 게시글의 조회수를 하나 올리고
+        게시글 데이터를 가져와서 BoardDetail에 출력
+         */
+        boardService.updatePostHits(postId);
+        BoardDto boardDto = boardService.findByPostId(postId);
+        model.addAttribute("board", boardDto);
+        return "BoardDetail";
+    }
 }

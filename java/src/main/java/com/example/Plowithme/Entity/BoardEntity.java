@@ -15,13 +15,18 @@ public class BoardEntity extends BaseEntity {
     @Id //pk 컬럼 지정. 필수
     @Column(name="post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int postId;
+    private long postId;
 
     @Column(length = 50) //크기 50, not null 지정
     private String postTitle;
 
     @Column(length = 500) //크기 500, null 가능
     private String postContents;
+
+    /*
+    @Column
+    private String postWriter;
+    */
 
     /* 시간에 관한 것은 bastEntity에 별도로 담음. baseEntity에 담았는데 주석처리한 것들을 실행시키면 에러남
      @Column

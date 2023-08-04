@@ -1,9 +1,9 @@
 package com.example.Plowithme.Controller;
-import com.example.Plowithme.Dto.EditAccountForm;
-import com.example.Plowithme.Dto.EditProfileForm;
-import com.example.Plowithme.Dto.UserForm;
+import com.example.Plowithme.dto.EditAccountForm;
+import com.example.Plowithme.dto.EditProfileForm;
+import com.example.Plowithme.dto.UserForm;
 import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Service.UserService;
+import com.example.Plowithme.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
