@@ -33,14 +33,21 @@ public class User {
     @Column
     private String birth;
 
+    @Embedded
     @Column
-    private String profile_image;
+    private Profile profile_image;
 
     @Column
     private String role;
 
     @Column
     private String region;
+
+//    //비밀번호 암호화
+//    public void encodePassword(PasswordEncoder passwordEncoder){
+//        this.password = passwordEncoder.encode(password);
+//    }
+
 
 //  지역 깊이 나눌건지에 따라 추가할 것
 //    @Embedded

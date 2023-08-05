@@ -1,6 +1,7 @@
 package com.example.Plowithme.Service;
 
 import com.example.Plowithme.Dto.UserForm;
+import com.example.Plowithme.Entity.Profile;
 import com.example.Plowithme.Entity.User;
 import com.example.Plowithme.Repository.UserRepository;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,8 +35,7 @@ public class UserService {
     //중복 회원 확인
     private void validateDuplicateUser(User user) {
         Optional<User> findUsers = userRepository.findByEmail(user.getEmail());
-        if (findUsers.isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        if (findUsers.isPresent()) {throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
 
@@ -61,25 +61,25 @@ public class UserService {
     }
     //회원 계정 수정
     @Transactional
-    public void editAccountUser(Long id,String name, String password, String region) // 아예 DTOform으로 받는 걸로 바꿀까?
+    public void editUserAccount(Long id,String name, String password, String region)
     {
         User user = userRepository.findOne(id);
 
         user.setPassword(password);
         user.setName(name);
         user.setRegion(region);
-
     }
-    //회원 프로필 수정
-    @Transactional
-    public void editProfileUser(Long id,String nickname, String profile_image) // 아예 DTOform으로 받는 걸로 바꿀까?
-    {
-        User user = userRepository.findOne(id);
 
-        user.setNickname(nickname);
-        user.setProfile_image(profile_image);
-
-    }
+//    //회원 프로필 수정
+//    @Transactional
+//    public void editUserProfile(Long id,String nickname, Profile profile_image) // 아예 DTOform으로 받는 걸로 바꿀까?
+//    {
+//        User user = userRepository.findOne(id);
+//
+//        user.setNickname(nickname);
+//        user.setProfile_image(profile_image);
+//
+//    }
 
     //회원 삭제
     @Transactional

@@ -17,7 +17,7 @@ public class UserRepository {
 
     //등록
     public User save(User user) {
-        log.info("save: user={}", user);
+        log.info("저장: user={}", user);
         em.persist(user);
         return user;
     }
@@ -38,7 +38,6 @@ public class UserRepository {
                 .filter(m -> m.getEmail().equals(email))
                 .findFirst();
     }
-
 
 
     //삭제
