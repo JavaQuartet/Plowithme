@@ -1,4 +1,4 @@
-package com.example.Plowithme.Repository;
+package com.example.Plowithme.repository;
 
 import com.example.Plowithme.Entity.User;
 import jakarta.persistence.EntityManager;

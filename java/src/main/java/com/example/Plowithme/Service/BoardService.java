@@ -4,11 +4,13 @@ import com.example.Plowithme.dto.BoardDto;
 import com.example.Plowithme.Entity.BaseEntity;
 import com.example.Plowithme.Entity.BoardEntity;
 import com.example.Plowithme.repository.BoardRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,4 +40,20 @@ public class BoardService {
         return boardDtoList;
     }
 
+    //게시글 조회수 증가
+    @Transactional
+    public void updatePostHits(Long postId) {
+        boardRepository.updatePostHits(postId);
+    }
+
+    public BoardDto findByPostId(Long postId) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(postId);
+        if (optionalBoardEntity.isPresent()) {
+            BoardEntity boardEntity= optionalBoardEntity.get();
+            BoardDto boardDto = BoardDto.toboardDto(boardEntity);
+            return boardDto;
+        } else {
+            return null;
+        }
+    }
 }

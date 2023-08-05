@@ -46,7 +46,8 @@ public class BoardController {
     }
 
     @GetMapping("/Board/list/{id}")
-    public String findByPostId(@PathVariable int postId, Model model) {
+    public String findByPostId(@PathVariable Long postId,
+                               Model model) {
         /*
         해당 게시글의 조회수를 하나 올리고
         게시글 데이터를 가져와서 BoardDetail에 출력

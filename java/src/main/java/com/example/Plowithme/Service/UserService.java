@@ -1,8 +1,8 @@
-package com.example.Plowithme.Service;
+package com.example.Plowithme.service;
 
-import com.example.Plowithme.Dto.UserForm;
+import com.example.Plowithme.dto.UserForm;
 import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
+import com.example.Plowithme.repository.UserRepository;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
