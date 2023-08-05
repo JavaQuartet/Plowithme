@@ -53,7 +53,8 @@
 </table>
 <button onclick="updateReq()">수정</button>
 <button onclick="deleteReq()">삭제</button>
-<button onclick="joinReq()">참여취소</button>
+<button onclick="unjoinReq()">참여취소</button>
+<button onclick="endReq()">모임종료</button>
 <button onclick="Class_Req()">나가기</button>
 </body>
 <script>
@@ -67,12 +68,20 @@
     const id = [[${class.id}]];
     location.href = "/Class/delete/" + id;
   }
-  const Class_Req = () => {
-    location.href = "/Class";
+
+
+  const unjoinReq = () => {
+    const id = [[${class.id}]];
+    location.href = "/Class/" + id;
   }
 
-  const joinReq = () => {
-    location.href = "/Class/" + id;
+  const endReq = () => {
+    const id = [[${class.id}]];
+    location.href = "/Class/ended/" + id;
+  }
+
+  const Class_Req = () => {
+    location.href = "/Class";
   }
 </script>
 </html>

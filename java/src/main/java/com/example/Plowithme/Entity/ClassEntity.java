@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,23 +53,7 @@ public class ClassEntity{
     @Column
     private int classjoined; // 1 or 0
 
-/*    @Column
-    private String originalFileName;
 
-    @Column
-    private String storedFileName;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
-    private ClassEntity classEntity;
-
-    public static ClassFileEntity toClassFileEntity(ClassEntity classEntity, String originalFileName, String storedFileName){
-        ClassFileEntity classFileEntity = new ClassFileEntity();
-        classFileEntity.setOriginalFileName(originalFileName);
-        classFileEntity.setStoredFileName(storedFileName);
-        classFileEntity.setClassEntity(classEntity);
-        return classFileEntity;
-    }*/
 
     public static ClassEntity toSaveEntity(ClassDTO classDTO){
         ClassEntity classEntity = new ClassEntity();
@@ -83,10 +69,12 @@ public class ClassEntity{
         classEntity.setDescription(classDTO.getDescription());
 
         classEntity.setNotice(classEntity.getNotice());
+
         classEntity.setFileAttached(0); // 파일 없음.
         classEntity.setClassjoined(1); // 참여함
         return classEntity;
     }
+
 
     public static ClassEntity toSaveFileEntity(ClassDTO classDTO){
         ClassEntity classEntity = new ClassEntity();
@@ -104,7 +92,6 @@ public class ClassEntity{
         classEntity.setNotice(classEntity.getNotice());
         classEntity.setFileAttached(1); // 파일 있음.
         classEntity.setClassjoined(1); // 참여함
-        
         return classEntity;
     }
 

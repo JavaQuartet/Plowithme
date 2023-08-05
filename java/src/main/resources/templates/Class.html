@@ -17,8 +17,9 @@
     </tr>
   <tr th:each="class: ${classList}">
       <td th:text="${class.id}"></td>
-      <td><a th:href="@{|/Class/${class.id}|}" th:text="${class.title}"></a></td>
-      <!--<td th:text="${class.member}"></td>-->
+     <!-- <td><a onclick="detailReq()" th:text="${class.title}"></a></td>-->
+      <td th:if="${class.classjoined == 1}"><a th:href="@{|/Class/joined/${class.id}|}" th:text="${class.title}"></a></td>
+      <td th:if="${class.classjoined == 0}"><a th:href="@{|/Class/${class.id}|}" th:text="${class.title}"></a></td>
       <td><a th:href="@{|/Class/${class.id}|}" th:text="${class.member}"></a></td>
       <td th:text="${class.status}"></td>
       <td th:text="${class.description}"></td>
@@ -32,5 +33,6 @@
   const make_class = () => {
     location.href = "/Class/class_save";
   }
+
 </script>
 </html>

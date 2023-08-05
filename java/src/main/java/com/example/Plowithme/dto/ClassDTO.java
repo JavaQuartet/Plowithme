@@ -38,6 +38,8 @@ public class ClassDTO {
     // 모임 상세 페이지에서 사용
     private String notion; //모임 공지사항
 
+
+
     public static ClassDTO toClassDTO(ClassEntity classEntity){
         ClassDTO classDTO = new ClassDTO();
 

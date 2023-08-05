@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "class_file_table")
-public class ClassFileEntity {
+public class ClassFileEntity extends ClassEntity{
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

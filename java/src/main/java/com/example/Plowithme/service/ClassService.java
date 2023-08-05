@@ -57,6 +57,21 @@ public class ClassService {
         classRepository.updateStatus(id);
     }
 
+    @Transactional
+    public void downstatus(Long id) {
+        classRepository.downStatus(id);
+    }
+
+    @Transactional
+    public void joinedclass(Long id){
+        classRepository.joinedclass(id);
+    }
+
+    @Transactional
+    public void unjoinedclass(Long id){
+        classRepository.unjoinedclass(id);
+    }
+
     public ClassDTO findById(Long id) {
         Optional<ClassEntity> optionalClassEntity = classRepository.findById(id);
         if (optionalClassEntity.isPresent()) {
@@ -72,6 +87,7 @@ public class ClassService {
     //모임 수정
     public ClassDTO update(ClassDTO classDTO) {
         ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO);
+        classEntity.setClassjoined(1);
         classRepository.save(classEntity);
         return findById(classDTO.getId());
     }

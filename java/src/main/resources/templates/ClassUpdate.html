@@ -5,7 +5,7 @@
   <title>모임 수정</title>
 </head>
 <body>
-<form th:action= "@{|/Class/${classUpdate.id}|}" method="post" name="ClassUpdateForm">
+<form th:action= "@{|/Class/joined/${classUpdate.id}|}" method="post" name="ClassUpdateForm">
 
   <input type="hidden" name="id" th:value="${classUpdate.id}">
   title: <input type="text" name="title" th:value="${classUpdate.title}"> <br>
