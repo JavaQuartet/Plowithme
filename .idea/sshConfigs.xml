@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="100.24.219.45" id="996012e2-2d09-4184-af5f-4fe538413aff" keyPath="C:\Users\User\Downloads\plowithme.ppk" port="22" nameFormat="DESCRIPTIVE" username="plowithme" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

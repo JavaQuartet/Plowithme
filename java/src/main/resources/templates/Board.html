@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Board</title>
+</head>
+<body>
+
+    <Button onclick="postingReq()">게시글 작성</button></a>
+    <button onclick="listReq()">전체글목록</button>
+
+</body>
+<script>
+ //   function saveReq() {
+ // <a href="/Board/pageReview">후기</a><br>
+ //<a href="/Board/pageInform">정보공유</a><br>
+ //   <a href="/Board/pageFree">자유</a><br>
+ //   }
+    const postingReq = () => {
+        location.href="/Board/Posting";
+    }
+    const listReq = () => {
+        location.href = "/Board/list";
+    }
+</script>
+
+</html>
