@@ -11,9 +11,10 @@
 <h4 th:text="|user: ${user.name}|">로그인 사용자 이름</h4>
 
 <form th:action="@{/logout}" method="post">
-  <button type="button" th:onclick="|location.href='@{/mypage}'|" >
+  <button type="button" th:onclick="|location.href='@{/user/mypage}'|" >
     마이페이지
   </button>
+
   <button type="button" th:onclick="|location.href='@{/login}'|" >
     로그아웃
   </button>
