@@ -1,11 +1,10 @@
-package com.example.Plowithme.Controller;
-import com.example.Plowithme.Dto.EditAccountForm;
-import com.example.Plowithme.Dto.EditProfileForm;
-import com.example.Plowithme.Dto.UserForm;
-import com.example.Plowithme.Entity.Profile;
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Service.ProfileStore;
-import com.example.Plowithme.Service.UserService;
+package com.example.Plowithme.controller;
+import com.example.Plowithme.dto.EditAccountForm;
+import com.example.Plowithme.dto.EditProfileForm;
+import com.example.Plowithme.dto.UserForm;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.service.ProfileStore;
+import com.example.Plowithme.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -19,10 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -70,12 +67,10 @@ public class UserController {
     @GetMapping("/mypage/{userId}/edit-account")
     public String editAccountForm(@PathVariable("userId") Long userId, Model model) {
         User user = (User) userService.findOne(userId);
-
         EditAccountForm form = new EditAccountForm();
         form.setName(user.getName());
         form.setPassword(user.getPassword());
         form.setRegion(user.getRegion());
-
         model.addAttribute("form", form);
         return "users/editAccountForm";
     }
@@ -89,7 +84,6 @@ public class UserController {
         return "redirect:/users/myPage";
     }
 
-
     //회원 프로필 수정 (마이페이지)
     @GetMapping("/mypage/{userId}/edit-profile")
     public String editProfileForm(@PathVariable("userId") Long userId, Model model) {
@@ -102,7 +96,7 @@ public class UserController {
         model.addAttribute("form", form);
         return "users/editProfileFrom";
     }
-    //프로필 수정
+//    //프로필 수정
 //    @PostMapping("/mypage/{userId}/edit-profile")
 //    public String editProfile(@PathVariable Long userId, @ModelAttribute EditProfileForm form, RedirectAttributes redirectAttributes) throws IOException {
 //        Profile attachFile = profileStore.storeFile(form.getProfile_image());

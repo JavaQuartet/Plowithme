@@ -1,4 +1,4 @@
-package com.example.Plowithme.Dto;
+package com.example.Plowithme.dto;
 
 
 import jakarta.validation.constraints.Email;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserForm {
 
     @NotEmpty(message = "이메일을 입력해주세요.")
     @Email

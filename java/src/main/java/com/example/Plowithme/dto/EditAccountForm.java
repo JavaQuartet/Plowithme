@@ -1,4 +1,4 @@
-package com.example.Plowithme.Dto;
+package com.example.Plowithme.dto;
 
 
 import jakarta.validation.constraints.Pattern;

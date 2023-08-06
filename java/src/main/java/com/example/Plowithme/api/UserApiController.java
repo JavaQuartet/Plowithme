@@ -1,9 +1,9 @@
 package com.example.Plowithme.api;
 
 
-import com.example.Plowithme.Dto.UserForm;
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Service.UserService;
+import com.example.Plowithme.dto.UserForm;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.service.UserService;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

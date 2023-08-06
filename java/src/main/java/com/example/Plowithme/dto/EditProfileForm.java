@@ -1,6 +1,6 @@
-package com.example.Plowithme.Dto;
+package com.example.Plowithme.dto;
 
-import com.example.Plowithme.Entity.Profile;
+import com.example.Plowithme.entity.Profile;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 

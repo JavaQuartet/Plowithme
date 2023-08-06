@@ -1,6 +1,6 @@
-package com.example.Plowithme.Service;
+package com.example.Plowithme.service;
 
-import com.example.Plowithme.Entity.Profile;
+import com.example.Plowithme.entity.Profile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

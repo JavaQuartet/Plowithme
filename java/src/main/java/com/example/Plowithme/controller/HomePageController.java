@@ -1,7 +1,6 @@
-package com.example.Plowithme.Controller;
-import com.example.Plowithme.Entity.SessionConst;
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
+package com.example.Plowithme.controller;
+import com.example.Plowithme.entity.SessionConst;
+import com.example.Plowithme.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequiredArgsConstructor
 public class HomePageController {
-    private final UserRepository userRepository;
 
     @GetMapping("/")
     public String homeLogin(

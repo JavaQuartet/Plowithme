@@ -1,6 +1,6 @@
-package com.example.Plowithme.Repository;
+package com.example.Plowithme.repository;
 
-import com.example.Plowithme.Entity.User;
+import com.example.Plowithme.entity.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

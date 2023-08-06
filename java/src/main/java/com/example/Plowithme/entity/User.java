@@ -1,4 +1,4 @@
-package com.example.Plowithme.Entity;
+package com.example.Plowithme.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

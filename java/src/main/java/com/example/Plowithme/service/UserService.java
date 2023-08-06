@@ -1,15 +1,11 @@
-package com.example.Plowithme.Service;
+package com.example.Plowithme.service;
 
-import com.example.Plowithme.Dto.UserForm;
-import com.example.Plowithme.Entity.Profile;
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
-import jakarta.validation.constraints.NotEmpty;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.plaf.synth.Region;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,18 +43,6 @@ public class UserService {
         return userRepository.findOne(Id);
     }
 
-
-    //회원 수정
-    @Transactional
-    public void editUser(Long id, String password, String name, String region) // 아예 DTOform으로 받는 걸로 바꿀까?
-    {
-        User user = userRepository.findOne(id);
-
-        user.setPassword(password);
-        user.setName(name);
-        user.setRegion(region);
-
-    }
     //회원 계정 수정
     @Transactional
     public void editUserAccount(Long id,String name, String password, String region)
@@ -72,7 +56,7 @@ public class UserService {
 
 //    //회원 프로필 수정
 //    @Transactional
-//    public void editUserProfile(Long id,String nickname, Profile profile_image) // 아예 DTOform으로 받는 걸로 바꿀까?
+//    public void editUserProfile(Long id,String nickname, Profile profile_image)
 //    {
 //        User user = userRepository.findOne(id);
 //
