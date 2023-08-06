@@ -34,7 +34,6 @@ public class BoardController {
         System.out.println("boardDto=" + boardDto);
         boardService.save(boardDto);
         return "Board";
-
     }
 
     @GetMapping("/Board/list")
