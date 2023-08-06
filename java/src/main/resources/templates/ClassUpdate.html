@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>모임 수정</title>
+</head>
+<body>
+<form th:action= "@{|/Class/joined/${classUpdate.id}|}" method="post" name="ClassUpdateForm">
+
+  <input type="hidden" name="id" th:value="${classUpdate.id}">
+  title: <input type="text" name="title" th:value="${classUpdate.title}"> <br>
+  member: <input type="text" name="member" th:value="${classUpdate.member}"> <br>
+  status: <input type="hidden" name="status" th:value="${classUpdate.status}"> <br>
+
+  start_region: <input type="text" name="start_region" th:value="${classUpdate.start_region}"> <br>
+  end_region: <input type="text" name="member" th:value="${classUpdate.end_region}"> <br>
+
+  start_date: <input type="text" name="start_date" th:value="${classUpdate.start_date}"> <br>
+  end_date: <input type="text" name="end_date" th:value="${classUpdate.end_date}"> <br>
+
+  description: <textarea name="description" cols="30" rows="10" th:text="${classUpdate.status}"></textarea> <br>
+  <input type="submit" value="모임 수정">
+</form>
+</body>
+</html>
