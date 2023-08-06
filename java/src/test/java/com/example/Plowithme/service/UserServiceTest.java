@@ -1,6 +1,11 @@
-package com.example.Plowithme.Service;
+package com.example.Plowithme.service;
 
 
+<<<<<<< HEAD:java/src/test/java/com/example/Plowithme/Service/UserServiceTest.java
+=======
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.repository.UserRepository;
+>>>>>>> 743b8d2a0f68fd19eef6db6cdf0a9cdc7ec7f7bd:java/src/test/java/com/example/Plowithme/service/UserServiceTest.java
 import jakarta.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;

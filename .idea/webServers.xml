@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f9871d53-fe2a-4500-a20f-b2bc12365f1d" name="plowithme" url="http://100.24.219.45">
+        <fileTransfer accessType="SFTP" host="100.24.219.45" port="22" sshConfigId="996012e2-2d09-4184-af5f-4fe538413aff" sshConfig="plowithme@100.24.219.45:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

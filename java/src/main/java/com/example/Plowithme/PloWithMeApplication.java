@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PloWithMeApplication {
-public static void main(String[] args) {
-		SpringApplication.run(PloWithMeApplication.class, args);
 
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PloWithMeApplication.class, args);
 
+    }
 }
