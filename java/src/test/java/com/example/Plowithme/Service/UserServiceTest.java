@@ -1,8 +1,6 @@
 package com.example.Plowithme.Service;
 
 
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class UserServiceTest {
 
     @Autowired UserService userService;
-    @Autowired UserRepository userRepository;
+    @Autowired UserRepository  userRepository;
     @Autowired EntityManager em;
 
     @Test
