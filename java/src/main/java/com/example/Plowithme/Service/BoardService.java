@@ -39,6 +39,7 @@ public class BoardService {
         return boardDtoList;
     }
 
+
     //게시글 조회수 증가
     @Transactional
     public void updatePostHits(Long postId) {

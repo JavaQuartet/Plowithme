@@ -5,6 +5,7 @@
       <paths name="plowithme">
         <serverdata>
           <mappings>
+            <mapping local="$PROJECT_DIR$/java/src/main" web="/" />
             <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
