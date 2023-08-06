@@ -2,7 +2,7 @@ package com.example.Plowithme.dto;
 
 import java.time.LocalDateTime;
 
-import com.example.Plowithme.Entity.BoardEntity;
+import com.example.Plowithme.entity.BoardEntity;
 import lombok.*;
 
 //DTO(Data Transfer Object), VO, Bean.

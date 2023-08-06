@@ -1,8 +1,7 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.BoardDto;
-import com.example.Plowithme.Entity.BaseEntity;
-import com.example.Plowithme.Entity.BoardEntity;
+import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
