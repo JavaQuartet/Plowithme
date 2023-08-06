@@ -1,4 +1,4 @@
-package com.example.Plowithme.Controller;
+package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.BoardDto;
 import com.example.Plowithme.service.BoardService;

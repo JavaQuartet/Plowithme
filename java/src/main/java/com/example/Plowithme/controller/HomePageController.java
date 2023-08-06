@@ -1,4 +1,4 @@
-package com.example.Plowithme.Controller;
+package com.example.Plowithme.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

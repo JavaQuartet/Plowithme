@@ -1,4 +1,4 @@
-package com.example.Plowithme.Entity;
+package com.example.Plowithme.entity;
 
 import com.example.Plowithme.dto.BoardDto;
 import jakarta.persistence.*;
