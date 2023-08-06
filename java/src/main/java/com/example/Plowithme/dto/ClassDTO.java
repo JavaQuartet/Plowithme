@@ -1,6 +1,6 @@
 package com.example.Plowithme.dto;
 
-import com.example.Plowithme.Entity.ClassEntity;
+import com.example.Plowithme.entity.ClassEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 

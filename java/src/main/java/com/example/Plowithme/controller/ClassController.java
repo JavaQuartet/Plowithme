@@ -1,6 +1,5 @@
-package com.example.Plowithme.Controller;
+package com.example.Plowithme.controller;
 
-import com.example.Plowithme.Entity.ClassEntity;
 import com.example.Plowithme.dto.ClassDTO;
 import com.example.Plowithme.service.ClassService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,7 @@ public class ClassController {
 
         List<ClassDTO> classDTOList = classService.findAll();
         model.addAttribute("classList", classDTOList);
-        return  "redirect:/Class";
+        return  "Class";
     }
 
 

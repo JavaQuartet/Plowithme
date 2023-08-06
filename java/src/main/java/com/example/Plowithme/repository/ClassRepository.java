@@ -1,6 +1,6 @@
 package com.example.Plowithme.repository;
 
-import com.example.Plowithme.Entity.ClassEntity;
+import com.example.Plowithme.entity.ClassEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

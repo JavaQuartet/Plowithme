@@ -1,8 +1,6 @@
 package com.example.Plowithme.Service;
 
 
-import com.example.Plowithme.Entity.User;
-import com.example.Plowithme.Repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
