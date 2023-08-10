@@ -1,51 +1,26 @@
 package com.example.Plowithme.repository;
-
 import com.example.Plowithme.entity.User;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
-@Slf4j
 @Repository
-@RequiredArgsConstructor
-public class UserRepository {
-    private final EntityManager em;
-
+public interface UserRepository extends JpaRepository<User, Long> {
     //등록
-    public User save(User user) {
-        log.info("저장: user={}", user);
-        em.persist(user);
-        return user;
-    }
+    User save(User user);
 
     //단건 조회
-    public User findOne(Long id) {
-        return em.find(User.class, id);
-    }
-
+    Optional<User> findById(Long id);
     //리스트 조회
-    public List<User> findAll() {
-        return em.createQuery("select m from User m", User.class)
-                .getResultList();
-    }
+    List<User> findAll();
     //이메일 조회
-    public Optional<User> findByEmail(String email) {
-        return findAll().stream()
-                .filter(m -> m.getEmail().equals(email))
-                .findFirst();
-    }
-
+    Optional<User> findByEmail(String Email);
 
     //삭제
-    public User delete(User user) {
-        log.info("delete: user={}", user);
-        em.remove(user);
-        return user;
-    }
+    void delete(User user);
 
 
 }

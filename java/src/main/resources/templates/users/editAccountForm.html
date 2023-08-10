@@ -8,7 +8,7 @@
 
 <div class="container">
   <h4>회원 가입</h4>
-  <form action="" th:action th:object="${userForm}" method="post">
+  <form action="" th:action th:object="${joinDto}" method="post">
 
       <label for="email">로그인 ID</label>
       <input type="text" id="email" th:field="*{email}" class="form-control">
