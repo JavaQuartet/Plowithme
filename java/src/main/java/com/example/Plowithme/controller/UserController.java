@@ -42,7 +42,7 @@ public class UserController {
         user.setRegion(dto.getRegion());
         user.setBirth(dto.getBirth());
         userService.join(user);
-        return "redirect:/login/loginForm";
+        return "redirect:/login";
     }
 
 //

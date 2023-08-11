@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.mapping.Join;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,11 @@ public class AuthController {
 
     private final UserService userService;
 
+    @GetMapping("/hello")
+    ResponseEntity<String> hello() {
+        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+    }
+
     //회원 가입
     @PostMapping("/signup")
     public ResponseEntity<String> saveUser(@Valid @ModelAttribute JoinDto dto, BindingResult bindingResult) {
@@ -32,13 +38,21 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원 가입 실패");
         }
-
+////
+//        if(DuplicateUserException e){
+////        try {
+////            userService.join(request.getUsername(), request.getPassword());
+////            return ResponseEntity.ok("회원 가입이 완료되었습니다.");
+//        } catch (DuplicateMemberException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 등록된 회원입니다.");
+//        }
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setName(dto.getName());
         user.setRegion(dto.getRegion());
         user.setBirth(dto.getBirth());
+        log.info("저장확인");
         userService.join(user);
         log.info("회원 가입 성공");
         return ResponseEntity.ok("회원 가입 성공");

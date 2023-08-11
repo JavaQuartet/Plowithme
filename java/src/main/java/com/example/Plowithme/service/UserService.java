@@ -32,8 +32,7 @@ public class UserService {
     public Long join(User user) {
         //중복 검증
         Optional<User> findUsers = userRepository.findByEmail(user.getEmail());
-        if (findUsers.isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");}
+        if (findUsers.isPresent()) {throw new IllegalStateException("이미 존재하는 회원입니다.");}
         //중복되지 않는다면
         userRepository.save(user);
         return user.getId();

@@ -15,7 +15,7 @@ public class JoinDto {
     private String email;
 
     @NotEmpty(message = "비밀번호를 입력해주세요.")
-    @Pattern(regexp="[a-zA-Z1-9]{6,15}", message = "비밀번호는 영어와 숫자를 포함해서 6~15자리 이내로 입력해주세요.")
+    @Pattern(regexp="[a-zA-Z1-9]{6,15}", message = "영어와 숫자를 포함해서 6~15자리 이내로 입력해주세요.")
     private String password;
 
     @NotEmpty(message = "이름을 입력해주세요.")
