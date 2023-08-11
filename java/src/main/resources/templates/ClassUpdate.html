@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8mb4">
   <title>모임 수정</title>
 </head>
 <body>
@@ -13,12 +13,12 @@
   status: <input type="hidden" name="status" th:value="${classUpdate.status}"> <br>
 
   start_region: <input type="text" name="start_region" th:value="${classUpdate.start_region}"> <br>
-  end_region: <input type="text" name="member" th:value="${classUpdate.end_region}"> <br>
+  end_region: <input type="text" name="end_region" th:value="${classUpdate.end_region}"> <br>
 
   start_date: <input type="text" name="start_date" th:value="${classUpdate.start_date}"> <br>
   end_date: <input type="text" name="end_date" th:value="${classUpdate.end_date}"> <br>
 
-  description: <textarea name="description" cols="30" rows="10" th:text="${classUpdate.status}"></textarea> <br>
+  description: <textarea name="description" cols="30" rows="10" th:text="${classUpdate.description}"></textarea> <br>
   <input type="submit" value="모임 수정">
 </form>
 </body>

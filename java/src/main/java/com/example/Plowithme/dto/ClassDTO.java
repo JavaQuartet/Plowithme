@@ -1,10 +1,12 @@
 package com.example.Plowithme.dto;
 
 import com.example.Plowithme.entity.ClassEntity;
+import com.example.Plowithme.entity.User;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,6 +35,7 @@ public class ClassDTO {
     private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
     private int classjoined; // 모임 참여 여부(참여 1, 미참여 0)
+    private String maker_id; // 모임 만든사람 아이디
 
 
     // 모임 상세 페이지에서 사용
@@ -54,6 +57,8 @@ public class ClassDTO {
         classDTO.setEnd_date(classEntity.getEnd_date());
         classDTO.setNotion(classEntity.getNotice());
         classDTO.setClassjoined(classEntity.getClassjoined());
+        classDTO.setMaker_id(classEntity.getMaker_id());
+
         return classDTO;
     }
 }

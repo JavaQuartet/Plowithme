@@ -45,11 +45,16 @@ public class LoginController {
             return "login/loginForm";
         }
 
+
+
         //로그인 성공 처리
         //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
         HttpSession session = request.getSession();
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+
+        String user_id = form.getEmail();
+        session.setAttribute("user_id", user_id);
 
         return "redirect:" + redirectURL;
 

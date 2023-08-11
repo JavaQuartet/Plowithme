@@ -1,10 +1,13 @@
 package com.example.Plowithme.service;
 
+import com.example.Plowithme.dto.UserForm;
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassFileEntity;
 import com.example.Plowithme.dto.ClassDTO;
+import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.ClassFileRepository;
 import com.example.Plowithme.repository.ClassRepository;
+import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,10 +24,11 @@ import java.util.Optional;
 public class ClassService {
     private final ClassRepository classRepository;
     private final ClassFileRepository classFileRepository;
+    private final UserRepository userRepository;
 
-    public void save(ClassDTO classDTO) throws IOException {
+    public void save(ClassDTO classDTO, String user_id) throws IOException {
         if(classDTO.getClassFile().isEmpty()){
-            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO);
+            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
             classRepository.save(classEntity);
         }else{
             MultipartFile classFile = classDTO.getClassFile();
@@ -33,7 +37,7 @@ public class ClassService {
             String savePath = "C:/plowithme_img/" + storedFilename;
             classFile.transferTo(new File(savePath));
 
-            ClassEntity classEntity = ClassEntity.toSaveFileEntity(classDTO);
+            ClassEntity classEntity = ClassEntity.toSaveFileEntity(classDTO, user_id);
             Long savedId = classRepository.save(classEntity).getId();
             ClassEntity Class = classRepository.findById(savedId).get();
 
@@ -84,8 +88,8 @@ public class ClassService {
 
 
     //모임 수정
-    public ClassDTO update(ClassDTO classDTO) {
-        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO);
+    public ClassDTO update(ClassDTO classDTO, String user_id) {
+        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO, user_id);
         classEntity.setClassjoined(1);
         classRepository.save(classEntity);
         return findById(classDTO.getId());
@@ -94,6 +98,5 @@ public class ClassService {
     //모임 삭제
     public void delete(Long id) {
         classRepository.deleteById(id);
-        classFileRepository.deleteById(id);
     }
 }
