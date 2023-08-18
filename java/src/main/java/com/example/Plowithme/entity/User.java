@@ -1,57 +1,100 @@
 package com.example.Plowithme.entity;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Getter @Setter
-@Table(name = "User")
-public class User {
+@Table(name = "users")
+public class User implements UserDetails {
 
-    @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, length = 30, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(length = 30)
+    private String birth;
+
+    @Column(length = 30)
     private String name;
 
-    @Column
+    @Embedded
+    @Column(nullable = false)
+    private Region region;
+
+    @Column(length = 30)
     private String nickname;
 
-    @Column
+    @Column(updatable = false)
     @CreatedDate
     private LocalDateTime create_date;
 
     @Column
-    private String birth;
+    private String profile;
 
-    @Embedded
-    @Column
-    private Profile profile_image;
 
     @Column
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
-    @Column
-    private String region;
+    //권한 목록
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
 
-//    //비밀번호 암호화
-//    public void encodePassword(PasswordEncoder passwordEncoder){
-//        this.password = passwordEncoder.encode(password);
-//    }
 
 
-//  지역 깊이 나눌건지에 따라 추가할 것
-//    @Embedded
-//    private Region region;
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     //게시글과 연관관계 생성 - User 엔티티 코드
 //    @OneToMany(mappedBy = "user")
@@ -64,3 +107,4 @@ public class User {
 //
 
 }
+
