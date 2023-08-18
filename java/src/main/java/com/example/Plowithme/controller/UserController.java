@@ -22,18 +22,18 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     public final UserService userService;
 
-    //회원 계정 설정 조회
-    @GetMapping("/users/{id}")
-    @Operation(summary = "회원 계정 설정 조회")
-    public ResponseEntity<CommonResponse> update (@Valid @@PathVariable("id") Long id, @RequestBody RegisterDto registerDto) {
-        userService.updateUser(id, registerDto);
-
-        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"회원 계정 설정 조회 완료");
-        log.info("회원 계정 설정 조회 완료");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-
+//    //회원 계정 설정 조회
+//    @GetMapping("/users/{id}")
+//    @Operation(summary = "회원 계정 설정 조회")
+//    public ResponseEntity<CommonResponse> update (@Valid @@PathVariable("id") Long id, @RequestBody RegisterDto registerDto) {
+//        userService.updateUser(id, registerDto);
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"회원 계정 설정 조회 완료");
+//        log.info("회원 계정 설정 조회 완료");
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
+//
+//
 
 
 
