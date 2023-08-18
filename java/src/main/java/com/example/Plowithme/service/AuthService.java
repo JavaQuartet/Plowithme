@@ -45,6 +45,8 @@ public class AuthService {
                 .name(registerDto.getName())
                 .region(registerDto.getRegion())
                 .roles(Collections.singletonList(Role.ROLE_USER.name()))
+                .nickname(registerDto.getName())
+                .birth(registerDto.getBirth())
                 .build();
 
         userRepository.save(user);

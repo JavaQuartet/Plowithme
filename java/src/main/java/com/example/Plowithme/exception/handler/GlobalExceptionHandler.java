@@ -1,6 +1,7 @@
 package com.example.Plowithme.exception.handler;
 
 import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;
+import com.example.Plowithme.exception.custom.UserNotFoundException;
 import com.example.Plowithme.exception.error.BaseException;
 import com.example.Plowithme.exception.error.ErrorCode;
 import com.example.Plowithme.exception.error.ErrorResponse;
@@ -10,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 @Slf4j
@@ -42,12 +45,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(Exception e){
-        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
-                e.getMessage());
+    //존재하지 않는 유저 호출
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(Exception e){
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                "유저를 찾을 수 없습니다.");
         log.error("=====error occurred===== UsernameNotFoundException : " + e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 //    @Override
@@ -65,15 +69,15 @@ public class GlobalExceptionHandler {
 //        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 //    }
 ////
-//    //존재하지 않는 http 메소드 호출
-//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-//    private ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-//
-//        ErrorResponse response = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), e.getMessage());
-//         log.error("=====error occurred===== HttpRequestMethodNotSupportedException : " + e.getMessage());
-//        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
-//
-//    }
+    //존재하지 않는 http 메소드 호출
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    private ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+
+        ErrorResponse response = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), e.getMessage());
+         log.error("=====error occurred===== HttpRequestMethodNotSupportedException : " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
+
+    }
 //
 
 
@@ -99,6 +103,8 @@ public class GlobalExceptionHandler {
 //        log.error("=====error occurred===== MethodArgumentNotValid : " + ex.getMessage());
 //        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 //    }
+//
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         HashMap<String, Object> errors = new HashMap<>();
@@ -112,16 +118,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Object processValidationError(MethodArgumentNotValidException ex) {
-////        Map<String, String> errorMap = new HashMap<>();
-////        ex.getBindingResult().getFieldErrors().forEach(error -> {
-////            errorMap.put(error.getField(), error.getDefaultMessage());
-////        });
-//        ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE_BINDING.getCode(), ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-//        return response;
-//    }
 
 
 

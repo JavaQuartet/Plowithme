@@ -1,8 +1,14 @@
 package com.example.Plowithme.service;
 
+import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
+import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.UserNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -10,7 +16,37 @@ public class UserService {
 
 
     private final UserRepository userRepository;
-//회원 계정 설정
+    private final PasswordEncoder passwordEncoder;
+
+
+    //회원 계정 설정 조회
+    @Transactional
+    public void findUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        AccountInfoFindDto accountInfoFindDto = AccountInfoFindDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .address(user.getRegion().getAddress())
+                .build();
+    }
+
+
+    //회원 계정 설정 수정
+    @Transactional
+    public void updateUser(Long id, AccountInfoUpdateDto accountInfoUpdateDto) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (!accountInfoUpdateDto.getName().isEmpty()) {
+            user.setName(accountInfoUpdateDto.getName());
+        }
+        if (!accountInfoUpdateDto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(accountInfoUpdateDto.getPassword()));
+        }
+        if (!accountInfoUpdateDto.getRegion().getAddress().isEmpty()) {
+            user.setRegion(accountInfoUpdateDto.getRegion());
+        }
+    }
+
 
 
 

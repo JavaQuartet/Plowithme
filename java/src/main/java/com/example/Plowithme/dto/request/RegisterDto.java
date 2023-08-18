@@ -4,6 +4,7 @@ import com.example.Plowithme.entity.Region;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +16,11 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class RegisterDto {
 
     @NotEmpty(message = "이메일을 입력해주세요.")
     @Email(message = "유효하지 않은 이메일 형식입니다.")
+    @Size(max = 30)
     private String email;
 
     @NotEmpty(message = "비밀번호를 입력해주세요.")
@@ -27,8 +28,8 @@ public class RegisterDto {
     private String password;
 
     @NotEmpty(message = "이름을 입력해주세요.")
+    @Size(max = 30)
     private String name;
-
 
     private Region region;
 

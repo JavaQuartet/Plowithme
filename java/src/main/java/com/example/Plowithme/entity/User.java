@@ -1,10 +1,8 @@
 package com.example.Plowithme.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,37 +16,35 @@ import java.util.stream.Collectors;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 30)
     private String birth;
 
-    @Column(length = 30)
     private String name;
 
     @Embedded
     @Column(nullable = false)
     private Region region;
 
-    @Column(length = 30)
     private String nickname;
 
     @Column(updatable = false)
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime create_date;
 
     @Column
