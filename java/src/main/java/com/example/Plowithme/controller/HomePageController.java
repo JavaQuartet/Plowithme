@@ -1,5 +1,4 @@
 package com.example.Plowithme.controller;
-import com.example.Plowithme.entity.SessionConst;
 import com.example.Plowithme.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ public class HomePageController {
 
     @GetMapping("/")
     public String homeLogin(
-            @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser, Model model) {
+            @SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         //세션에 회원 데이터가 없으면 main
         if (loginUser == null) {
             return "main";
