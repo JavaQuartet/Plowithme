@@ -1,8 +1,10 @@
 package com.example.Plowithme.entity;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,9 +35,8 @@ public class User {
     @Column
     private String birth;
 
-    @Embedded
-    @Column
-    private Profile profile_image;
+//    @Column
+//    private Profile profile_image;
 
     @Column
     private String role;

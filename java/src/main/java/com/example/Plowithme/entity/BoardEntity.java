@@ -23,28 +23,26 @@ public class BoardEntity extends BaseEntity {
     @Column(length = 500) //크기 500, null 가능
     private String postContents;
 
-    /*
     @Column
-    private String postWriter;
-    */
+    private String writerId;
+
 
     /* 시간에 관한 것은 bastEntity에 별도로 담음. baseEntity에 담았는데 주석처리한 것들을 실행시키면 에러남
      @Column
-    private String postCreateDate;
+    private String CreateDate;
 
     @Column
-    private String postUpdateDate;
-
-
-    @Column
-    private String postCategory;
+    private String UpdateDate;
 
     @Column
-    private String postImage;
+    private String Category;
 
     @Column
-    private String postImagePath;
-*/
+    private String ImageName;
+
+    @Column
+    private String ImagePath; */
+
     @Column
     private long postHits;
 

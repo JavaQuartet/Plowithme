@@ -32,10 +32,17 @@ public class BoardService {
     }
     public List<BoardDto> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
+        // boardrepsitory에서 findAll 함수를 호출, 엔티티 리스트 형태로 받는다
+        // 엔티티로 넘어온 객체를 다시 dto로 담아서 넘겨야 한다!
+
         List<BoardDto> boardDtoList = new ArrayList<>();
+        //리스트 객체 선언
+
         for (BoardEntity boardEntity : boardEntityList) {
             boardDtoList.add(BoardDto.toboardDto(boardEntity));
         }
+        //엔티티 객체를 하나씩 꺼내서 dto 객체로 하나씩 옮겨 담는다.
+
         return boardDtoList;
     }
 

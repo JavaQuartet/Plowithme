@@ -1,27 +1,19 @@
 package com.example.Plowithme.controller;
+
 import com.example.Plowithme.dto.EditAccountForm;
-import com.example.Plowithme.dto.EditProfileForm;
 import com.example.Plowithme.dto.UserForm;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.service.ProfileStore;
 import com.example.Plowithme.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriUtils;
 
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +23,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final ProfileStore profileStore;
+   // private final ProfileStore profileStore;
 
     //회원 등록
     @GetMapping("/add")
@@ -84,18 +76,18 @@ public class UserController {
         return "redirect:/users/myPage";
     }
 
-    //회원 프로필 수정 (마이페이지)
-    @GetMapping("/mypage/{userId}/edit-profile")
-    public String editProfileForm(@PathVariable("userId") Long userId, Model model) {
-        User user = (User) userService.findOne(userId);
-
-        EditProfileForm form = new EditProfileForm();
-        form.setNickname(user.getNickname());
-        form.setProfile_image(user.getProfile_image());
-
-        model.addAttribute("form", form);
-        return "users/editProfileFrom";
-    }
+//    //회원 프로필 수정 (마이페이지)
+//    @GetMapping("/mypage/{userId}/edit-profile")
+//    public String editProfileForm(@PathVariable("userId") Long userId, Model model) {
+//        User user = (User) userService.findOne(userId);
+//
+//        EditProfileForm form = new EditProfileForm();
+//        form.setNickname(user.getNickname());
+//        form.setProfile_image(user.getProfile_image());
+//
+//        model.addAttribute("form", form);
+//        return "users/editProfileFrom";
+//    }
 //    //프로필 수정
 //    @PostMapping("/mypage/{userId}/edit-profile")
 //    public String editProfile(@PathVariable Long userId, @ModelAttribute EditProfileForm form, RedirectAttributes redirectAttributes) throws IOException {
@@ -107,31 +99,31 @@ public class UserController {
 //        return "redirect:/users/myPage";
 //    }
     //프로필 이미지
-    @ResponseBody
-    @GetMapping("/mypage/images/{profilename}")
-    public Resource downloadImage(@PathVariable String profilename) throws
-            MalformedURLException {
-        return new UrlResource("프로필:" + profileStore.getFullPath(profilename));
-    }
-
-
-    //프로필 첨부
-    @GetMapping("/attach/{userId}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable Long userId) throws MalformedURLException {
-        User user = userService.findOne(userId);
-        String storeFileName = user.getProfile_image().getStoreFileName();
-        String uploadFileName = user.getProfile_image().getUploadFileName();
-        UrlResource resource = new UrlResource("profile:" + profileStore.getFullPath(storeFileName));
-
-        log.info("업로드 프로필 명={}", uploadFileName);
-
-        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
-        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .body(resource);
-    }
-
+//    @ResponseBody
+//    @GetMapping("/mypage/images/{profilename}")
+//    public Resource downloadImage(@PathVariable String profilename) throws
+//            MalformedURLException {
+//        return new UrlResource("프로필:" + profileStore.getFullPath(profilename));
+//    }
+//
+//
+//    //프로필 첨부
+//    @GetMapping("/attach/{userId}")
+//    public ResponseEntity<Resource> downloadAttach(@PathVariable Long userId) throws MalformedURLException {
+//        User user = userService.findOne(userId);
+//        String storeFileName = user.getProfile_image().getStoreFileName();
+//        String uploadFileName = user.getProfile_image().getUploadFileName();
+//        UrlResource resource = new UrlResource("profile:" + profileStore.getFullPath(storeFileName));
+//
+//        log.info("업로드 프로필 명={}", uploadFileName);
+//
+//        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+//        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+//                .body(resource);
+//    }
+//
 
     //회원 삭제
     @GetMapping("/list/{userId}/delete")

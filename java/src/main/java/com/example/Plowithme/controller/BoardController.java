@@ -5,7 +5,6 @@ import com.example.Plowithme.service.BoardService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,37 +13,37 @@ import java.util.List;
 @Getter
 @Setter
 @RequestMapping
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
 
-    @GetMapping("/Board")
+    @GetMapping("/board")
     private String getBoard() {
-        return "Board";
+        return "board";
     }
 
-    @GetMapping("/Board/Posting")
+    @GetMapping("/board/posting")
     private String GoPostingForm() {
-        return "Posting";
+        return "posting";
     }
 
-    @PostMapping("/Board/Posting")
+    @PostMapping("/board/posting")
     private String savePosting(@ModelAttribute BoardDto boardDto) {
         System.out.println("boardDto=" + boardDto);
         boardService.save(boardDto);
-        return "Board";
+        return "board";
     }
 
-    @GetMapping("/Board/list")
+    @GetMapping("/board/list")
     public String findAll(Model model) {
-       //db에서 전체 게시글 데이터를 가져와서 list.html에 보여준다
-       List<BoardDto> boardDtoList=boardService.findAll();
-       model.addAttribute("boardlist", boardDtoList);
-       return "BoardList";
+        //db에서 전체 게시글 데이터를 가져와서 list.html에 보여준다
+        List<BoardDto> boardDtoList= boardService.findAll();
+        model.addAttribute("boardList", boardDtoList);
+       return "list";
     }
 
-    @GetMapping("/Board/list/{id}")
+    @GetMapping("/board/list/{id}")
     public String findByPostId(@PathVariable Long postId,
                                Model model) {
         /*
@@ -54,7 +53,7 @@ public class BoardController {
         boardService.updatePostHits(postId);
         BoardDto boardDto = boardService.findByPostId(postId);
         model.addAttribute("board", boardDto);
-        return "BoardDetail";
+        return "detail";
     }
 
 }
