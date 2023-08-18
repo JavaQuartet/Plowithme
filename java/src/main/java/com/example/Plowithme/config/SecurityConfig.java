@@ -86,8 +86,8 @@ public class SecurityConfig {
 
                 ).exceptionHandling( exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(new JwtAccessDeniedHandler()) //인증 경로 가로채기
-//                ).sessionManagement( session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).sessionManagement( session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
