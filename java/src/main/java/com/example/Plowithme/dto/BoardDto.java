@@ -13,25 +13,25 @@ import lombok.*;
 @AllArgsConstructor  //모든 필드를 매개변수로 하는 생성자
 @ToString
 public class BoardDto {
-    private Long postId;
-    private String postTitle;
-    private String postContents;
-    private String postCategory;
-    private String postImage;
-    private String postImagePath;
-    private LocalDateTime postCreateDate;
-    private LocalDateTime postUpdateDate;
+    private Long id;
+    private String title;
+    private String contents;
+    private String category;
+//    private String postImage;
+//    private String imagePath;
+    private LocalDateTime CreateDate;
+    private LocalDateTime UpdateDate;
     private long postHits; //조회수
 
     public static BoardDto toboardDto(BoardEntity boardEntity) {
         BoardDto boardDto = new BoardDto();
-        boardDto.setPostId(boardEntity.getPostId());
-        boardDto.setPostTitle(boardEntity.getPostTitle());
-        boardDto.setPostContents(boardEntity.getPostContents());
+        boardDto.setId(boardEntity.getId());
+        boardDto.setTitle(boardEntity.getTitle());
+        boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
-        boardDto.setPostCreateDate(boardEntity.getPostCreateDate());
-        //boardDto.setPostUpdateDate(boardEntity.getPostUpdateDate());
-      //  boardDto.setPostCategory(boardEntity.getPostCategory());
+        boardDto.setCreateDate(boardEntity.getPostCreateDate());
+        //boardDto.setUpdateDate(boardEntity.getUpdateDate());
+      //  boardDto.setCategory(boardEntity.getCategory());
 
         return boardDto;
 

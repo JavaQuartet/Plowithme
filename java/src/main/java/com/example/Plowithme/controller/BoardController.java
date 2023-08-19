@@ -19,43 +19,42 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    @GetMapping("/Board")
+    @GetMapping("/board")
     private String getBoard() {
-        return "Board";
+        return "board";
     }
 
-    @GetMapping("/Board/Posting")
+    @GetMapping("/Board/posting")
     private String GoPostingForm() {
-        return "Posting";
+        return "posting";
     }
 
-    @PostMapping("/Board/Posting")
+    @PostMapping("/board/posting")
     private String savePosting(@ModelAttribute BoardDto boardDto) {
         System.out.println("boardDto=" + boardDto);
         boardService.save(boardDto);
-        return "Board";
+        return "board";
 
     }
 
-    @GetMapping("/Board/list")
+    @GetMapping("/board/list")
     public String findAll(Model model) {
        //db에서 전체 게시글 데이터를 가져와서 list.html에 보여준다
        List<BoardDto> boardDtoList=boardService.findAll();
        model.addAttribute("boardlist", boardDtoList);
-       return "BoardList";
+       return "list";
     }
 
-    @GetMapping("/Board/list/{id}")
-    public String findByPostId(@PathVariable Long postId,
-                               Model model) {
+    @GetMapping("/board/list/{id}")
+    public String findByPostId(@PathVariable Long id, Model model) {
         /*
         해당 게시글의 조회수를 하나 올리고
         게시글 데이터를 가져와서 BoardDetail에 출력
          */
-        boardService.updatePostHits(postId);
-        BoardDto boardDto = boardService.findByPostId(postId);
+        boardService.updatePostHits(id);
+        BoardDto boardDto = boardService.findByPostId(id);
         model.addAttribute("board", boardDto);
-        return "BoardDetail";
+        return "detail";
     }
 
 }

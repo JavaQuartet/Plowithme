@@ -39,15 +39,14 @@ public class BoardService {
         return boardDtoList;
     }
 
-
     //게시글 조회수 증가
     @Transactional
-    public void updatePostHits(Long postId) {
-        boardRepository.updatePostHits(postId);
+    public void updatePostHits(Long id) {
+        boardRepository.updatePostHits(id);
     }
 
-    public BoardDto findByPostId(Long postId) {
-        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(postId);
+    public BoardDto findByPostId(Long id) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity= optionalBoardEntity.get();
             BoardDto boardDto = BoardDto.toboardDto(boardEntity);
