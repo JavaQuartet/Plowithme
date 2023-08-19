@@ -1,14 +1,22 @@
 package com.example.Plowithme.service;
 
+import com.example.Plowithme.dto.UserSummary;
 import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
 import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.UserNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
+import com.sun.security.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -18,16 +26,28 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //현재 유저 조회
+//    @GetMapping("/me")
+//    public ResponseEntity<UserSummary> getCurrentUser(UserPrincipal currentUser) {
+//        UserSummary userSummary = userService.getCurrentUser(currentUser);
+//
+//        return new ResponseEntity< >(userSummary, HttpStatus.OK);
+//    }
+    public UserSummary getCurrentUser(User currentUser) {
+        return new UserSummary(currentUser.getId(), currentUser.getEmail(),currentUser.getName());
 
+    }
     //회원 계정 설정 조회
     @Transactional
-    public void findUser(Long id){
+    public AccountInfoFindDto findUser(Long id){
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         AccountInfoFindDto accountInfoFindDto = AccountInfoFindDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .address(user.getRegion().getAddress())
                 .build();
+
+        return accountInfoFindDto;
     }
 
 

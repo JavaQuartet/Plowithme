@@ -1,8 +1,12 @@
 package com.example.Plowithme.controller;
 
 
+import com.example.Plowithme.dto.UserSummary;
 import com.example.Plowithme.dto.request.RegisterDto;
+import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
+import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -22,18 +29,39 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     public final UserService userService;
 
-//    //회원 계정 설정 조회
-//    @GetMapping("/users/{id}")
-//    @Operation(summary = "회원 계정 설정 조회")
-//    public ResponseEntity<CommonResponse> update (@Valid @@PathVariable("id") Long id, @RequestBody RegisterDto registerDto) {
-//        userService.updateUser(id, registerDto);
+
+//    @GetMapping("/me")
+//    public ResponseEntity<UserSummary> getCurrentUser(@CurrentUser User currentUser) {
+//        UserSummary userSummary = userService.getCurrentUser(currentUser);
 //
-//        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"회원 계정 설정 조회 완료");
-//        log.info("회원 계정 설정 조회 완료");
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        return new ResponseEntity< >(userSummary, HttpStatus.OK);
 //    }
-//
-//
+    @GetMapping("/test")
+    public ResponseEntity<?> Hello(){
+        return ResponseEntity.ok("test");
+    }
+    //회원 계정 설정 조회
+    @GetMapping("/users/{id}")
+    @Operation(summary = "회원 계정 설정 조회")
+    public ResponseEntity<CommonResponse> find (@Valid @PathVariable("id") Long id) {
+        AccountInfoFindDto accountInfoFindDto = userService.findUser(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"회원 계정 설정 조회 완료", accountInfoFindDto);
+        log.info("회원 계정 설정 조회 완료: {]", id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+    //회원 계정 설정 수정
+    @PutMapping("/users/{id}")
+    @Operation(summary = "회원 계정 설정 수정")
+    public ResponseEntity<CommonResponse> find (@Valid @PathVariable("id") @RequestBody Long id, AccountInfoUpdateDto accountInfoUpdateDto) {
+        userService.updateUser(id, accountInfoUpdateDto);
+
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"회원 계정 설정 수정 완료");
+        log.info("회원 계정 설정 수정 완료: {]", id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
 
 

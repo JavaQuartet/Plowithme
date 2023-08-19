@@ -56,6 +56,13 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    @Column
+    private int class_count;
+
+    @Column
+    private int class_distance;
+
+
     //권한 목록
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

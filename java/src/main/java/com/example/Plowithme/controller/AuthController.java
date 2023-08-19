@@ -3,6 +3,7 @@ package com.example.Plowithme.controller;
 import com.example.Plowithme.dto.request.LoginDto;
 import com.example.Plowithme.dto.request.RegisterDto;
 import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.dto.response.JWTAuthResponse;
 import com.example.Plowithme.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    @GetMapping("/hello")
-    public ResponseEntity<?> Hello(){
-        return ResponseEntity.ok("hello");
-    }
+
 
 //    @PostMapping(value = "/login")
 //    @Operation(summary = "로그인")
@@ -45,12 +43,13 @@ public class AuthController {
     public ResponseEntity<CommonResponse> login(@Validated @RequestBody LoginDto loginDto) {
 
         String token = authService.login(loginDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", token);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공");
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JWTAuthResponse(token) );
         log.info("로그인 완료");
-        return ResponseEntity.ok().header("Authorization").body(response);
+        return ResponseEntity.ok().body(response);
+//        return ResponseEntity.ok().header("Authorization").body(response);
     }
 
 

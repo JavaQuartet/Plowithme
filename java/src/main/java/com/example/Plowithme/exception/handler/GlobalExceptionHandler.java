@@ -33,9 +33,11 @@ public class GlobalExceptionHandler {
         log.error("=====error occurred===== BaseException : " + e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
     /*
      글로벌 에러
      */
+
     //서버 에러
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception e){
@@ -52,6 +54,14 @@ public class GlobalExceptionHandler {
                 "유저를 찾을 수 없습니다.");
         log.error("=====error occurred===== UsernameNotFoundException : " + e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    //잘못된 인자
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception e){
+        ErrorResponse response = new ErrorResponse((HttpStatus.BAD_REQUEST.value()), e.getMessage());
+        log.error("=====error occurred===== IllegalArgumentException : " + e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 //    @Override
@@ -105,6 +115,7 @@ public class GlobalExceptionHandler {
 //    }
 //
 
+    //@Vaild 검증
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         HashMap<String, Object> errors = new HashMap<>();
@@ -130,6 +141,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
+
     /*
     로그인, 회원가입
      */
@@ -148,9 +160,11 @@ public class GlobalExceptionHandler {
     마이페이지
      */
 
+
       /*
     커뮤니티
      */
+
 
     /*
     모임

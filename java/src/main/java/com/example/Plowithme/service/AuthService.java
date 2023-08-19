@@ -57,6 +57,10 @@ public class AuthService {
     //로그인
     @Transactional
     public String login(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail())
+                .filter(it -> passwordEncoder.matches(loginDto.getPassword(), it.getPassword()))
+                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(), loginDto.getPassword()));
