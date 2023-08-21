@@ -1,10 +1,7 @@
 package com.example.Plowithme.dto.request;
 
 import com.example.Plowithme.entity.Region;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +27,7 @@ public class RegisterDto {
     @NotEmpty(message = "이름을 입력해주세요.")
     @Size(max = 30)
     private String name;
+
 
     private Region region;
 

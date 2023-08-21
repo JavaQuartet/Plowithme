@@ -6,4 +6,5 @@ import lombok.RequiredArgsConstructor;
 public class BaseException extends RuntimeException {
     private final ErrorCode errorCode;
 
+
 }

@@ -3,7 +3,6 @@ package com.example.Plowithme.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +49,6 @@ public class User implements UserDetails {
     @Column
     private String profile;
 
-
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -62,16 +60,20 @@ public class User implements UserDetails {
     @Column
     private int class_distance;
 
-
     //권한 목록
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
+        return roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
 
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public String getUsername() {
@@ -97,6 +99,20 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+//    public boolean equals(Object object) {
+//        if (this == object)
+//            return true;
+//        if (object == null || getClass() != object.getClass())
+//            return false;
+//        JwtUser that = (JwtUser) object;
+//        return Objects.equals(id, that.id);
+//    }
+
+    //현재 유저의 id
+    public Long curentUserId() {
+        return id;
     }
 
     //게시글과 연관관계 생성 - User 엔티티 코드

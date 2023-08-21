@@ -1,7 +1,8 @@
 package com.example.Plowithme.exception.handler;
 
+import com.example.Plowithme.exception.custom.TokenException;
 import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;
-import com.example.Plowithme.exception.custom.UserNotFoundException;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.exception.error.BaseException;
 import com.example.Plowithme.exception.error.ErrorCode;
 import com.example.Plowithme.exception.error.ErrorResponse;
@@ -9,14 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 @Slf4j
@@ -47,11 +46,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //존재하지 않는 유저 호출
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(Exception e){
+//    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+//    public ResponseEntity<ErrorResponse> handleIOException(Exception e){
+//        ErrorResponse response = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+//        log.error("=====error occurred===== Unauthorized : " + e.getMessage());
+//        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+//    }
+
+
+    //존재하지 않는 리소스 호출
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(Exception e){
         ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                "유저를 찾을 수 없습니다.");
+                e.getMessage());
         log.error("=====error occurred===== UsernameNotFoundException : " + e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -63,6 +70,7 @@ public class GlobalExceptionHandler {
         log.error("=====error occurred===== IllegalArgumentException : " + e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
 
 //    @Override
 //    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -155,6 +163,43 @@ public class GlobalExceptionHandler {
 
     }
 
+    //토큰
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ErrorResponse> handleTokenException(TokenException e){
+        ErrorResponse response = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        log.error("=====error occurred===== UserEmailAlreadyExistException : " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+    }
+
+
+//    @ExceptionHandler(SignatureException.class)
+//    public ResponseEntity<ErrorResponse> handleSignatureException(SignatureException e) {
+//        ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_TOKEN);
+//        log.error("=====error occurred===== SignatureException : " + ErrorCode.INVALID_TOKEN.getMessage());
+//        return ResponseEntity.status(ErrorCode.INVALID_TOKEN.getStatus()).body(response);
+//    }
+//
+//    @ExceptionHandler(MalformedJwtException.class)
+//    public ResponseEntity<ErrorResponse> handleMalformedJwtException(MalformedJwtException e) {
+//        ErrorResponse response = new ErrorResponse(ErrorCode.WRONG_TOKEN);
+//        log.error("=====error occurred===== MalformedJwtException : " + ErrorCode.WRONG_TOKEN.getMessage());
+//        return ResponseEntity.status(ErrorCode.WRONG_TOKEN.getStatus()).body(response);
+//    }
+//
+//    @ExceptionHandler(ExpiredJwtException.class)
+//    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
+//        ErrorResponse response = new ErrorResponse(ErrorCode.TOKEN_EXPIRED);
+//        log.error("=====error occurred===== ExpiredJwtException : " + ErrorCode.TOKEN_EXPIRED.getMessage());
+//        return ResponseEntity.status(ErrorCode.TOKEN_EXPIRED.getStatus()).body(response);
+//    }
+//
+//    @ExceptionHandler(UnsupportedJwtException.class)
+//    public ResponseEntity<ErrorResponse> handleUnsupportedJwtException(UnsupportedJwtException e){
+//        ErrorResponse response = new ErrorResponse(ErrorCode.UNSUPPORTED_TOKEN);
+//        log.error("=====error occurred===== UnsupportedJwtException : " + ErrorCode.UNSUPPORTED_TOKEN.getMessage());
+//        return ResponseEntity.status(ErrorCode.UNSUPPORTED_TOKEN.getStatus()).body(response);
+//    }
 
     /*
     마이페이지

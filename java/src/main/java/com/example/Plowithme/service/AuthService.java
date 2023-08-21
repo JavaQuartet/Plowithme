@@ -39,6 +39,10 @@ public class AuthService {
             throw new UserEmailAlreadyExistException();
         }
 
+        if(registerDto.getRegion().getAddress().isEmpty()|| registerDto.getRegion().getDepth_1().isEmpty() || registerDto.getRegion().getDepth_2().isEmpty() || registerDto.getRegion().getDepth_3().isEmpty()){
+            throw new IllegalArgumentException("지역을 입력해주세요.");
+        }
+
         User user = User.builder()
                 .email(registerDto.getEmail())
                 .password(passwordEncoder.encode(registerDto.getPassword()))

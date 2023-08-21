@@ -1,22 +1,16 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.UserSummary;
+import com.example.Plowithme.dto.request.mypage.CurrentUserDto;
 import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
 import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.exception.custom.UserNotFoundException;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
-import com.sun.security.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,21 +20,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //현재 유저 조회
-//    @GetMapping("/me")
-//    public ResponseEntity<UserSummary> getCurrentUser(UserPrincipal currentUser) {
-//        UserSummary userSummary = userService.getCurrentUser(currentUser);
-//
-//        return new ResponseEntity< >(userSummary, HttpStatus.OK);
-//    }
-    public UserSummary getCurrentUser(User currentUser) {
-        return new UserSummary(currentUser.getId(), currentUser.getEmail(),currentUser.getName());
+
+    public CurrentUserDto getCurrentUser(User currentUser) {
+        return new CurrentUserDto(currentUser.getId(), currentUser.getEmail(),currentUser.getName());
 
     }
     //회원 계정 설정 조회
     @Transactional
-    public AccountInfoFindDto findUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    public AccountInfoFindDto findUser(Long id, User currentUser){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
         AccountInfoFindDto accountInfoFindDto = AccountInfoFindDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
@@ -53,18 +47,29 @@ public class UserService {
 
     //회원 계정 설정 수정
     @Transactional
-    public void updateUser(Long id, AccountInfoUpdateDto accountInfoUpdateDto) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    public void updateUser(Long id, User currentUser, AccountInfoUpdateDto accountInfoUpdateDto) {
 
-        if (!accountInfoUpdateDto.getName().isEmpty()) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        if (accountInfoUpdateDto.getName()!=null) {
             user.setName(accountInfoUpdateDto.getName());
         }
-        if (!accountInfoUpdateDto.getPassword().isEmpty()) {
+        if (accountInfoUpdateDto.getPassword()!=null) {
             user.setPassword(passwordEncoder.encode(accountInfoUpdateDto.getPassword()));
         }
-        if (!accountInfoUpdateDto.getRegion().getAddress().isEmpty()) {
+        if (accountInfoUpdateDto.
+                getRegion().getAddress()!=null
+                || accountInfoUpdateDto.getRegion().getDepth_3()!=null
+                || accountInfoUpdateDto.getRegion().getDepth_2()!=null
+                || accountInfoUpdateDto.getRegion().getDepth_1()!=null
+        ) {
             user.setRegion(accountInfoUpdateDto.getRegion());
         }
+
     }
 
 
