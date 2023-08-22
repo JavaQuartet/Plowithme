@@ -3,8 +3,10 @@ package com.example.Plowithme.config;
 import com.example.Plowithme.exception.handler.JwtAccessDeniedHandler;
 import com.example.Plowithme.security.JwtAuthEntryPoint;
 import com.example.Plowithme.security.JwtAuthticationFilter;
+import com.example.Plowithme.security.JwtExceptionFilter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+@AllArgsConstructor
 @Configuration
 @EnableMethodSecurity
 @SecurityScheme(
@@ -36,16 +40,11 @@ public class SecurityConfig {
 
     private JwtAuthticationFilter authenticationFilter;
 
+    private JwtExceptionFilter jwtExceptionFilter;
     @Qualifier("customAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
 
-    public SecurityConfig(UserDetailsService userDetailsService,
-                          JwtAuthEntryPoint authenticationEntryPoint,
-                          JwtAuthticationFilter authenticationFilter){
-        this.userDetailsService = userDetailsService;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.authenticationFilter = authenticationFilter;
-    }
+
 
 //    //ADMIN 계정 설정 - 일단 시큐리티 유저로 설정
 //    @Bean
@@ -79,19 +78,25 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
+
+                                .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
+
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
 
-                ).exceptionHandling( exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(new JwtAccessDeniedHandler()) //인증 경로 가로채기
+
                 ).sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
+                .exceptionHandling( exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
+                )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
+                .addFilterBefore(jwtExceptionFilter, JwtAuthticationFilter.class)
                 .build();
     }
 

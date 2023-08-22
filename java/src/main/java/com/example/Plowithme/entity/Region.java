@@ -8,11 +8,13 @@ import lombok.Getter;
 @Getter
 public class Region {
 
+
     private String depth_1; //시
+
     private String depth_2; //시+구
+
     private String depth_3; //동
 
-    @NotEmpty(message = "지역을 선택해주세요")
     private String address;
     protected Region() {
     }

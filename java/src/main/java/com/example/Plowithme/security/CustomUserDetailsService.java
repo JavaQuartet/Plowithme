@@ -17,13 +17,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //이메일로
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //user
           User user = userRepository.findByEmail(username)
                  .orElseThrow(() ->
                          new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(),
-                user.getAuthorities());
+          return user;
+//        return new JwtUser(user);
     }
 }
