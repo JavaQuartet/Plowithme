@@ -29,7 +29,7 @@ public class BoardDto {
         boardDto.setTitle(boardEntity.getTitle());
         boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
-        boardDto.setCreateDate(boardEntity.getPostCreateDate());
+        boardDto.setCreateDate(boardEntity.getCreateDate());
         //boardDto.setUpdateDate(boardEntity.getUpdateDate());
       //  boardDto.setCategory(boardEntity.getCategory());
 

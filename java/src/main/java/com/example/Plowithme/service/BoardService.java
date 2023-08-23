@@ -45,6 +45,7 @@ public class BoardService {
         boardRepository.updatePostHits(id);
     }
 
+
     public BoardDto findByPostId(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {
