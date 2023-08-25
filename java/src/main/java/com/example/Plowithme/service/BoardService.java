@@ -56,4 +56,8 @@ public class BoardService {
             return null;
         }
     }
+
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
+    }
 }

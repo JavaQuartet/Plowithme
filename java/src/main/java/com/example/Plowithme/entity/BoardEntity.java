@@ -23,8 +23,8 @@ public class BoardEntity extends BaseEntity {
     @Column(length = 500) //크기 500, null 가능
     private String contents;
 
-    @Column
-    private String category;
+    @Column(name="b_category")
+    private int category;
 
     @Column
     private long postHits;

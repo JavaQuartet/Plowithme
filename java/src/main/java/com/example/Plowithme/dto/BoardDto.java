@@ -16,7 +16,7 @@ public class BoardDto {
     private Long id;
     private String title;
     private String contents;
-    private String category;
+    private int category;
 //    private String postImage;
 //    private String imagePath;
     private LocalDateTime CreateDate;
