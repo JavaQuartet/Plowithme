@@ -51,8 +51,8 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping
-    @Operation(summary = "댓글 삭제")
+    @DeleteMapping("/board/{id}")
+    @Operation(summary = "게시글 삭제")
     public ResponseEntity<CommonResponse> delete(@Valid @RequestBody Long id) {
         boardService.delete(id);
 
