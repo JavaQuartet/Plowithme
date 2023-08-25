@@ -1,5 +1,6 @@
 package com.example.Plowithme.exception.handler;
 
+import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.TokenException;
 import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    /*
+    /**
     Common
      */
 
@@ -33,7 +34,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    /*
+
+
+    /**
      글로벌 에러
      */
 
@@ -150,7 +153,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    /*
+    /**
     로그인, 회원가입
      */
 
@@ -167,8 +170,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<ErrorResponse> handleTokenException(TokenException e){
         ErrorResponse response = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-        log.error("=====error occurred===== UserEmailAlreadyExistException : " + e.getMessage());
+        log.error("=====error occurred===== UserTokenException : " + e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+    }
+
+
+
+    //파일
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<ErrorResponse> handleFileException(FileException e){
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        log.error("=====error occurred===== UserFileException : " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 
     }
 

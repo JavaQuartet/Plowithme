@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     UNKNOWN_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "확인된지 않은 에러"),
     PERMISSION_DENIED(401, HttpStatus.UNAUTHORIZED,"접근 거부");
+
     //마이페이지
 
     private final int code;

@@ -6,7 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.awt.*;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +27,7 @@ public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -36,8 +40,9 @@ public class User implements UserDetails{
 
     private String name;
 
-    @Embedded
+
     @Column(nullable = false)
+    @Embedded
     private Region region;
 
     private String nickname;
@@ -50,6 +55,9 @@ public class User implements UserDetails{
     private String profile;
 
     @Column
+    private String introduction;
+
+    @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
@@ -58,7 +66,8 @@ public class User implements UserDetails{
     private int class_count;
 
     @Column
-    private int class_distance;
+    private double class_distance;
+
 
     //권한 목록
     @Override
@@ -67,8 +76,6 @@ public class User implements UserDetails{
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
-
 
     @Override
     public String getPassword() {
@@ -125,5 +132,13 @@ public class User implements UserDetails{
 //    private User user;
 //
 
+
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+//    public void updatePassword(PasswordEncoder passwordEncoder, String password){
+//        this.password = passwordEncoder.encode(password);
+//    }
 }
 

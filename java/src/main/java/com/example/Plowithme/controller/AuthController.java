@@ -25,31 +25,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-
-//    @PostMapping(value = "/login")
-//    @Operation(summary = "로그인")
-//    public ResponseEntity<String> login(@Validated @RequestBody LoginDto loginDto) {
-//
-//
-//        String token = authService.login(loginDto);
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.set("Authorization", token);
-//        return new ResponseEntity(httpHeaders, HttpStatus.OK);
-//
-//    }
-
     @PostMapping(value = "/login")
     @Operation(summary = "로그인")
-    public ResponseEntity<CommonResponse> login(@Validated @RequestBody LoginDto loginDto) {
-
+    public ResponseEntity<CommonResponse> login(@Valid @RequestBody LoginDto loginDto) {
         String token = authService.login(loginDto);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", token);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JWTAuthResponse(token) );
         log.info("로그인 완료");
         return ResponseEntity.ok().body(response);
-//        return ResponseEntity.ok().header("Authorization").body(response);
     }
 
 

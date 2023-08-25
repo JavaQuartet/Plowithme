@@ -73,6 +73,9 @@ dependencies {
 	implementation 'org.json:json:20230618'
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
+	//파일 업로드 메소드 라이브러리
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
 }
 

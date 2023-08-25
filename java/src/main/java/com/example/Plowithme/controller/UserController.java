@@ -1,9 +1,7 @@
 package com.example.Plowithme.controller;
 
 
-import com.example.Plowithme.dto.request.mypage.CurrentUserDto;
-import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
-import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
+import com.example.Plowithme.dto.request.mypage.*;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
@@ -13,9 +11,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.groovy.parser.antlr4.GroovyParser;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -26,10 +29,9 @@ public class UserController {
     public final UserService userService;
 
 
-
     //연결 test
     @GetMapping("/test")
-    public ResponseEntity<?> Test(){
+    public ResponseEntity<?> Test() {
         return ResponseEntity.ok("test");
     }
 
@@ -39,7 +41,7 @@ public class UserController {
     public ResponseEntity<CommonResponse> getCurrentUser(@CurrentUser User currentUser) {
 
         CurrentUserDto currentUserDto = userService.getCurrentUser(currentUser);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"현재 회원 정보 조회", currentUserDto);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 회원 정보 조회", currentUserDto);
         log.info("현재 유저 정보 조회 완료:" + currentUserDto.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -48,54 +50,88 @@ public class UserController {
     //회원 계정 설정 조회
     @GetMapping("/users/{id}")
     @Operation(summary = "회원 계정 설정 조회")
-    public ResponseEntity<CommonResponse> find (@Valid @PathVariable("id") Long id, @CurrentUser User currentUser) {
+    public ResponseEntity<CommonResponse> find(@Valid @PathVariable("id") Long id, @CurrentUser User currentUser) {
         AccountInfoFindDto accountInfoFindDto = userService.findUser(id, currentUser);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"회원 계정 설정 조회 완료", accountInfoFindDto);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "회원 계정 설정 조회 완료", accountInfoFindDto);
         log.info("회원 계정 설정 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
-    //회원 계정 설정 수정 - 차후 수정 예정
-   // @PatchMapping("/users/{id}")
+    //회원 계정 설정 수정
+    @PatchMapping("/users/{id}")
     @Operation(summary = "회원 계정 설정 수정")
-    public ResponseEntity<CommonResponse> find (@Valid @PathVariable("id") Long id, @CurrentUser User currentUser, @RequestBody AccountInfoUpdateDto accountInfoUpdateDto) {
+    public ResponseEntity<CommonResponse> update(@Valid @RequestBody AccountInfoUpdateDto accountInfoUpdateDto, @PathVariable("id") Long id, @CurrentUser User currentUser) {
         userService.updateUser(id, currentUser, accountInfoUpdateDto);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"회원 계정 설정 수정 완료");
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "회원 계정 설정 수정 완료");
         log.info("회원 계정 설정 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
+    //모임 횟수 조회
+    @GetMapping("/users/{id}/class-count")
+    @Operation(summary = "모임 횟수 조회")
+    public ResponseEntity<CommonResponse> findClassCount(@PathVariable("id") Long id) {
+
+        int class_count = userService.classCount(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 횟수 조회 완료", class_count);
+        log.info("모임 횟수 조회 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    //모임 총 거리 조회
+    @GetMapping("/users/{id}/class-distance")
+    @Operation(summary = "모임 총 거리 조회")
+    public ResponseEntity<CommonResponse> findClassDistance(@PathVariable("id") Long id) {
+
+        Double class_distance = userService.classDistance(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 총 거리 조회 완료", class_distance);
+        log.info("모임 총 거리 조회 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
 
 
-//    public final UserService storageService;
+    //프로필 설정 조회
+    @GetMapping("/users/{id}/profile")
+    public ResponseEntity<CommonResponse> findProfile(@PathVariable("id") Long id, @CurrentUser User currentUser) {
 
-//    //프로필 수정(업로드)
-//    @PostMapping("/upload")
-//    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file) {
-//        String message = "";
-//        try {
-//            storageService.save(file);
-//
-//            message = "Uploaded the file successfully: " + file.getOriginalFilename();
-//            return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
-//        } catch (Exception e) {
-//            message = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
-//        }
-//    }
-//
-//    //프로필 조회
-//    @GetMapping("/files/{filename}")
-//    @ResponseBody
-//    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-//        Resource file = storageService.load(filename);
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-//    }
+        ProfileFindDto profileFindDto = userService.findProfile(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 조회 완료", profileFindDto);
+        log.info("포르필 조회 완료");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + currentUser.getProfile() + "\"").body(response);
+    }
+
+
+
+    //프로필 사진 수정(업로드)
+    @PostMapping("/users/{id}/profile")
+    public ResponseEntity<CommonResponse> uploadProfileImage(@PathVariable("id") Long id, MultipartFile file) {
+
+        userService.updateProfileImage(file, id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 사진 수정 완료");
+        log.info("프로필 사진 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    //프로필 설정 수정
+    @PatchMapping("/users/{id}/profile")
+    public ResponseEntity<CommonResponse> uploadProfileInfo(@Valid @RequestBody ProfileUpdateDto profileUpdateDto, @PathVariable("id") Long id) {
+
+        userService.updateProfileInfo(id, profileUpdateDto);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 수정 완료");
+        log.info("프로필 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 
 }

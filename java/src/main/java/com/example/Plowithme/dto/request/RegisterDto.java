@@ -25,7 +25,7 @@ public class RegisterDto {
     private String password;
 
     @NotEmpty(message = "이름을 입력해주세요.")
-    @Size(max = 30)
+    @Size(min=2, max = 10)
     private String name;
 
 

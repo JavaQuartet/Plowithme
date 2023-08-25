@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,30 +49,34 @@ public class JwtAuthticationFilter extends OncePerRequestFilter {
             // 토큰 검증
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-                //            // 토큰으로부터 username가져옴
-                //            String username = jwtTokenProvider.getUsername(token);
-                //
-                //            // 토큰 유저 불러옴
-                //            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                //
-                //            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                //                userDetails,
-                //                null,
-                //                userDetails.getAuthorities()
-                //            );
-                //
-                //            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                //            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    // 토큰으로부터 username가져옴
+                    String username = jwtTokenProvider.getUsername(token);
 
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                log.info("authentication:", authentication);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("============토큰 유효함 ===========");
+                    // 토큰 유저 불러옴
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                    );
+
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+//                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+//                log.info("authentication:", authentication);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//                logger.info("============토큰 유효함 ===========");
             }
         } catch (Exception e) {
-            request.setAttribute("exception", e);	// try-catch로 예외를 감지하여 request에 추가
+            request.setAttribute("exception", e);
             log.info("==================예외 감지");
         }
+//            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+//                     SignatureException | IllegalArgumentException e) {
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired，登陆已过期");
+//            }
 
 
         filterChain.doFilter(request, response);

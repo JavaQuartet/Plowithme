@@ -10,15 +10,20 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
@@ -75,12 +80,18 @@ public class SecurityConfig {
         return http
 
                 .csrf(AbstractHttpConfigurer::disable)
+                        .exceptionHandling( exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
+                )
+
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
-
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
+
+                                .requestMatchers("/C:/**").permitAll()
 
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
@@ -90,13 +101,13 @@ public class SecurityConfig {
                 ).sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling( exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
-                )
+//                .exceptionHandling( exception -> exception
+//                        .authenticationEntryPoint(authenticationEntryPoint)
+//                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
+//                )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
-                .addFilterBefore(jwtExceptionFilter, JwtAuthticationFilter.class)
+//                .addFilterBefore(jwtExceptionFilter, JwtAuthticationFilter.class)
                 .build();
     }
 
@@ -126,5 +137,21 @@ public class SecurityConfig {
 //            .addLogoutHandler(logoutHandler)
 //                            .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
 //            )
+
+
+    public UserDetailsService userDetailsService() {
+        //인메모리에 username, password, role 설정
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("user")
+                        .password("pwd")
+                        .roles("USER")
+                        .build();
+
+        System.out.println("password : " + user.getPassword());
+
+        return new InMemoryUserDetailsManager(user);
+    }
+
 
 }

@@ -24,15 +24,18 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
+        log.error("Responding with unauthorized error. Message - {}", authException.getMessage());
+  //      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Sorry, You're not authorized to access this resource.");
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");
 
         JSONObject responseJson = new JSONObject();
         responseJson.put("code", HttpStatus.UNAUTHORIZED.value());
-        responseJson.put("message", "접근 권한이 없습니다.");
+        responseJson.put("message", "권한이 없습니다.");
         response.getWriter().print(responseJson);
     }
-
+//
 //    public JwtAuthEntryPoint(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
 //        this.resolver = resolver;
 //    }

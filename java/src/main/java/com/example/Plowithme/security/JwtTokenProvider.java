@@ -85,20 +85,21 @@ public class JwtTokenProvider {
 
             } catch (MalformedJwtException ex) {
                 log.error("잘못된 토큰");
-                throw new TokenException("잘못된 토큰");
+              //  throw new TokenException("잘못된 토큰");
             } catch (SignatureException ex) {
                 log.error("유효하지 않은 JWT signature");
-                throw new TokenException("잘못된 토큰");
+              //  throw new TokenException("잘못된 토큰");
             } catch (ExpiredJwtException ex) {
                 log.error("만료된 토큰");
-                throw new TokenException("토큰 기한 만료");
+              //  throw new TokenException("토큰 기한 만료");
             } catch (UnsupportedJwtException ex) {
                 log.error("지원하지 않는 토큰");
-                throw new TokenException("지원하지 않는 토큰");
+               // throw new TokenException("지원하지 않는 토큰");
             } catch (IllegalArgumentException ex) {
                 log.error("유효하지 않은 토큰");
-                throw new TokenException("유효하지 않은 토큰");
+               // throw new TokenException("유효하지 않은 토큰");
             }
+            return false;
         }
         else{
             throw new AccessDeniedException("권한이 없습니다.");

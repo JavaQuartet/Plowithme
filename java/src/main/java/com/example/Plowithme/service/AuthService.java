@@ -43,6 +43,7 @@ public class AuthService {
             throw new IllegalArgumentException("지역을 입력해주세요.");
         }
 
+
         User user = User.builder()
                 .email(registerDto.getEmail())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
@@ -51,17 +52,26 @@ public class AuthService {
                 .roles(Collections.singletonList(Role.ROLE_USER.name()))
                 .nickname(registerDto.getName())
                 .birth(registerDto.getBirth())
+                .class_count(0)
+                .class_distance(0)
+                .profile("default-image.png")
+                .introduction("")
                 .build();
 
         userRepository.save(user);
 
+
         return user.getId();
+
+
     }
 
     //로그인
     @Transactional
     public String login(LoginDto loginDto) {
-        User user = userRepository.findByEmail(loginDto.getEmail())
+
+
+        userRepository.findByEmail(loginDto.getEmail())
                 .filter(it -> passwordEncoder.matches(loginDto.getPassword(), it.getPassword()))
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
 

@@ -1,9 +1,8 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.mypage.CurrentUserDto;
-import com.example.Plowithme.dto.request.mypage.AccountInfoFindDto;
-import com.example.Plowithme.dto.request.mypage.AccountInfoUpdateDto;
+import com.example.Plowithme.dto.request.mypage.*;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     public CurrentUserDto getCurrentUser(User currentUser) {
         return new CurrentUserDto(currentUser.getId(), currentUser.getEmail(),currentUser.getName());
 
@@ -55,12 +61,11 @@ public class UserService {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
-        if (accountInfoUpdateDto.getName()!=null) {
-            user.setName(accountInfoUpdateDto.getName());
-        }
         if (accountInfoUpdateDto.getPassword()!=null) {
-            user.setPassword(passwordEncoder.encode(accountInfoUpdateDto.getPassword()));
+            accountInfoUpdateDto.setPassword(passwordEncoder.encode(accountInfoUpdateDto.getPassword()));
+            user.updatePassword(accountInfoUpdateDto.getPassword());
         }
+
         if (accountInfoUpdateDto.
                 getRegion().getAddress()!=null
                 || accountInfoUpdateDto.getRegion().getDepth_3()!=null
@@ -72,52 +77,91 @@ public class UserService {
 
     }
 
+    //모임 총 횟수 조회
+    @Transactional
+    public int classCount(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        return user.getClass_count();
+    }
+
+    //모임 총 거리 조회
+    @Transactional
+    public double classDistance(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        return Double.parseDouble(String.format("%.2f", user.getClass_distance()));
+    }
+
+    //프로필 설정 조회
+
+    private final Path root = Paths.get("uploads/profiles");
+
+    @Transactional
+    public void updateProfileInfo(Long id, ProfileUpdateDto profileUpdateDto ){
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        if(profileUpdateDto.getNickname() != null){
+            user.setNickname(profileUpdateDto.getNickname());
+            user.setIntroduction(profileUpdateDto.getIntroduction());
+        }
+
+        if(profileUpdateDto.getIntroduction() != null){
+            user.setIntroduction(profileUpdateDto.getIntroduction());
+        }
+
+    }
+    @Transactional
+     public void updateProfileImage(MultipartFile file, Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        if(file.isEmpty()){
+            throw new FileException("파일이 없습니다.");
+        }
+
+        //확장자 제한
+        String fileName = file.getOriginalFilename();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        if(!ext.equals("jpeg") && !ext.equals("jpg") && !ext.equals("png") ){
+            throw new FileException("업로드가 불가능한 확장자입니다.");
+        }
+
+        String profileName = UUID.randomUUID()+file.getOriginalFilename();
+         try {
+
+             //원래 사진 삭제
+             Path files = root.resolve(user.getProfile());
+             Files.deleteIfExists(files);
+             //프로필 사진 수정
+             Files.copy(file.getInputStream(), this.root.resolve(profileName));
+
+             user.setProfile(profileName);
+
+         } catch (Exception e) {
+             throw new FileException("파일을 수정할 수 없습니다.");
+         }
+
+     }
+
+     //프로필 설정 조회
+    @Transactional
+    public ProfileFindDto findProfile(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
 
+        try {
 
-//    private final Path root = Paths.get("uploads");
-//
-//    //프로필 업로드 초기 설정
-//    public void init() {
-//        try {
-//            Files.createDirectories(root);
-//        } catch (IOException e) {
-//            throw new RuntimeException("파일 업로드 폴더 생성 안됨");
-//        }
-//    }
-//
-//    //프로필 저장
-//    public void save(MultipartFile file) {
-//        try {
-//            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-//            UUID gi =
-//            UserRepository.findById()
-//        } catch (Exception e) {
-//            if (e instanceof FileAlreadyExistsException) {
-//                throw new RuntimeException("파일 이름 이미 존재");
-//            }
-//
-//            throw new RuntimeException(e.getMessage());
-//        }
-//    }
-//
-//  //프로필 조화
-//    public Resource load(String filename) {
-//        try {
-//            Path file = root.resolve(filename);
-//            Resource resource = new UrlResource(file.toUri());
-//
-//            if (resource.exists() || resource.isReadable()) {
-//                return resource;
-//            } else {
-//                throw new RuntimeException("파일을 읽음 불가");
-//            }
-//        } catch (MalformedURLException e) {
-//            throw new RuntimeException("파일 다운로드 불가");
-//        }
-//    }
+            ProfileFindDto profileFindDto = ProfileFindDto.builder()
+                    .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
+                    .nickname(user.getNickname())
+                    .introduction(user.getIntroduction())
+                    .build();
 
+            return profileFindDto;
 
-
+        }catch (Exception e) {
+            throw new FileException("파일을 조회할 수 없습니다.");
+        }
+    }
 
 }
