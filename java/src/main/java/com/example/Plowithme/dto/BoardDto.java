@@ -16,7 +16,7 @@ public class BoardDto {
     private Long id;
     private String title;
     private String contents;
-    private int category;
+    private String category;
 //    private String postImage;
 //    private String imagePath;
     private LocalDateTime CreateDate;
@@ -31,7 +31,7 @@ public class BoardDto {
         boardDto.setPostHits(boardEntity.getPostHits());
         boardDto.setCreateDate(boardEntity.getCreateDate());
         //boardDto.setUpdateDate(boardEntity.getUpdateDate());
-      //  boardDto.setCategory(boardEntity.getCategory());
+        boardDto.setCategory(boardEntity.getCategory());
 
         return boardDto;
 

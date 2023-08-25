@@ -2,6 +2,8 @@ package com.example.Plowithme.entity;
 
 import com.example.Plowithme.dto.BoardDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,19 +14,28 @@ import lombok.Setter;
 @Setter
 public class BoardEntity extends BaseEntity {
 
+    /*
+    @NotNull : Null 값 체크
+    @NotEmpty : Null, "" 체크
+    @NotBlank : Null, "", 공백을 포함한 빈값 체크
+     */
+
     @Id //pk 컬럼 지정. 필수
     @Column(name="postId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50) //크기 50, not null 지정
+    @Column(length = 100) //크기 50, not null 지정
+   // @NotEmpty(message = "제목을 입력해주세요.")
     private String title;
 
-    @Column(length = 500) //크기 500, null 가능
+    @Column(length = 5000) //크기 5000, null 가능
+    //@NotEmpty(message = "내용을 입력해주세요.")
     private String contents;
 
     @Column(name="b_category")
-    private int category;
+    //@NotBlank(message = "카테고리를 선택해주세요.")
+    private String category;
 
     @Column
     private long postHits;
@@ -54,7 +65,7 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setTitle(boardDto.getTitle());
         boardEntity.setContents(boardDto.getContents());
         boardEntity.setPostHits(boardDto.getPostHits());
-        //boardEntity.setCategory(boardDto.getCategory());
+        boardEntity.setCategory(boardDto.getCategory());
         //boardEntity.setPostImage(boardDto.getPostImage());
         //boardEntity.setImagePath(boardDto.getImagePath());
         //dto에 담긴 것을 entity로 넘김(변환)

@@ -6,9 +6,12 @@ import com.example.Plowithme.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -16,6 +19,11 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
+    public BoardEntity getPostById(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No post searched with id: " + id));
+    }
 
     public void save(BoardDto boardDto) {
         /*
@@ -57,7 +65,20 @@ public class BoardService {
         }
     }
 
+    //게시글 삭제 기능
     public void delete(Long id) {
         boardRepository.deleteById(id);
     }
+
+    //게시글 수정 기능
+//    public void updatePost(Long id, String title, String contents) {
+//        Optional<BoardEntity> board= boardRepository.findById(id);
+//        BoardEntity boardEntity= board.orElseThrow(() -> new NotFoundException("No post searched"));
+//        boardEntity.setTitle(title);
+//        boardEntity.setContents(contents);
+//        boardRepository.save(boardEntity);
+//
+//    }
+
+
 }

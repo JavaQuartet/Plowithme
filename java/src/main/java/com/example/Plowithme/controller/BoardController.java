@@ -2,6 +2,7 @@ package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.BoardDto;
 import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class BoardController {
 
     @PostMapping(value = "/board/posting")
     @Operation(summary = "커뮤니티 게시글 등록")
-    private ResponseEntity<CommonResponse> savePosting(@RequestBody @ModelAttribute BoardDto boardDto) {
+    private ResponseEntity<CommonResponse> savePosting(@Valid @RequestBody BoardDto boardDto) {
         System.out.println("boardDto=" + boardDto);
         boardService.save(boardDto);
 
@@ -62,16 +62,32 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+//    @PatchMapping("/board/{id}")
+//    @Operation(summary = "게시글 수정")
+//    public ResponseEntity<CommonResponse> update(@Valid @RequestBody @PathVariable Long id) {
+//       BoardEntity boardEntity=boardService.getPostById(id);
+//       boardService.updatePost(boardEntity);
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
+//        log.info("게시글 수정 완료");
+//        return ResponseEntity.status(HttpStatus.OK).body(response);
+//
+//    }
+
+//    @PostMapping("/member/{id}")
+//    public String update(@ModelAttribute MemberDto memberDto) {
+//        memberService.update(memberDto);
+//        return "redirect:mypage"; //+memberDto.getId();
+//    }
+
     @GetMapping("/board/list")
-    public ResponseEntity<CommonResponse> findAll(Model model) {
-       //db에서 전체 게시글 데이터를 가져와서 list.html에 보여준다
+    @Operation(summary = "커뮤니티 전체 페이지 조회")
+    public ResponseEntity<CommonResponse> findAll() {
        List<BoardDto> boardDtoList=boardService.findAll();
-       model.addAttribute("boardlist", boardDtoList);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"커뮤니티 전페 게시글 조회 성공");
         log.info("커뮤니티 전체 페이지 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @GetMapping("/board/{id}")

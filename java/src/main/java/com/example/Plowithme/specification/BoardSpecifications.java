@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BoardSpecifications {
 
-    public static Specification<BoardEntity> hasCategoryin(List<Integer> categories) {
+    public static Specification<BoardEntity> withCategory(List<Integer> categories) {
         return ((root, query, criteriaBuilder) ->
                 root.get("categoty").in(categories));
     }
