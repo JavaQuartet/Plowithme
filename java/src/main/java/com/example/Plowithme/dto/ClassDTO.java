@@ -2,6 +2,7 @@ package com.example.Plowithme.dto;
 
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
+import com.example.Plowithme.entity.Region;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.ClassRepository;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClassDTO {
 
-    private Long id;
+    /*private Long id;*/
 
 
     // 모임 만들때 사용
@@ -56,9 +57,9 @@ public class ClassDTO {
     // 모임 상세 페이지에서 사용
     private String notion; //모임 공지사항
 
-    private int distance; // 걸은 거리
+    private double distance; // 걸은 거리
 
-    private String region; // 지역 태그
+    private Region region; // 지역 태그
 
     // 참여자 모임
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
@@ -67,7 +68,7 @@ public class ClassDTO {
     public static ClassDTO toClassDTO(ClassEntity classEntity){
         ClassDTO classDTO = new ClassDTO();
 
-        classDTO.setId(classEntity.getId());
+        /*classDTO.setId(classEntity.getId());*/
         classDTO.setTitle(classEntity.getTitle());
         classDTO.setMember(classEntity.getMember());
         classDTO.setStatus(classEntity.getStatus());

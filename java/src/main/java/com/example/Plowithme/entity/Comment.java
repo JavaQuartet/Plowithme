@@ -4,10 +4,7 @@ import com.example.Plowithme.dto.CommentDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.parameters.P;
 
@@ -18,10 +15,14 @@ import java.time.LocalDateTime;
 @Data
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "Comment")
-public class Comment extends BaseEntity implements Serializable  {
+public class Comment extends BaseEntity  {
 
-    @Column @Id
+    @Column(name = "comment_id")
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -31,8 +32,10 @@ public class Comment extends BaseEntity implements Serializable  {
     @Column
     private String contents;
 
-    @Column
-    private Long boardId;
+    //board:comment=1:n
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity boardEntity;
 
 
     public static Comment toComment(CommentDto commentDto) {

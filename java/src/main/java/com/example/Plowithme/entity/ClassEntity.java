@@ -49,13 +49,13 @@ public class ClassEntity{
     private String end_date; // 도착 시간
 
     @Column
-    private int distance; // 걸은 거리
+    private double distance; // 걸은 거리
 
     @Column
     private Long maker_id; // 만든사람의 아이디
 
     @Column
-    private String region; // 지역 태그
+    private Region region; // 지역 태그
 
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClassFileEntity> classFileEntityList = new ArrayList<>();
@@ -116,10 +116,10 @@ public class ClassEntity{
 
 
     //모임 수정
-    public static ClassEntity toUpdateEntity(ClassDTO classDTO, User user_id){
+    public static ClassEntity toUpdateEntity(ClassEntity classDTO, User user_id){
         ClassEntity classEntity = new ClassEntity();
 
-        classEntity.setId(classDTO.getId());
+        /*classEntity.setId(classDTO.getId());*/
         classEntity.setTitle(classDTO.getTitle());
 
         classEntity.setMember(classDTO.getMember());
