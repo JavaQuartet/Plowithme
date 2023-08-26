@@ -89,8 +89,8 @@ public class ClassService {
     }
 
     @Transactional
-    public void deleteparticipant(ClassDTO classDTO, User user) {// 모임 참여 취소 할때 사용
-        classParticipantRepository.deleteByUseridAndClassid(user.getId(), classDTO.getId());
+    public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
+        classParticipantRepository.deleteByUseridAndClassid(user.getId(), classEntity.getId());
     }
 
 /*    public void deleteAllParticipant(){
@@ -105,16 +105,16 @@ public class ClassService {
 
     //모임 수정
     @Transactional
-    public ClassDTO update(ClassDTO classDTO, User user_id) {
-        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO, user_id);
+    public ClassDTO update(ClassEntity Class, User user_id) {
+        ClassEntity classEntity = ClassEntity.toUpdateEntity(Class, user_id);
         classRepository.save(classEntity);
-        return findById(classDTO.getId());
+        return findById(Class.getId());
     }
 
     @Transactional
     public void end_class(ClassDTO classDTO){
         for(ClassParticipantsEntity user : classDTO.getClassParticipantsEntityList()){
-            Optional<User> optionalUser = userRepository.findById(user.getParticipant_id());
+            Optional<User> optionalUser = userRepository.findById(user.getUserid());
             optionalUser.get().setClass_count(optionalUser.get().getClass_count() + 1);
             optionalUser.get().setClass_distance(optionalUser.get().getClass_distance() + classDTO.getDistance());
             userRepository.save(optionalUser.get());

@@ -149,12 +149,13 @@ userService.findOne();
     @Operation(summary = "참여, 참여취소")
     public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user) {
         ClassDTO classDTO = classService.findById(id);
-        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
+
+        ClassEntity classEntity = classRepository.findById(id).get();
 
         for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
             if (user.getId() == classParticipantsEntity.getUserid()){
                 classService.downstatus(id);
-                classService.deleteparticipant(classDTO, user);
+                classService.deleteparticipant(classEntity, user);
                 CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 나가기", classDTO);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
@@ -199,8 +200,9 @@ userService.findOne();
 
     @PostMapping("/joined/{id}")// 모임 수정
     @Operation(summary = "모임 수정 저장")
-    public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassDTO classDTO, Model model, @CurrentUser User user_id) {
-        ClassDTO Class = classService.update(classDTO, user_id);
+    public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassDTO classDTO,@PathVariable("id") Long id, @CurrentUser User user_id) {
+        ClassEntity classEntity = classRepository.findById(id).get();
+        ClassDTO Class = classService.update(classEntity, user_id);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", Class);
         return ResponseEntity.status(HttpStatus.OK).body(response);
         //return "redirect:/joined/" + classDTO.getId();
@@ -210,7 +212,7 @@ userService.findOne();
     // 모임 수정 페이지 이동
     @GetMapping("/class_update/{id}")
     @Operation(summary = "모임 수정")
-    public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id, Model model){
+    public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id){
         ClassDTO classDTO = classService.findById(id);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -231,14 +233,13 @@ userService.findOne();
     //모임종료 후기 작성 칸으로 넘어갈 수 있게끔 수정
     @PostMapping("/ended/{id}")
     @Operation(summary = "모임 종료")
-    public ResponseEntity<CommonResponse> endedclass(@PathVariable("id") Long id, @CurrentUser User user, @RequestBody int distance) {
-
-        ClassDTO classDTO = classService.findById(id);
-        classDTO.setDistance(distance);
-        classService.end_class(classDTO);
+    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassDTO classDTO) {
+        ClassEntity classEntity = classRepository.findById(id).get();
+        ClassDTO Class = classService.update(classEntity, user);
+        classService.end_class(Class);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 종료");
 
-        classService.delete(id);
+        /*classService.delete(id);*/
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
