@@ -33,9 +33,9 @@ public class MessageController {
     public ResponseEntity<CommonResponse> sendMessage(@Valid @RequestBody MessageSandDto messageSandDto, @CurrentUser User currentUser ) {
         messageService.writeMessage(currentUser.getId(),messageSandDto);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "쪽지 전송 완료");
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "쪽지 전송 완료");
         log.info("쪽지 전송 완료");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "쪽지 상세 조회")

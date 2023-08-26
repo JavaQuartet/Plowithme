@@ -13,6 +13,6 @@ public class ProfileFindDto {
 
     private String profile_url;
 
-    @Size(max=250)
+    @Size(max=100)
     private String introduction;
 }
