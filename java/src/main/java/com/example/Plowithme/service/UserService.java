@@ -156,12 +156,9 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
         try {
-//            Path file = root.resolve(user.getProfile());
-//    //        Resource resource = new UrlResource(file.toUri().toURL());
-//            System.out.println("resource = " + resource);
+
             ProfileFindDto profileFindDto = ProfileFindDto.builder()
                     .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
-  //                  .profile_resource(resource)
                     .nickname(user.getNickname())
                     .introduction(user.getIntroduction())
                     .build();
