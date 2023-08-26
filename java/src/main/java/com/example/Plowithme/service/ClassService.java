@@ -1,14 +1,18 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.ClassFileEntity;
+
+import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.ClassDTO;
 import com.example.Plowithme.repository.ClassFileRepository;
+import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
+import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.events.Event;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,27 +23,30 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ClassService {
+
     private final ClassRepository classRepository;
     private final ClassFileRepository classFileRepository;
+    private final ClassParticipantRepository classParticipantRepository;
+    private final UserRepository userRepository;
 
-    public void save(ClassDTO classDTO) throws IOException {
-        if(classDTO.getClassFile().isEmpty()){
-            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO);
+    public void save(ClassDTO classDTO, User user_id) throws IOException {
+/*        if(classDTO.getClassFile().isEmpty()){*/
+            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
             classRepository.save(classEntity);
-        }else{
+/*        }else{
             MultipartFile classFile = classDTO.getClassFile();
             String originalFilename = classFile.getOriginalFilename();
             String storedFilename = System.currentTimeMillis() + "_" + originalFilename;
             String savePath = "C:/plowithme_img/" + storedFilename;
             classFile.transferTo(new File(savePath));
 
-            ClassEntity classEntity = ClassEntity.toSaveFileEntity(classDTO);
+            ClassEntity classEntity = ClassEntity.toSaveFileEntity(classDTO, user_id);
             Long savedId = classRepository.save(classEntity).getId();
             ClassEntity Class = classRepository.findById(savedId).get();
 
             ClassFileEntity classFileEntity = ClassFileEntity.toClassFileEntity(Class, originalFilename, storedFilename);
             classFileRepository.save(classFileEntity);
-        }
+        }*/
     }
 
     public List<ClassDTO> findAll(){
@@ -61,15 +68,6 @@ public class ClassService {
         classRepository.downStatus(id);
     }
 
-    @Transactional
-    public void joinedclass(Long id){
-        classRepository.joinedclass(id);
-    }
-
-    @Transactional
-    public void unjoinedclass(Long id){
-        classRepository.unjoinedclass(id);
-    }
 
     public ClassDTO findById(Long id) {
         Optional<ClassEntity> optionalClassEntity = classRepository.findById(id);
@@ -83,17 +81,50 @@ public class ClassService {
     }
 
 
-    //모임 수정
-    public ClassDTO update(ClassDTO classDTO) {
-        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO);
-        classEntity.setClassjoined(1);
-        classRepository.save(classEntity);
-        return findById(classDTO.getId());
+
+
+    public void participant(ClassDTO classDTO ,User user) {
+        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
+        ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveEntity(classEntity, user);
+        classParticipantRepository.save(classParticipantsEntity);
     }
+
+    public void deleteparticipant(ClassDTO classDTO, User user){// 모임 참여 취소 할때 사용
+        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
+        /*ClassParticipantsEntity classParticipantsEntity = classParticipantRepository.findByUser_id(user.getId()).get();*/
+        /*classParticipantRepository.deleteById(classParticipantsEntity.getParticipant_id());*/
+    }
+
+/*    public void deleteAllParticipant(){
+
+    }*/
 
     //모임 삭제
     public void delete(Long id) {
         classRepository.deleteById(id);
-        classFileRepository.deleteById(id);
     }
+
+
+
+    //모임 수정
+    public ClassDTO update(ClassDTO classDTO, User user_id) {
+        ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO, user_id);
+        classRepository.save(classEntity);
+        return findById(classDTO.getId());
+    }
+
+
+    public void end_class(ClassDTO classDTO){
+        for(ClassParticipantsEntity user : classDTO.getClassParticipantsEntityList()){
+            Optional<User> optionalUser = userRepository.findById(user.getParticipant_id());
+            optionalUser.get().setClass_count(optionalUser.get().getClass_count() + 1);
+            optionalUser.get().setClass_distance(optionalUser.get().getClass_distance() + classDTO.getDistance());
+            userRepository.save(optionalUser.get());
+        }
+    }
+
+
+
+
+
 }
