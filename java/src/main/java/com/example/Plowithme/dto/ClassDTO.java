@@ -58,7 +58,7 @@ public class ClassDTO {
 
     private int distance; // 걸은 거리
 
-    /*private String region;*/
+    private String region; // 지역 태그
 
     // 참여자 모임
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
@@ -79,6 +79,7 @@ public class ClassDTO {
         classDTO.setNotion(classEntity.getNotice());
         classDTO.setDistance(classEntity.getDistance());
         classDTO.setMaker_id(classEntity.getMaker_id());
+        classDTO.setRegion(classEntity.getRegion());
         classDTO.setClassParticipantsEntityList(classEntity.getClassParticipantsEntityList());
 
         return classDTO;

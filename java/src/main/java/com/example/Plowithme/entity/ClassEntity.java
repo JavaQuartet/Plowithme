@@ -54,8 +54,8 @@ public class ClassEntity{
     @Column
     private Long maker_id; // 만든사람의 아이디
 
-    /*@Column*/
-    /*private String region;*/
+    @Column
+    private String region; // 지역 태그
 
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClassFileEntity> classFileEntityList = new ArrayList<>();
@@ -84,7 +84,7 @@ public class ClassEntity{
         classEntity.setDescription(classDTO.getDescription());
 
         classEntity.setNotice(classEntity.getNotice());
-
+        classEntity.setRegion(classEntity.getRegion());
 
 
         classEntity.setMaker_id(user_id.getId());

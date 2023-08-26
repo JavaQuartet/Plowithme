@@ -5,8 +5,10 @@ import com.example.Plowithme.dto.ClassDTO;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.ClassEntity;
 
+import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.ClassParticipantRepository;
+import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.ClassService;
 import com.example.Plowithme.service.UserService;
@@ -30,6 +32,7 @@ public class ClassController {
     private final ClassService classService;
     private final UserService userService;
     private final ClassParticipantRepository classParticipantRepository;
+    private final ClassRepository classRepository;
 
 
 
@@ -74,13 +77,13 @@ userService.findOne();
 
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
-    public ResponseEntity<CommonResponse> save(@Valid @RequestBody ClassDTO classDTO, @CurrentUser User user, Model model) throws IOException {
+    public ResponseEntity<CommonResponse> save(@Valid @RequestBody ClassDTO classDTO, @CurrentUser User user) throws IOException {
         System.out.println("classDTO = " + classDTO);
 
 
 
-        classService.save(classDTO, user);
-        classService.participant(classDTO, user);
+        ClassEntity classEntity = classService.save(classDTO, user);
+        classService.participant(classEntity, user);
 
         List<ClassDTO> classDTOList = classService.findAll();
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"모임 저장 완료", classDTOList);
@@ -125,32 +128,55 @@ userService.findOne();
     @Operation(summary = "모임 상세")
     public ResponseEntity<CommonResponse> findById(@PathVariable("id") Long id, @CurrentUser User user) {// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
-
-        if(classParticipantRepository.findById(user.getId()).isPresent()){
+        for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
+            if (user.getId() == classParticipantsEntity.getUserid()){
+                CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+        }
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여 안한모임 세부정보 이동", classDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+/*        if(classParticipantRepository.findByUserid(user.getId()).isPresent() && classParticipantRepository.findByClassid(classDTO.getId()).isPresent()){
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }else{
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여 안한모임 세부정보 이동", classDTO);
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
+        }*/
     }
 
     @PostMapping("/{id}")// 참여하기 참여취소 버튼
     @Operation(summary = "참여, 참여취소")
-    public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user){
+    public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user) {
         ClassDTO classDTO = classService.findById(id);
+        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
 
-        if(classParticipantRepository.findById(user.getId()).isPresent()){// 모임 참여취소
+        for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
+            if (user.getId() == classParticipantsEntity.getUserid()){
+                classService.downstatus(id);
+                classService.deleteparticipant(classDTO, user);
+                CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 나가기", classDTO);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+        }
+
+        classService.updatestatus(id);
+        classService.participant(classEntity, user);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 참여하기", classDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+
+/*        if(classParticipantRepository.findByUserid(user.getId()).isPresent() && classParticipantRepository.findByClassid(classDTO.getId()).isPresent()){// 모임 참여취소
             classService.downstatus(id);
             classService.deleteparticipant(classDTO, user);
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }else{// 모임 참여하기
             classService.updatestatus(id);
             classService.participant(classDTO, user);
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 참여하기", classDTO);
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
+        }*/
     }
 
 /*    @GetMapping("/joined/{id}") // 참여한 모임
@@ -175,7 +201,6 @@ userService.findOne();
     @Operation(summary = "모임 수정 저장")
     public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassDTO classDTO, Model model, @CurrentUser User user_id) {
         ClassDTO Class = classService.update(classDTO, user_id);
-        model.addAttribute("class", Class);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", Class);
         return ResponseEntity.status(HttpStatus.OK).body(response);
         //return "redirect:/joined/" + classDTO.getId();
@@ -187,7 +212,6 @@ userService.findOne();
     @Operation(summary = "모임 수정")
     public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id, Model model){
         ClassDTO classDTO = classService.findById(id);
-        model.addAttribute("classUpdate", classDTO);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
