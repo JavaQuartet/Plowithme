@@ -69,11 +69,9 @@ public class CommentController {
         log.info("댓글 삭제 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-
-    @GetMapping("/comment/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "게시글 댓글 목록 가져오기")
-    public ResponseEntity<CommonResponse> getCommentAll(CommentDto commentDto) {
+    public ResponseEntity<CommonResponse> getCommentAll(@Valid @PathVariable("id") Long id, CommentDto commentDto) {
         List<CommentDto> commentDtoList=commentService.findAllComment(commentDto.getBoardId());
 
         CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 목록 조회 성공", commentDtoList);

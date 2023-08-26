@@ -12,6 +12,8 @@ import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +79,7 @@ public class CommentService {
     public List<CommentDto> findAllComment(Long boardId) {
         BoardEntity boardEntity=boardRepository.findById(boardId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
+
         //entitylist>dto list
         List<CommentDto> commentDtoList=new ArrayList<>();
         for (Comment comment : commentList) {
@@ -84,4 +87,5 @@ public class CommentService {
             commentDtoList.add(commentDto);
         } return commentDtoList;
     }
+
 }
