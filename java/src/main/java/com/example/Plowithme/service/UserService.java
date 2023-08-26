@@ -190,7 +190,7 @@ public class UserService {
         List<ClassParticipantsEntity> joinList = classEntity.getClassParticipantsEntityList();
         List<JoinedClassProfileFindDto> joinedClassProfileFindDtos = new ArrayList<>();
         for (ClassParticipantsEntity classParticipantsEntity : joinList) {
-            User user = userRepository.findById(classParticipantsEntity.getUser_id()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+            User user = userRepository.findById(classParticipantsEntity.getUserid()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
             joinedClassProfileFindDtos.add(JoinedClassProfileFindDto.toDto(user));
         }

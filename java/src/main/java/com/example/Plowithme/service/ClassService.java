@@ -1,6 +1,7 @@
 package com.example.Plowithme.service;
 
 
+import com.example.Plowithme.dto.request.ClassSearchDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.ClassDTO;
 import com.example.Plowithme.repository.ClassFileRepository;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -122,6 +124,15 @@ public class ClassService {
     }
 
 
+//    @Transactional
+//    public List<ClassSearchDto> searchClass(String keyword) {
+//        List<ClassEntity> classEntities = classRepository.findAllSearch(keyword).stream()
+//                .map(ClassSearchDto::new)
+//                .collect(Collectors.toList());
+//
+//
+//        return
+//    }
 
 
 

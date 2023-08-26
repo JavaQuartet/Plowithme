@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-
 @Tag(name = "마이페이지")
 public class UserController {
     public final UserService userService;
@@ -150,8 +149,8 @@ public class UserController {
      */
 
     //모임 참여자 프로필 조회: 프로필 사진+닉네임
-    @GetMapping("/class/{id}/profile")
-    public ResponseEntity<CommonResponse> findClassProfiles(@PathVariable("id") Long id) {
+    @GetMapping("/classes/{classId}/profile")
+    public ResponseEntity<CommonResponse> findClassProfiles(@PathVariable("classId") Long id) {
 
         List<JoinedClassProfileFindDto> joinedClassProfileFindDtos = userService.findClassProfiles(id);
 
