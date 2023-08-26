@@ -21,7 +21,7 @@ public class BoardEntity extends BaseEntity {
      */
 
     @Id //pk 컬럼 지정. 필수
-    @Column(name="postId")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -33,9 +33,9 @@ public class BoardEntity extends BaseEntity {
     //@NotEmpty(message = "내용을 입력해주세요.")
     private String contents;
 
-    @Column(name="b_category")
+    @Column(name="category")
     //@NotBlank(message = "카테고리를 선택해주세요.")
-    private String category;
+    private int category;
 
     @Column
     private long postHits;

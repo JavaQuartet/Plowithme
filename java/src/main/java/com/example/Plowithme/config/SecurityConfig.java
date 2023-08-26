@@ -88,10 +88,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
-<<<<<<< HEAD
-=======
+
+//<<<<<<< HEAD
+//=======
                                 .requestMatchers("/**").permitAll()
->>>>>>> e842cdea2b2aff70e4afe0d529c0c1d9cfc56aa2
+//>>>>>>> e842cdea2b2aff70e4afe0d529c0c1d9cfc56aa2
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
 

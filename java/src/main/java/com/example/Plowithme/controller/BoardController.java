@@ -3,7 +3,12 @@ package com.example.Plowithme.controller;
 import com.example.Plowithme.dto.BoardDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
+import com.example.Plowithme.repository.UserRepository;
+import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
+import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -11,8 +16,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +34,7 @@ import java.util.List;
 @Tag(name = "커뮤니티 페이지/게시글")
 public class BoardController {
     private final BoardService boardService;
+    private final UserRepository userRepository;
 
 //    @GetMapping("/board")
 //    @Operation(summary = "커뮤니티 페이지 조회")
@@ -42,9 +50,10 @@ public class BoardController {
 
     @PostMapping(value = "/board/posting")
     @Operation(summary = "커뮤니티 게시글 등록")
-    private ResponseEntity<CommonResponse> savePosting(@Valid @RequestBody BoardDto boardDto) {
+    private ResponseEntity<CommonResponse> savePosting(@Valid @RequestBody  @PathVariable("id") Long id, BoardDto boardDto, @CurrentUser User currentUser) {
+
         System.out.println("boardDto=" + boardDto);
-        boardService.save(boardDto);
+        boardService.save(id, currentUser, boardDto);
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"게시글 생성 성공");
         log.info("게시글 등록 완료");
@@ -80,19 +89,26 @@ public class BoardController {
 //        return "redirect:mypage"; //+memberDto.getId();
 //    }
 
-    @GetMapping("/board/list")
+    @GetMapping("/board")
     @Operation(summary = "커뮤니티 전체 페이지 조회")
-    public ResponseEntity<CommonResponse> findAll() {
-       List<BoardDto> boardDtoList=boardService.findAll();
+    public ResponseEntity<CommonResponse> findAll(@RequestParam(name = "category", required = false) List<Integer> categories) {
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"커뮤니티 전페 게시글 조회 성공");
+        Specification<BoardEntity> spec = Specification.where(null);
+        if (categories != null && !categories.isEmpty()) {
+            spec = spec.and(BoardSpecifications.withCategory(categories));
+        }
+        List<BoardDto> boardDtos = boardService.getFilter(spec);
+
+        List<BoardDto> boardDtoList=boardService.findAll();
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"커뮤니티 전체 게시글 조회 성공", boardDtoList);
         log.info("커뮤니티 전체 페이지 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/board/{id}")
     @Operation(summary = "게시글 상세 조회")
-    public ResponseEntity<CommonResponse> findByPostId(@PathVariable Long id) {
+    public ResponseEntity<CommonResponse> findByPostId(@PathVariable("id") Long id) {
         /*
         해당 게시글의 조회수를 하나 올리고
         게시글 데이터를 가져와서 BoardDetail에 출력
