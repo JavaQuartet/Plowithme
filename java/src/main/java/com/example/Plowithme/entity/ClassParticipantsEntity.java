@@ -19,7 +19,10 @@ public class ClassParticipantsEntity {
     private Long participant_id;
 
     @Column
-    private Long user_id;
+    private Long userid;
+
+    @Column
+    private Long classid;
 
     /*@Column
     private Profile profileImageName;*/
@@ -31,11 +34,12 @@ public class ClassParticipantsEntity {
 
 
 
-    public static ClassParticipantsEntity toSaveEntity(ClassEntity classEntity,User user){
+    public static ClassParticipantsEntity toSaveParticiantEntity(ClassEntity classEntity,User user){
         ClassParticipantsEntity classParticipantsEntity = new ClassParticipantsEntity();
 
-        classParticipantsEntity.setUser_id(user.getId());
+        classParticipantsEntity.setUserid(user.getId());
         /*classParticipantsEntity.setProfileImageName(user.getProfile_image());*/
+        classParticipantsEntity.setClassid(classEntity.getId());
         classParticipantsEntity.setClassEntity(classEntity);
         return classParticipantsEntity;
     }
