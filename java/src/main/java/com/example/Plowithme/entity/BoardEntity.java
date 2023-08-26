@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //db 테이블 역할을 하는 클래스
 @Entity
 @Table(name = "board")
@@ -21,9 +24,9 @@ public class BoardEntity extends BaseEntity {
      */
 
     @Id //pk 컬럼 지정. 필수
-    @Column(name="id")
+    @Column(name="board_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postId;
 
     @Column(length = 100) //크기 50, not null 지정
    // @NotEmpty(message = "제목을 입력해주세요.")
@@ -33,12 +36,15 @@ public class BoardEntity extends BaseEntity {
     //@NotEmpty(message = "내용을 입력해주세요.")
     private String contents;
 
-    @Column(name="category")
+    @Column(name="board_category")
     //@NotBlank(message = "카테고리를 선택해주세요.")
     private int category;
 
     @Column
     private long postHits;
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment> commentList=new ArrayList<>();
 
     /*
     @Column

@@ -1,6 +1,7 @@
 package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.BoardDto;
+import com.example.Plowithme.dto.CommentDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
@@ -8,6 +9,7 @@ import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
+import com.example.Plowithme.service.CommentService;
 import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +37,7 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
 //    @GetMapping("/board")
 //    @Operation(summary = "커뮤니티 페이지 조회")
@@ -50,10 +53,10 @@ public class BoardController {
 
     @PostMapping(value = "/board/posting")
     @Operation(summary = "커뮤니티 게시글 등록")
-    private ResponseEntity<CommonResponse> savePosting(@Valid @RequestBody  @PathVariable("id") Long id, BoardDto boardDto, @CurrentUser User currentUser) {
+    private ResponseEntity<CommonResponse> savePosting(@Valid @CurrentUser User currentUser, @RequestBody BoardDto boardDto) {
 
         System.out.println("boardDto=" + boardDto);
-        boardService.save(id, currentUser, boardDto);
+        boardService.save(currentUser, boardDto);
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"게시글 생성 성공");
         log.info("게시글 등록 완료");

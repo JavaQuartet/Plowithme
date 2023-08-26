@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor  //모든 필드를 매개변수로 하는 생성자
 @ToString
 public class BoardDto {
-    private Long id;
+    private Long postId;
     private String title;
     private String contents;
     private int category;
@@ -25,7 +25,7 @@ public class BoardDto {
 
     public static BoardDto toboardDto(BoardEntity boardEntity) {
         BoardDto boardDto = new BoardDto();
-        boardDto.setId(boardEntity.getId());
+        boardDto.setPostId(boardEntity.getPostId());
         boardDto.setTitle(boardEntity.getTitle());
         boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
