@@ -39,14 +39,11 @@ public class CommentService {
 //        commentRepository.findAll();
 //    }
 
-    public void saveComment(Long id, User currentUser, CommentDto commentDto) {
+    public void saveComment(User currentUser, CommentDto commentDto) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
-
-        if(!user.getId().equals(currentUser.getId())){
-            throw new AccessDeniedException("접근 권한이 없습니다.");
-        }
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+        });
 
         //부모 엔티티(boardEntity) 조회
         Optional<BoardEntity> optionalBoardEntity= boardRepository.findById(commentDto.getBoardId());
@@ -63,9 +60,15 @@ public class CommentService {
     }
 
     //Id를 통해 comment 찾기
-    public Comment findById(Long id) {
-        return commentRepository.findById(id)
-                .orElseThrow(()->new NoSuchElementException("Can't find Comment with id" + id));
+    public CommentDto findById(Long id) {
+        Optional<Comment> optionalComment = commentRepository.findById(id);
+        if (optionalComment.isPresent()) {
+            Comment comment= optionalComment.get();
+            CommentDto commentDto = CommentDto.toCommentDto(comment);
+            return commentDto;
+        } else {
+            return null;
+        }
 
 
     }
@@ -75,10 +78,11 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    //댓글 조회
+    //댓글 목록 조회
     public List<CommentDto> findAllComment(Long boardId) {
         BoardEntity boardEntity=boardRepository.findById(boardId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
+
 
         //entitylist>dto list
         List<CommentDto> commentDtoList=new ArrayList<>();

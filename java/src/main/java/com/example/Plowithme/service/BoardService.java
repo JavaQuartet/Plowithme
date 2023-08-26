@@ -25,12 +25,12 @@ public class BoardService {
 
     private final UserRepository userRepository;
 
-    public void save(Long id, User currentUser, BoardDto boardDto) {
+    public void save(User currentUser, BoardDto boardDto) {
         /*
             1. dto>entity 변환
             2. repository의 savaPosting 메서드 호출
         */
-        User user = userRepository.findById(id)
+        User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
         if(!user.getId().equals(currentUser.getId())){
@@ -56,13 +56,13 @@ public class BoardService {
 
     //게시글 조회수 증가
     @Transactional
-    public void updatePostHits(Long id) {
-        boardRepository.updatePostHits(id);
+    public void updatePostHits(Long postId) {
+        boardRepository.updatePostHits(postId);
     }
 
 
-    public BoardDto findByPostId(Long id) {
-        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+    public BoardDto findByPostId(Long postId) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(postId);
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity= optionalBoardEntity.get();
             BoardDto boardDto = BoardDto.toboardDto(boardEntity);

@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSp
     //update board_table set board_postHits=board_postHits+1 where id=?
     //b 는 boardEntity
     @Modifying
-    @Query(value = "update BoardEntity b set b.postHits=b.postHits+1 where b.id=:id")
-    void updatePostHits(@Param("id") Long id);
+    @Query(value = "update BoardEntity b set b.postHits=b.postHits+1 where b.postId=:postId")
+    void updatePostHits(@Param("postId") Long postId);
 
 }
