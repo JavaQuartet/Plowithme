@@ -29,10 +29,11 @@ public class ClassService {
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
 
-    public void save(ClassDTO classDTO, User user_id) throws IOException {
+    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
 /*        if(classDTO.getClassFile().isEmpty()){*/
             ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
             classRepository.save(classEntity);
+            return classEntity;
 /*        }else{
             MultipartFile classFile = classDTO.getClassFile();
             String originalFilename = classFile.getOriginalFilename();
@@ -82,24 +83,20 @@ public class ClassService {
 
 
 
-
-    public void participant(ClassDTO classDTO ,User user) {
-        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
-        ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveEntity(classEntity, user);
+    public void participant(ClassEntity classEntity ,User user) {
+        ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveParticiantEntity(classEntity, user);
         classParticipantRepository.save(classParticipantsEntity);
     }
 
-    public void deleteparticipant(ClassDTO classDTO, User user){// 모임 참여 취소 할때 사용
-        ClassEntity classEntity = classRepository.findById(classDTO.getId()).get();
-        /*ClassParticipantsEntity classParticipantsEntity = classParticipantRepository.findByUser_id(user.getId()).get();*/
-        /*classParticipantRepository.deleteById(classParticipantsEntity.getParticipant_id());*/
+    @Transactional
+    public void deleteparticipant(ClassDTO classDTO, User user) {// 모임 참여 취소 할때 사용
+        classParticipantRepository.deleteByUseridAndClassid(user.getId(), classDTO.getId());
     }
 
 /*    public void deleteAllParticipant(){
 
     }*/
-
-    //모임 삭제
+    @Transactional //모임 삭제
     public void delete(Long id) {
         classRepository.deleteById(id);
     }
@@ -107,13 +104,14 @@ public class ClassService {
 
 
     //모임 수정
+    @Transactional
     public ClassDTO update(ClassDTO classDTO, User user_id) {
         ClassEntity classEntity = ClassEntity.toUpdateEntity(classDTO, user_id);
         classRepository.save(classEntity);
         return findById(classDTO.getId());
     }
 
-
+    @Transactional
     public void end_class(ClassDTO classDTO){
         for(ClassParticipantsEntity user : classDTO.getClassParticipantsEntityList()){
             Optional<User> optionalUser = userRepository.findById(user.getParticipant_id());
