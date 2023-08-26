@@ -107,6 +107,7 @@ public class UserService {
     public void updateProfileInfo(Long id, ProfileUpdateDto profileUpdateDto ){
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
+
         if(profileUpdateDto.getNickname() != null){
             user.setNickname(profileUpdateDto.getNickname());
             user.setIntroduction(profileUpdateDto.getIntroduction());
@@ -120,6 +121,7 @@ public class UserService {
     @Transactional
      public void updateProfileImage(MultipartFile file, Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
 
         if(file.isEmpty()){
             throw new FileException("파일이 없습니다.");
@@ -135,11 +137,12 @@ public class UserService {
         String profileName = UUID.randomUUID()+file.getOriginalFilename();
          try {
 
-             //원래 사진 삭제
-             Path files = root.resolve(user.getProfile());
-             Files.deleteIfExists(files);
-
-             //프로필 사진 수정
+             if(!user.getProfile().equals("default-image.png")) { //기본 이미지
+                 //원래 사진 삭제
+                 Path files = root.resolve(user.getProfile());
+                 Files.deleteIfExists(files);
+             }
+             //프로필 사진 추가
              Files.copy(file.getInputStream(), this.root.resolve(profileName));
 
              user.setProfile(profileName);
@@ -156,7 +159,6 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
         try {
-
             ProfileFindDto profileFindDto = ProfileFindDto.builder()
                     .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
                     .nickname(user.getNickname())
@@ -169,13 +171,5 @@ public class UserService {
         }
     }
 
-    public Stream<Path> loadAll(Long id){
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
-        try {
-            return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
-        }
-    }
 
 }

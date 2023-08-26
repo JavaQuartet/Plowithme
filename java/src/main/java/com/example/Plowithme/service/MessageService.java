@@ -8,6 +8,7 @@ import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.MessageRepository;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,13 +41,30 @@ public class MessageService {
         messageRepository.save(message);
 
     }
+    //쪽지 상세 조회
+    @Transactional(readOnly = true)
+    public MessageFindDto findMessage(Long id) {
+        Message message = messageRepository.findById(id).orElseThrow(() -> {
+            return new ResourceNotFoundException("쪽지를 찾을 수 없습니다.");
+        });
+
+
+        MessageFindDto messageFindDto = MessageFindDto.toDto(message);
+
+        return messageFindDto;
+    }
+
+
 
     //받은 쪽지 조회
+
     @Transactional(readOnly = true)
     public List<MessageFindDto> receivedMessage(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
         });
+
+
         List<Message> messages = messageRepository.findAllByReceiver(user);
         List<MessageFindDto> messageFindDtos = new ArrayList<>();
 
@@ -57,6 +75,9 @@ public class MessageService {
         }
         return messageFindDtos;
     }
+
+
+
 
     // 받은 쪽지 삭제
     @Transactional
@@ -69,6 +90,7 @@ public class MessageService {
         Message message = messageRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundException("메시지를 찾을 수 없습니다.");
         });
+
 
         if(user == message.getSender()) {
             message.deleteByReceiver();
@@ -109,6 +131,7 @@ public class MessageService {
         Message message = messageRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundException("메시지를 찾을 수 없습니다.");
         });
+
 
         if(user == message.getSender()) {
             message.deleteBySender(); // 받은 사람에서만 삭제
