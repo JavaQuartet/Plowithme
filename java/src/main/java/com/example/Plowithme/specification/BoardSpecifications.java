@@ -9,6 +9,6 @@ public class BoardSpecifications {
 
     public static Specification<BoardEntity> withCategory(List<Integer> categories) {
         return ((root, query, criteriaBuilder) ->
-                root.get("categoty").in(categories));
+                root.get("category").in(categories));
     }
 }

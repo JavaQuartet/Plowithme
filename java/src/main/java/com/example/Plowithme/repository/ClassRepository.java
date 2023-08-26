@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     @Modifying
     @Query(value = "update ClassEntity c set c.status=c.status + 1 where c.id=:id")
@@ -17,11 +18,9 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     @Query(value = "update ClassEntity c set c.status=c.status - 1 where c.id=:id")
     void downStatus(@Param("id") Long id);
 
-    @Modifying
-    @Query(value = "update ClassEntity c set c.classjoined=1 where c.id=:id")
-    void joinedclass(@Param("id") Long id);
 
-    @Modifying
-    @Query(value = "update ClassEntity c set c.classjoined=0 where c.id=:id")
-    void unjoinedclass(@Param("id") Long id);
+
+/*    @Modifying
+    @Query(value = "update User u set u.total_distance = u.total_distance + u.distance where u.id=:id")
+    void endclass(@Param("id") Long id);*/
 }

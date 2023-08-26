@@ -2,17 +2,20 @@ package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.BoardDto;
 import com.example.Plowithme.entity.BoardEntity;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
+import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +23,20 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public BoardEntity getPostById(Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No post searched with id: " + id));
-    }
+    private final UserRepository userRepository;
 
-    public void save(BoardDto boardDto) {
+    public void save(Long id, User currentUser, BoardDto boardDto) {
         /*
             1. dto>entity 변환
             2. repository의 savaPosting 메서드 호출
         */
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
         BoardEntity boardEntity=BoardEntity.toSaveEntity(boardDto);
         //boardEntity의 toBoardEntity메소드를 매개변수 boardDto 이용해서 호출
         //변환된 entity를 가져와야 하므로 BoardEntity boardEntity=~~
@@ -69,6 +76,15 @@ public class BoardService {
     public void delete(Long id) {
         boardRepository.deleteById(id);
     }
+
+    public List<BoardDto> getFilter(Specification<BoardEntity> spec) {
+        List<BoardEntity> questions = boardRepository.findAll(spec);
+        return questions.stream()
+                .map(BoardDto::toboardDto)
+                .collect(Collectors.toList());
+
+    }
+
 
     //게시글 수정 기능
 //    public void updatePost(Long id, String title, String contents) {
