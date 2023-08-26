@@ -1,21 +1,27 @@
 package com.example.Plowithme.service;
 
+import com.example.Plowithme.controller.UserController;
 import com.example.Plowithme.dto.request.mypage.*;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -132,6 +138,7 @@ public class UserService {
              //원래 사진 삭제
              Path files = root.resolve(user.getProfile());
              Files.deleteIfExists(files);
+
              //프로필 사진 수정
              Files.copy(file.getInputStream(), this.root.resolve(profileName));
 
@@ -148,19 +155,29 @@ public class UserService {
     public ProfileFindDto findProfile(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
-
         try {
-
+//            Path file = root.resolve(user.getProfile());
+//    //        Resource resource = new UrlResource(file.toUri().toURL());
+//            System.out.println("resource = " + resource);
             ProfileFindDto profileFindDto = ProfileFindDto.builder()
                     .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
+  //                  .profile_resource(resource)
                     .nickname(user.getNickname())
                     .introduction(user.getIntroduction())
                     .build();
-
             return profileFindDto;
 
         }catch (Exception e) {
             throw new FileException("파일을 조회할 수 없습니다.");
+        }
+    }
+
+    public Stream<Path> loadAll(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+        try {
+            return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not load the files!");
         }
     }
 

@@ -19,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -97,14 +101,14 @@ public class UserController {
 
 
 
-    //프로필 설정 조회
+//    프로필 설정 조회
     @GetMapping("/users/{id}/profile")
     public ResponseEntity<CommonResponse> findProfile(@PathVariable("id") Long id, @CurrentUser User currentUser) {
 
         ProfileFindDto profileFindDto = userService.findProfile(id);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 조회 완료", profileFindDto);
-        log.info("포르필 조회 완료");
+        log.info("프로필 조회 완료");
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + currentUser.getProfile() + "\"").body(response);
     }
