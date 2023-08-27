@@ -1,9 +1,7 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.BoardDto;
+import com.example.Plowithme.dto.request.community.BoardDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

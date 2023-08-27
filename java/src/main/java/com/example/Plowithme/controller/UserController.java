@@ -1,7 +1,9 @@
 package com.example.Plowithme.controller;
 
 
+import com.example.Plowithme.dto.request.meeting.JoinedClassProfileFindDto;
 import com.example.Plowithme.dto.request.mypage.*;
+import com.example.Plowithme.dto.request.user.CurrentUserDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
@@ -11,23 +13,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.groovy.parser.antlr4.GroovyParser;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-
 @Tag(name = "마이페이지")
 public class UserController {
     public final UserService userService;
@@ -39,6 +35,9 @@ public class UserController {
         return ResponseEntity.ok("test");
     }
 
+    /**
+     회원정보
+     */
 
     //현재 유저 정보 조회
     @GetMapping("/me")
@@ -74,6 +73,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     모임
+     */
 
     //모임 횟수 조회
     @GetMapping("/users/{id}/class-count")
@@ -99,9 +101,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+    프로필
+     */
 
-
-//    프로필 설정 조회
+    //프로필 설정 조회
     @GetMapping("/users/{id}/profile")
     public ResponseEntity<CommonResponse> findProfile(@PathVariable("id") Long id, @CurrentUser User currentUser) {
 
@@ -134,6 +138,20 @@ public class UserController {
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 수정 완료");
         log.info("프로필 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    /**
+     외부에서 쓰일 프로필
+     */
+
+    //모임 참여자 프로필 조회: 프로필 사진+닉네임
+    @GetMapping("/classes/{classId}/profile")
+    public ResponseEntity<CommonResponse> findClassProfiles(@PathVariable("classId") Long id) {
+
+        List<JoinedClassProfileFindDto> joinedClassProfileFindDtos = userService.findClassProfiles(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여자 프로필 조회 완료", joinedClassProfileFindDtos );
+        log.info("모임 참여자 프로필 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

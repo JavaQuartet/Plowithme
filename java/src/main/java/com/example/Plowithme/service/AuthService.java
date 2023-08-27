@@ -1,7 +1,7 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.LoginDto;
-import com.example.Plowithme.dto.request.RegisterDto;
+import com.example.Plowithme.dto.request.user.LoginDto;
+import com.example.Plowithme.dto.request.user.RegisterDto;
 import com.example.Plowithme.entity.Role;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;

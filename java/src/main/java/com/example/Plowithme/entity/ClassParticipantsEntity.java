@@ -2,6 +2,7 @@ package com.example.Plowithme.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class ClassParticipantsEntity {
     /*@Column
     private Profile profileImageName;*/
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id")
     @JsonIgnore
     private ClassEntity classEntity;

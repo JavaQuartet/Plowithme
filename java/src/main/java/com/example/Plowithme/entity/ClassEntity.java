@@ -1,34 +1,40 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.ClassDTO;
-import com.example.Plowithme.security.CurrentUser;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
+import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Getter
 @Setter
-@Table(name = "class_table")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "class")
 /*@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)*/
 public class ClassEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "class_id")
     private Long id;
 
     @Column(length = 10)
     private String title; // 모임 이름
 
     @Column
-    private int member; // 모임 전원
+    private int member_max; // 모임 전원
 
     @Column
-    private int status; // 모임 인원
+    private int member_current;// 모임 인원
+
+    @Column
+    private int status; //모임 상태: 활성 = 1 , 종료= 0
 
     @Column
     private String start_region; // 시작 지역
@@ -42,10 +48,10 @@ public class ClassEntity{
     @Column
     private String notice; // 공지
 
-    @Column()
+    @Column
     private String start_date; // 시작 시간
 
-    @Column()
+    @Column
     private String end_date; // 도착 시간
 
     @Column
@@ -54,65 +60,68 @@ public class ClassEntity{
     @Column
     private Long maker_id; // 만든사람의 아이디
 
+//    @Column
+//    private Region region; // 지역 태그
+
     @Column
-    private Region region; // 지역 태그
+    private String image_name;
 
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClassFileEntity> classFileEntityList = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
 
 
 
+//
+//    public static ClassEntity toSaveEntity(ClassDTO classDTO, User user_id){
+//
+//        ClassEntity classEntity = new ClassEntity();
+//
+//        classEntity.setTitle(classDTO.getTitle());
+//        classEntity.setMember(classDTO.getMember());
+//        classEntity.setStatus(1);
+////        classEntity.setStart_region(classDTO.getStart_region());
+//        classEntity.setEnd_region(classDTO.getEnd_region());
+//
+//        classEntity.setStart_date(classDTO.getStart_date());
+//        classEntity.setEnd_date(classDTO.getEnd_date());
+//
+//        classEntity.setDescription(classDTO.getDescription());
+//
+//        classEntity.setNotice(classEntity.getNotice());
+//        classEntity.setRegion(classEntity.getRegion());
+//
+//
+//        classEntity.setMaker_id(user_id.getId());
+//        return classEntity;
+//    }
 
-    public static ClassEntity toSaveEntity(ClassDTO classDTO, User user_id){
-
-        ClassEntity classEntity = new ClassEntity();
-
-        classEntity.setTitle(classDTO.getTitle());
-        classEntity.setMember(classDTO.getMember());
-        classEntity.setStatus(1);
-        classEntity.setStart_region(classDTO.getStart_region());
-        classEntity.setEnd_region(classDTO.getEnd_region());
-
-        classEntity.setStart_date(classDTO.getStart_date());
-        classEntity.setEnd_date(classDTO.getEnd_date());
-
-        classEntity.setDescription(classDTO.getDescription());
-
-        classEntity.setNotice(classEntity.getNotice());
-        classEntity.setRegion(classEntity.getRegion());
-
-
-        classEntity.setMaker_id(user_id.getId());
-        return classEntity;
-    }
-
-
-    public static ClassEntity toSaveFileEntity(ClassDTO classDTO, User user_id){
-        ClassEntity classEntity = new ClassEntity();
-
-        classEntity.setTitle(classDTO.getTitle());
-        classEntity.setMember(classDTO.getMember());
-        classEntity.setStatus(1);
-        classEntity.setStart_region(classDTO.getStart_region());
-        classEntity.setEnd_region(classDTO.getEnd_region());
-
-        classEntity.setStart_date(classDTO.getStart_date());
-        classEntity.setStart_date(classDTO.getEnd_date());
-
-        classEntity.setDescription(classDTO.getDescription());
-
-        classEntity.setNotice(classEntity.getNotice());
-
-
-        classEntity.setMaker_id(user_id.getId());
-        return classEntity;
-    }
-
+//
+//    public static ClassEntity toSaveFileEntity(ClassDTO classDTO, User user_id){
+//        ClassEntity classEntity = new ClassEntity();
+//
+//        classEntity.setTitle(classDTO.getTitle());
+//        classEntity.setMember(classDTO.getMember());
+//        classEntity.setStatus(1);
+//        classEntity.setStart_region(classDTO.getStart_region());
+//        classEntity.setEnd_region(classDTO.getEnd_region());
+//
+//        classEntity.setStart_date(classDTO.getStart_date());
+//        classEntity.setStart_date(classDTO.getEnd_date());
+//
+//        classEntity.setDescription(classDTO.getDescription());
+//
+//        classEntity.setNotice(classEntity.getNotice());
+//
+//
+//        classEntity.setMaker_id(user_id.getId());
+//        return classEntity;
+//    }
+//
 
 
     //모임 수정
@@ -122,7 +131,7 @@ public class ClassEntity{
         /*classEntity.setId(classDTO.getId());*/
         classEntity.setTitle(classDTO.getTitle());
 
-        classEntity.setMember(classDTO.getMember());
+        classEntity.setMember_max(classDTO.getMember_max());
         classEntity.setStatus(classDTO.getStatus());
 
         classEntity.setStart_region(classDTO.getStart_region());
@@ -138,4 +147,14 @@ public class ClassEntity{
         classEntity.setMaker_id(user_id.getId());
         return classEntity;
     }
+
+
+    public String getImageUrl(String image_name) {
+        try {
+            return Paths.get("uploads/profiles").resolve(this.image_name).toUri().toURL().toString();
+
+        }catch (Exception e){
+            throw new FileException("파일을 조회할 수 없습니다.");}
+    }
+
 }

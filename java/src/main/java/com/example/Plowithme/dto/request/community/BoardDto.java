@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto;
+package com.example.Plowithme.dto.request.community;
 
 import java.time.LocalDateTime;
 

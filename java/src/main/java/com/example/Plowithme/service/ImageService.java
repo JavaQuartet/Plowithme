@@ -25,11 +25,9 @@ public class ImageService {
 
 
 
-
-
     //이미지 저장
     @Transactional
-    public void saveImage(MultipartFile file) {
+    public String saveImage(MultipartFile file) {
 
         if(file.isEmpty()){
             throw new FileException("파일이 없습니다.");
@@ -43,12 +41,11 @@ public class ImageService {
             throw new FileException("업로드가 불가능한 확장자입니다.");
         }
 
-        String profileName = UUID.randomUUID()+file.getOriginalFilename();
+        String imageName = UUID.randomUUID()+file.getOriginalFilename();
         try {
 
-        Files.copy(file.getInputStream(), this.root.resolve(profileName));
-        Path profilePath = root.resolve(profileName);
-
+        Files.copy(file.getInputStream(), this.root.resolve(imageName));
+        return imageName;
 
         } catch (Exception e) {
             throw new FileException("파일을 저장할 수 없습니다.");
@@ -58,7 +55,7 @@ public class ImageService {
 
     @Transactional
     //이미지 수정
-    public void updateImage(MultipartFile file,  Long id) {
+    public String updateImage(MultipartFile file,  Long id, String oldImageName) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
         if(file.isEmpty()){
@@ -72,17 +69,17 @@ public class ImageService {
             throw new FileException("업로드가 불가능한 확장자입니다.");
         }
 
-        String profileName = UUID.randomUUID()+file.getOriginalFilename();
+        String newImageName = UUID.randomUUID()+file.getOriginalFilename();
         try {
 
             //원래 사진 삭제
-            Path files = root.resolve(user.getProfile());
+            Path files = root.resolve(oldImageName);
             Files.deleteIfExists(files);
             //사진 업로드
-            Files.copy(file.getInputStream(), this.root.resolve(profileName));
-            Path profilePath = root.resolve(profileName);
+            Files.copy(file.getInputStream(), this.root.resolve(newImageName));
+            Path imagePath = root.resolve(newImageName);
 
-            user.setProfile(profileName);
+            return newImageName;
 
 
         } catch (Exception e) {

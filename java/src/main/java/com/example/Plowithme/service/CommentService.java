@@ -1,8 +1,6 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.BoardDto;
-import com.example.Plowithme.dto.CommentDto;
-import com.example.Plowithme.dto.request.mypage.CurrentUserDto;
+import com.example.Plowithme.dto.request.community.CommentDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
@@ -13,14 +11,10 @@ import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

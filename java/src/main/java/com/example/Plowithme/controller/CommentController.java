@@ -1,9 +1,8 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.CommentDto;
-import com.example.Plowithme.dto.request.mypage.CurrentUserDto;
+import com.example.Plowithme.dto.request.community.CommentDto;
+import com.example.Plowithme.dto.request.user.CurrentUserDto;
 import com.example.Plowithme.dto.response.CommonResponse;
-import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.security.CurrentUser;
@@ -12,19 +11,15 @@ import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Controller

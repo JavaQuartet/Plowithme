@@ -1,7 +1,9 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.ClassDTO;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
 
+import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
+import com.example.Plowithme.dto.request.meeting.ClassSearchDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.ClassEntity;
 
@@ -11,6 +13,7 @@ import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.ClassService;
+import com.example.Plowithme.service.ImageService;
 import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -19,7 +22,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
@@ -33,7 +38,7 @@ public class ClassController {
     private final UserService userService;
     private final ClassParticipantRepository classParticipantRepository;
     private final ClassRepository classRepository;
-
+    private final ImageService imageService;
 
 
 /*
@@ -77,19 +82,19 @@ userService.findOne();
 
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
-    public ResponseEntity<CommonResponse> save(@Valid @RequestBody ClassDTO classDTO, @CurrentUser User user) throws IOException {
-        System.out.println("classDTO = " + classDTO);
+    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "classSavaDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
+        ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
+        if(file != null){
+            String imageName = imageService.saveImage(file);
+            classEntity.setImage_name(imageName);
+        }
 
-
-
-        ClassEntity classEntity = classService.save(classDTO, user);
         classService.participant(classEntity, user);
 
-        List<ClassDTO> classDTOList = classService.findAll();
-        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"모임 저장 완료", classDTOList);
+
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"모임 저장 완료", classEntity.getId()); // 생성된 모임 id 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 
     // 수정 필요 공지
 /*    @PostMapping("/{id}")

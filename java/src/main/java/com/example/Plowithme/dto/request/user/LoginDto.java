@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request;
+package com.example.Plowithme.dto.request.user;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;

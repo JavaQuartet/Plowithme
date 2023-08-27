@@ -8,6 +8,7 @@ import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "쪽지")
 public class MessageController {
 
     private final MessageService messageService;
@@ -31,10 +33,23 @@ public class MessageController {
     public ResponseEntity<CommonResponse> sendMessage(@Valid @RequestBody MessageSandDto messageSandDto, @CurrentUser User currentUser ) {
         messageService.writeMessage(currentUser.getId(),messageSandDto);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "쪽지 전송 완료");
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "쪽지 전송 완료");
         log.info("쪽지 전송 완료");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Operation(summary = "쪽지 상세 조회")
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<CommonResponse> findReceivedMessage(@PathVariable("messageId") Long id) {
+        MessageFindDto messageFindDto = messageService.findMessage(id);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "받은 쪽지 상세 조회 완료", messageFindDto);
+        log.info("받은 쪽지 상세 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+
+
 
     @Operation(summary = "받은 쪽지 조회")
     @GetMapping("/messages/received")
@@ -67,8 +82,8 @@ public class MessageController {
     public ResponseEntity<CommonResponse> findSentMessage(@CurrentUser User currentUser) {
 
         List<MessageFindDto> messageFindDtos = messageService.sentMessage(currentUser);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "받은 쪽지 삭제", messageFindDtos );
-        log.info("받은 쪽지 조회");
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "보낸 쪽지 조회", messageFindDtos );
+        log.info("보낸 쪽지 조회");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

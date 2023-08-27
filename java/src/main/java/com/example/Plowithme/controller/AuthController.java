@@ -1,7 +1,7 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.LoginDto;
-import com.example.Plowithme.dto.request.RegisterDto;
+import com.example.Plowithme.dto.request.user.LoginDto;
+import com.example.Plowithme.dto.request.user.RegisterDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.dto.response.JWTAuthResponse;
 import com.example.Plowithme.service.AuthService;
@@ -10,10 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
