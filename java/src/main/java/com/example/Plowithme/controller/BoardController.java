@@ -1,11 +1,9 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.BoardDto;
-import com.example.Plowithme.dto.CommentDto;
+import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
@@ -21,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

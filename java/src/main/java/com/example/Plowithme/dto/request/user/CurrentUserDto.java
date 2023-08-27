@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request.mypage;
+package com.example.Plowithme.dto.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.BoardDto;
+import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;

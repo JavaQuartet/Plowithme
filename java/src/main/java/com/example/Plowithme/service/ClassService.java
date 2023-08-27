@@ -1,9 +1,10 @@
 package com.example.Plowithme.service;
 
 
-import com.example.Plowithme.dto.request.ClassSearchDto;
+import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
 import com.example.Plowithme.entity.*;
-import com.example.Plowithme.dto.ClassDTO;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassFileRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
@@ -11,16 +12,11 @@ import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
-import org.yaml.snakeyaml.events.Event;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +27,11 @@ public class ClassService {
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
 
-    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
-/*        if(classDTO.getClassFile().isEmpty()){*/
-            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
-            classRepository.save(classEntity);
-            return classEntity;
+//    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
+///*        if(classDTO.getClassFile().isEmpty()){*/
+//            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
+//            classRepository.save(classEntity);
+//            return classEntity;
 /*        }else{
             MultipartFile classFile = classDTO.getClassFile();
             String originalFilename = classFile.getOriginalFilename();
@@ -50,7 +46,28 @@ public class ClassService {
             ClassFileEntity classFileEntity = ClassFileEntity.toClassFileEntity(Class, originalFilename, storedFilename);
             classFileRepository.save(classFileEntity);
         }*/
+//    }
+
+    public ClassEntity saveClass(ClassSaveDto classSaveDto, Long id){
+
+        ClassEntity classEntity = ClassEntity.builder()
+                .title(classSaveDto.getTitle())
+                .member_max(classSaveDto.getMember_max())
+                .member_current(1)
+                .status(1)
+                .start_region(classSaveDto.getStart_region())
+                .end_region(classSaveDto.getEnd_date())
+                .description(classSaveDto.getDescription())
+                .start_date(classSaveDto.getStart_date())
+                .end_date(classSaveDto.getEnd_date())
+                .maker_id(id)
+                .build();
+        return classEntity;
+
+
     }
+
+
 
     public List<ClassDTO> findAll(){
         List<ClassEntity> classEntityList = classRepository.findAll();

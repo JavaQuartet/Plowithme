@@ -1,34 +1,28 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.controller.UserController;
-import com.example.Plowithme.dto.request.JoinedClassProfileFindDto;
+import com.example.Plowithme.dto.request.meeting.JoinedClassProfileFindDto;
 import com.example.Plowithme.dto.request.mypage.*;
+import com.example.Plowithme.dto.request.user.CurrentUserDto;
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
-import com.example.Plowithme.entity.Message;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service

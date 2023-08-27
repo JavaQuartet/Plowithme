@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request;
+package com.example.Plowithme.dto.request.user;
 
 import com.example.Plowithme.entity.Region;
 import jakarta.validation.constraints.*;

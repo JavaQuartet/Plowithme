@@ -1,8 +1,9 @@
 package com.example.Plowithme.controller;
 
 
-import com.example.Plowithme.dto.request.JoinedClassProfileFindDto;
+import com.example.Plowithme.dto.request.meeting.JoinedClassProfileFindDto;
 import com.example.Plowithme.dto.request.mypage.*;
+import com.example.Plowithme.dto.request.user.CurrentUserDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
@@ -12,18 +13,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.groovy.parser.antlr4.GroovyParser;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController

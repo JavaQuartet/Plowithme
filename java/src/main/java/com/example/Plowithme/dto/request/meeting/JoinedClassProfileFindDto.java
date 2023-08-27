@@ -1,10 +1,6 @@
-package com.example.Plowithme.dto.request;
+package com.example.Plowithme.dto.request.meeting;
 
 
-import com.example.Plowithme.dto.request.mypage.MessageFindDto;
-import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.ClassParticipantsEntity;
-import com.example.Plowithme.entity.Message;
 import com.example.Plowithme.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,15 +1,11 @@
-package com.example.Plowithme.dto.request;
+package com.example.Plowithme.dto.request.meeting;
 
 
 import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.User;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -30,9 +26,4 @@ public class ClassSearchDto {
     private String start_date;
 
 
-
-    public static ClassSearchDto toDto(ClassEntity classEntity) {
-        return new ClassSearchDto(classEntity.getTitle(),
-                classEntity.getMember(), classEntity.getStatus(), classEntity.getStart_region(), classEntity.getDescription(), classEntity.getStart_date());
-    }
 }

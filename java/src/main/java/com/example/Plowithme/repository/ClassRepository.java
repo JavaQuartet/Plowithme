@@ -26,7 +26,7 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     @Query(value = "update User u set u.total_distance = u.total_distance + u.distance where u.id=:id")
     void endclass(@Param("id") Long id);*/
 
-    @Query(value = "SELECT b FROM class_table b WHERE b.depth_1 LIKE %:keyword% OR b.depth_2 LIKE %:keyword% OR b.depth_3 LIKE %:keyword%"
-    )
-    List<ClassEntity> findAllSearch(String keyword);
+//    @Query(value = "SELECT b FROM class_table b WHERE b.depth_1 LIKE %:keyword% OR b.depth_2 LIKE %:keyword% OR b.depth_3 LIKE %:keyword%"
+//    )
+//    List<ClassEntity> findAllSearch(String keyword);
 }

@@ -1,22 +1,10 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.ClassSearchDto;
-import com.example.Plowithme.dto.request.JoinedClassProfileFindDto;
-import com.example.Plowithme.dto.request.mypage.MessageFindDto;
-import com.example.Plowithme.dto.response.CommonResponse;
-import com.example.Plowithme.repository.ClassRepository;
-import com.example.Plowithme.service.ClassService;
-import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor

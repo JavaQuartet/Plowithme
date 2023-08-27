@@ -1,10 +1,7 @@
-package com.example.Plowithme.dto;
+package com.example.Plowithme.dto.request.community;
 
 import com.example.Plowithme.entity.Comment;
 import lombok.*;
-import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor;
-
-import java.time.LocalDateTime;
 
 @Getter //인스턴스 변수 반환
 @Setter //인스턴스 변수를 대입하거나 수정

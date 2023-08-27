@@ -1,13 +1,10 @@
-package com.example.Plowithme.dto;
+package com.example.Plowithme.dto.request.meeting;
 
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.Region;
-import com.example.Plowithme.entity.User;
-import com.example.Plowithme.repository.ClassRepository;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,7 +67,8 @@ public class ClassDTO {
 
         /*classDTO.setId(classEntity.getId());*/
         classDTO.setTitle(classEntity.getTitle());
-        classDTO.setMember(classEntity.getMember());
+        classDTO.setMember(classEntity.getMember_max());
+        classDTO.setMember(classEntity.getMember_current());
         classDTO.setStatus(classEntity.getStatus());
         classDTO.setStart_region(classEntity.getStart_region());
         classDTO.setEnd_region(classEntity.getEnd_region());
@@ -80,7 +78,6 @@ public class ClassDTO {
         classDTO.setNotion(classEntity.getNotice());
         classDTO.setDistance(classEntity.getDistance());
         classDTO.setMaker_id(classEntity.getMaker_id());
-        classDTO.setRegion(classEntity.getRegion());
         classDTO.setClassParticipantsEntityList(classEntity.getClassParticipantsEntityList());
 
         return classDTO;
