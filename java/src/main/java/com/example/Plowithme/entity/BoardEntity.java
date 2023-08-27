@@ -24,7 +24,7 @@ public class BoardEntity extends BaseEntity {
      */
 
     @Id //pk 컬럼 지정. 필수
-    @Column(name="board_id")
+    @Column(name="post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 

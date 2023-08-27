@@ -41,6 +41,8 @@ public class CommentController {
 
     private final CommentRepository commentRepository;
 
+    private final BoardController boardController;
+
     @PostMapping("/save")
     @Operation(summary = "댓글 작성")
     //컨트롤러에서 바디를 자바객체로 받기 위해서는 @restbody 를 반드시 명시해야함
@@ -68,12 +70,15 @@ public class CommentController {
         log.info("댓글 삭제 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    @GetMapping("/{board-id}")
-    @Operation(summary = "댓글 목록 가져오기")
-    public ResponseEntity<CommonResponse> getCommentAll(@Valid @PathVariable("board-id") Long boardId) {
-        List<CommentDto> commentDtoList=commentService.findAllComment(boardId);
 
-        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 목록 조회 성공", commentDtoList);
+
+    @GetMapping("/{post-id}/comments")
+    @Operation(summary = "댓글 목록 가져오기")
+    public ResponseEntity<CommonResponse> getComments(@Valid @PathVariable("post-id") Long postId) {
+
+        //List<CommentDto> commentDtoList=commentService.findAllCommentOfPost(postId);
+
+        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 목록 조회 성공", commentService.findAllCommentOfPost(postId));
         //디비에 값을 저장하는 거라 저장한 값을 보여줄 필요없고 저장되었다는 결과만 반환해주면 됨.
         log.info("댓글 목록 조회 성공");
         return ResponseEntity.status(HttpStatus.OK).body(response);

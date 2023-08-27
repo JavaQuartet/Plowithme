@@ -1,6 +1,7 @@
 package com.example.Plowithme.dto;
 
 import com.example.Plowithme.entity.Comment;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor;
 
@@ -16,7 +17,9 @@ public class CommentDto {
     private Long id;
     private String writer;
     private String contents;
-    private Long boardId;
+
+    @JsonProperty("post_id")
+    private Long postId;
 
 //   setter를 이용하는 방식. 다시 변수를 설정
 //   public void setId(Long id) {
@@ -34,7 +37,7 @@ public class CommentDto {
 
     public static CommentDto toCommentDto(Comment comment) {
         CommentDto commentDto=new CommentDto();
-      //  commentDto.setId(comment.getId());
+        commentDto.setId(comment.getId());
         commentDto.setWriter(comment.getWriter());
         commentDto.setContents(comment.getContents());
         return commentDto;

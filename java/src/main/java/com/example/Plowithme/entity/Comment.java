@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.parameters.P;
 
 import java.io.Serializable;
@@ -34,13 +36,14 @@ public class Comment extends BaseEntity  {
 
     //board:comment=1:n
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "post_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제하라
     private BoardEntity boardEntity;
 
 
     public static Comment toComment(CommentDto commentDto) {
         Comment comment=new Comment();
-//        comment.setId(commentDto.getId());
+        comment.setId(commentDto.getId());
         comment.setWriter(commentDto.getWriter());
         comment.setContents(commentDto.getContents());
         return comment;

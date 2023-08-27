@@ -11,6 +11,7 @@ import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +47,12 @@ public class CommentService {
             return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
         });
 
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
         //부모 엔티티(boardEntity) 조회
-        Optional<BoardEntity> optionalBoardEntity= boardRepository.findById(commentDto.getBoardId());
+        Optional<BoardEntity> optionalBoardEntity= boardRepository.findById(commentDto.getPostId());
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity=optionalBoardEntity.get();
             Comment comment=Comment.toComment(commentDto);
@@ -78,9 +84,10 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
+
     //댓글 목록 조회
-    public List<CommentDto> findAllComment(Long boardId) {
-        BoardEntity boardEntity=boardRepository.findById(boardId).get();
+    public List<CommentDto> findAllCommentOfPost(Long postId) {
+        BoardEntity boardEntity=boardRepository.findById(postId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
 
 
@@ -92,4 +99,14 @@ public class CommentService {
         } return commentDtoList;
     }
 
+//    @Transactional()
+//    public List<CommentDto> findAllCommentOfPost(Long postId) {
+//        //service가 데이터를 가져올 때 repository에게 시킨다
+//
+//        List<Comment> comments = commentRepository.findAllByPostId(postId);
+//        List<CommentDto> commentDtos = new ArrayList<>();
+//
+//        comments.forEach(s -> commentDtos.add(CommentDto.toCommentDto(s)));
+//        return commentDtos;
+//    }
 }
