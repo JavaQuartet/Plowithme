@@ -55,8 +55,7 @@ public class ImageService {
 
     @Transactional
     //이미지 수정
-    public String updateImage(MultipartFile file,  Long id, String oldImageName) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+    public String updateImage(MultipartFile file,  String oldImageName) {
 
         if(file.isEmpty()){
             throw new FileException("파일이 없습니다.");

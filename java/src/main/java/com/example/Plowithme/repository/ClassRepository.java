@@ -1,6 +1,8 @@
 package com.example.Plowithme.repository;
 
 import com.example.Plowithme.entity.ClassEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +31,6 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
 //    @Query(value = "SELECT b FROM class_table b WHERE b.depth_1 LIKE %:keyword% OR b.depth_2 LIKE %:keyword% OR b.depth_3 LIKE %:keyword%"
 //    )
 //    List<ClassEntity> findAllSearch(String keyword);
+//
+//    Page<ClassEntity> findByStart_regionContaining(String searchKey, Pageable pageble);
 }
