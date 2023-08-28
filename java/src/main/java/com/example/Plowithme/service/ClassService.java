@@ -2,6 +2,8 @@ package com.example.Plowithme.service;
 
 
 import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
+import com.example.Plowithme.dto.request.meeting.ClassFindDto;
+import com.example.Plowithme.dto.request.mypage.MessageFindDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -11,12 +13,15 @@ import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -150,7 +155,20 @@ public class ClassService {
 //
 //        return
 //    }
+    //모임 검색
+    @Transactional
+    public List<ClassFindDto> searchStart_region(String keyword, Pageable pageable) {
 
+
+        List<ClassEntity> classEntities = classRepository.findByTitleContaining(keyword, pageable).stream().toList();
+        List<ClassFindDto> classFindDtos = new ArrayList<>();
+
+        for(ClassEntity classEntity : classEntities){
+            if(classEntity.getStatus() == 1) // 모집중인 모임
+            classFindDtos.add(ClassFindDto.toDto(classEntity));
+        }
+        return classFindDtos;
+    }
 
 
 }

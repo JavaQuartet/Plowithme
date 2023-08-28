@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class CommentService {
         });
 
         if(!user.getId().equals(currentUser.getId())){
-            throw new AccessDeniedException("접근 권한이 없습니다.");
+            throw new CommentException("접근 권한이 없습니다.");
         }
 
         //부모 엔티티(boardEntity) 조회

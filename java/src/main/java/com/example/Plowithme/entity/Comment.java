@@ -1,6 +1,6 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.CommentDto;
+import com.example.Plowithme.dto.request.community.CommentDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

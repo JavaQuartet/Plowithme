@@ -42,8 +42,8 @@ public class UserController {
     //현재 유저 정보 조회
     @GetMapping("/me")
     public ResponseEntity<CommonResponse> getCurrentUser(@CurrentUser User currentUser) {
-
         CurrentUserDto currentUserDto = userService.getCurrentUser(currentUser);
+
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 회원 정보 조회", currentUserDto);
         log.info("현재 유저 정보 조회 완료:" + currentUserDto.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(response);
