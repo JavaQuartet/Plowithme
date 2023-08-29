@@ -42,7 +42,7 @@ public class CommentController {
 
     private final BoardRepository boardRepository;
 
-    @PostMapping("/{postId}/comments")
+    @PostMapping("/{postId}/commenting")
     @Operation(summary = "댓글 작성")
     //컨트롤러에서 바디를 자바객체로 받기 위해서는 @restbody 를 반드시 명시해야함
     public ResponseEntity<CommonResponse> save(@Valid @PathVariable("postId") Long postId, @CurrentUser User currentUser, @RequestBody CommentDto commentDto) {
@@ -58,7 +58,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{postId}/comments")
+    @DeleteMapping("/{postId}/DeleteComments")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<CommonResponse> delete(@Valid @CurrentUser User currentUser, @PathVariable("postId") Long postId, @RequestBody Long id) {
         commentService.deleteComment(currentUser, id);

@@ -88,7 +88,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
-
+                                .requestMatchers("/board", "/board/{postId}", "/board/{postId}/comments").permitAll()
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
 
