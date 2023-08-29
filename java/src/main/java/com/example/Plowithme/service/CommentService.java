@@ -90,6 +90,11 @@ public class CommentService {
 
     //댓글 목록 조회
     public List<CommentDto> findAllCommentOfPost(Long postId) {
+
+        BoardEntity optionalBoardEntity= boardRepository.findById(postId).orElseThrow(() -> {
+            return new ResourceNotFoundException("게시글을 찾을 수 없습니다.");
+        });
+
         BoardEntity boardEntity=boardRepository.findById(postId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
 
