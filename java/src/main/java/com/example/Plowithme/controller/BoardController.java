@@ -1,6 +1,7 @@
 package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
+import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
@@ -48,9 +49,9 @@ public class BoardController {
 //        return "posting";
 //    }
 
-    @PostMapping(value = "/board/posting")
+    @PostMapping(value = "/board")
     @Operation(summary = "커뮤니티 게시글 등록")
-    private ResponseEntity<CommonResponse> savePosting(@Valid @CurrentUser User currentUser, @RequestBody BoardDto boardDto) {
+    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, @RequestBody BoardDto boardDto) {
 
         System.out.println("boardDto=" + boardDto);
         boardService.save(currentUser, boardDto);

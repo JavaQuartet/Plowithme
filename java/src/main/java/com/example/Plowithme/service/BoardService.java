@@ -1,7 +1,9 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
+import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.entity.BoardEntity;
+import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
@@ -23,6 +25,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+  //  private final BoardEntity boardEntity;
+
     private final UserRepository userRepository;
 
     public void save(User currentUser, BoardDto boardDto) {
@@ -31,20 +35,31 @@ public class BoardService {
             2. repository의 savaPosting 메서드 호출
         */
         User user = userRepository.findById(currentUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니당."));
 
         if(!user.getId().equals(currentUser.getId())){
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
-        BoardEntity boardEntity=BoardEntity.toSaveEntity(boardDto);
+        User optionalUserEntity=userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+        });
+
+      //  BoardEntity boardEntity=BoardEntity.toSaveEntity(boardSaveDto);
         //boardEntity의 toBoardEntity메소드를 매개변수 boardDto 이용해서 호출
         //변환된 entity를 가져와야 하므로 BoardEntity boardEntity=~~
+
+        BoardEntity boardEntity= new BoardEntity();
+        boardEntity.setWriterId(currentUser.getId());
+        boardEntity.toSaveEntity(boardDto);
+        userRepository.save(user);
 
         boardRepository.save(boardEntity);
         //{jpa 제공하는) 레파지토리 save메소드 호출
 
     }
+
+    //게시글 조회기능
     public List<BoardDto> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDto> boardDtoList = new ArrayList<>();
@@ -53,6 +68,7 @@ public class BoardService {
         }
         return boardDtoList;
     }
+
 
     //게시글 조회수 증가
     @Transactional

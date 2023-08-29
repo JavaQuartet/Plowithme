@@ -4,6 +4,8 @@ import com.example.Plowithme.dto.request.community.BoardDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ public class BoardEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
+    @Column
+    private Long writerId;
+
     @Column(length = 100) //크기 50, not null 지정
    // @NotEmpty(message = "제목을 입력해주세요.")
     private String title;
@@ -43,6 +48,12 @@ public class BoardEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> commentList=new ArrayList<>();
+
+    //user:board=1:n
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제하라
+    private User user;
 
     /*
     @Column
