@@ -31,6 +31,6 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
 //    @Query(value = "SELECT b FROM class_table b WHERE b.depth_1 LIKE %:keyword% OR b.depth_2 LIKE %:keyword% OR b.depth_3 LIKE %:keyword%"
 //    )
 //    List<ClassEntity> findAllSearch(String keyword);
-//
-//    Page<ClassEntity> findByStart_regionContaining(String searchKey, Pageable pageble);
+
+    Page<ClassEntity> findByTitleContaining(String searchKey, Pageable pageable);
 }
