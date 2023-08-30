@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,9 @@ public class BoardService {
 
         BoardEntity boardEntity= new BoardEntity();
         boardEntity.setWriterId(currentUser.getId());
-        boardEntity.toSaveEntity(boardDto);
+        boardEntity.setContents(boardDto.getContents());
+        boardEntity.setTitle(boardDto.getTitle());
+        //toSaveEntity(boardDto);
         userRepository.save(user);
 
         boardRepository.save(boardEntity);
@@ -103,14 +106,15 @@ public class BoardService {
 
 
     //게시글 수정 기능
-//    public void updatePost(Long id, String title, String contents) {
-//        Optional<BoardEntity> board= boardRepository.findById(id);
-//        BoardEntity boardEntity= board.orElseThrow(() -> new NotFoundException("No post searched"));
-//        boardEntity.setTitle(title);
-//        boardEntity.setContents(contents);
-//        boardRepository.save(boardEntity);
-//
-//    }
+    public void updatePost(Long postId, BoardDto boardDto) {
+        Optional<BoardEntity> board= boardRepository.findById(postId);
+        BoardEntity boardEntity= board.orElseThrow(() -> new NotFoundException("No post searched"));
+
+        boardEntity.setTitle(boardDto.getTitle());
+        boardEntity.setContents(boardDto.getContents());
+        boardRepository.save(boardEntity);
+
+    }
 
 
 }
