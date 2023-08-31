@@ -4,34 +4,26 @@ package com.example.Plowithme.service;
 import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
 import com.example.Plowithme.dto.request.meeting.ClassFindDto;
 import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
-import com.example.Plowithme.dto.request.mypage.MessageFindDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
-import com.example.Plowithme.repository.ClassFileRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClassService {
 
     private final ClassRepository classRepository;
-    private final ClassFileRepository classFileRepository;
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
 
@@ -74,6 +66,7 @@ public class ClassService {
                 .start_day(classSaveDto.getStart_day())
                 .end_date(classSaveDto.getEnd_date())
                 /*.current_day(now.getDayOfYear())*/
+                .image_name("default-image.jpeg")
                 .maker_id(id)
                 .maker_nickname(user.get().getNickname())
                 .maker_profile(user.get().getProfileUrl(user.get().getProfile()))
@@ -106,9 +99,8 @@ public class ClassService {
 
 
     public ClassDTO findById(Long id) {
-        Optional<ClassEntity> optionalClassEntity = classRepository.findById(id);
-        if (optionalClassEntity.isPresent()) {
-            ClassEntity classEntity = optionalClassEntity.get();
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+        if (classEntity.getId().equals(id)) {
             ClassDTO classDTO = ClassDTO.toClassDTO(classEntity);
             return classDTO;
         } else {
@@ -204,8 +196,8 @@ public class ClassService {
         if (classDTO.getTitle() != null) {
             entity.setTitle(classDTO.getTitle());
         }
-        if (classDTO.getStart_region() != null) {
-            entity.setStart_region(classDTO.getStart_region());
+        if (classDTO.getStartRegion() != null) {
+            entity.setStartRegion(classDTO.getStartRegion());
         }
         if (classDTO.getMember_max() != null) {
             entity.setMember_max(classDTO.getMember_max());

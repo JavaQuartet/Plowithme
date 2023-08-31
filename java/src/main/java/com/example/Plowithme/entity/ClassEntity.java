@@ -85,9 +85,6 @@ public class ClassEntity{
     @Column
     private String image_name;
 
-    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ClassFileEntity> classFileEntityList = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();

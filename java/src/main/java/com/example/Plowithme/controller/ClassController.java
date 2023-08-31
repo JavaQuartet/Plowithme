@@ -11,6 +11,7 @@ import com.example.Plowithme.entity.ClassEntity;
 
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -83,6 +84,9 @@ public class ClassController {
                     .description("설명"+i)
                     .start_date("1")
                     .end_date("2")
+                    .distance(0.0)
+                    .image_name("default-image.jpeg")
+                    .maker_id((long) 4)
                     .build();
 
             classRepository.save(classEntity);
@@ -165,14 +169,14 @@ userService.findOne();
             if (user.getId() == classParticipantsEntity.getUserid()) {
                 classService.downstatus(id);
                 classService.deleteparticipant(classEntity, user);
-                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기", classDTO);
+                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기");
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
 
         classService.updatestatus(id);
         classService.participant(classEntity, user);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기", classDTO);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
@@ -189,9 +193,16 @@ userService.findOne();
 
     @PatchMapping("/{id}")// 모임 수정
     @Operation(summary = "모임 수정 저장")
-    public ResponseEntity<CommonResponse> update(@Valid @RequestPart ClassUpdateDto classDTO ,@PathVariable("id") Long id, @CurrentUser User user_id) {
-        ClassDTO updatedClass = classService.updated(id, classDTO);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", updatedClass);
+    public ResponseEntity<CommonResponse> update(@Valid @RequestPart(value ="classUpdateDto") ClassUpdateDto classUpdateDto ,@PathVariable("id") Long id, @CurrentUser User user_id, @RequestPart(value ="file", required = false) MultipartFile file) {
+        ClassDTO updatedClass = classService.updated(id, classUpdateDto);
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+
+        if(file != null){
+            String imageName = imageService.updateImage(file, classEntity.getImage_name());
+            classEntity.setImage_name(imageName);
+        }
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
         //return "redirect:/joined/" + classDTO.getId();
     }

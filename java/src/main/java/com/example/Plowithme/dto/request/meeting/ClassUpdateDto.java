@@ -22,7 +22,7 @@ public class ClassUpdateDto {
 
     private int status;
 
-    private String start_region; //출발 위치
+    private String startRegion; //출발 위치
 
     private String end_region; //도착 위치
 
