@@ -1,6 +1,7 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.CommentDto;
+import com.example.Plowithme.dto.request.community.CommentSaveDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
@@ -36,7 +37,11 @@ public class CommentService {
 //        commentRepository.findAll();
 //    }
 
-    public void saveComment(User currentUser, CommentDto commentDto) {
+//    public void setPostID(Comment comment, int postId) {
+//        comment.setPostId(postId);
+//    }
+
+    public void saveComment(Long postId, User currentUser, CommentDto commentDto) {
 
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
             return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
@@ -47,14 +52,17 @@ public class CommentService {
         }
 
         //부모 엔티티(boardEntity) 조회
-        Optional<BoardEntity> optionalBoardEntity= boardRepository.findById(commentDto.getPostId());
-        if (optionalBoardEntity.isPresent()) {
-            BoardEntity boardEntity=optionalBoardEntity.get();
-            Comment comment=Comment.toComment(commentDto);
-            commentRepository.save(comment);
-        } else {
-         throw new CommentException("게시글을 찾을 수 없습니다.");
-        }
+        BoardEntity optionalBoardEntity= boardRepository.findById(postId).orElseThrow(() -> {
+            return new ResourceNotFoundException("포스트를 찾을 수 없습니다.");
+        });
+
+        Comment comment=Comment.builder()
+                .writer(currentUser.getNickname())
+                .contents(commentDto.getContents())
+                .boardEntity(optionalBoardEntity)
+                .build();
+        commentRepository.save(comment);
+      //      commentRepository.save(comment);
 
       //  comment.setWriter(currentUser.getNickname());
 
@@ -75,16 +83,20 @@ public class CommentService {
     }
 
     //댓글 삭제
-    public void deleteComment(Long id) {
+    public void deleteComment(User currentUser, Long id) {
         commentRepository.deleteById(id);
     }
 
 
     //댓글 목록 조회
     public List<CommentDto> findAllCommentOfPost(Long postId) {
+
+        BoardEntity optionalBoardEntity= boardRepository.findById(postId).orElseThrow(() -> {
+            return new ResourceNotFoundException("게시글을 찾을 수 없습니다.");
+        });
+
         BoardEntity boardEntity=boardRepository.findById(postId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
-
 
         //entitylist>dto list
         List<CommentDto> commentDtoList=new ArrayList<>();
@@ -104,4 +116,5 @@ public class CommentService {
 //        comments.forEach(s -> commentDtos.add(CommentDto.toCommentDto(s)));
 //        return commentDtos;
 //    }
+
 }

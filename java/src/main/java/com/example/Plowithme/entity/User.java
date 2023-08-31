@@ -66,6 +66,8 @@ public class User implements UserDetails {
     @Column
     private double class_distance;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BoardEntity> BoardList=new ArrayList<>();
 
     //권한 목록
     @Override

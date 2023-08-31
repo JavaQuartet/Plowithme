@@ -2,6 +2,7 @@ package com.example.Plowithme.dto.request.meeting;
 
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
+import com.example.Plowithme.entity.Date;
 import com.example.Plowithme.entity.Region;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -56,7 +57,7 @@ public class ClassDTO {
 
     private double distance; // 걸은 거리
 
-    private Region region; // 지역 태그
+    /*private Region region; // 지역 태그*/
 
     // 참여자 모임
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();

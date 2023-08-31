@@ -97,6 +97,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
+
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()

@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +55,8 @@ public class ClassService {
 //    }
 
     public ClassEntity saveClass(ClassSaveDto classSaveDto, Long id){
+        /*LocalDate now = LocalDate.now();*/
+        Optional<User> user = userRepository.findById(id);
 
         ClassEntity classEntity = ClassEntity.builder()
                 .title(classSaveDto.getTitle())
@@ -61,11 +64,14 @@ public class ClassService {
                 .member_current(1)
                 .status(1)
                 .start_region(classSaveDto.getStart_region())
-                .end_region(classSaveDto.getEnd_date())
+                .end_region(classSaveDto.getEnd_region())
                 .description(classSaveDto.getDescription())
                 .start_date(classSaveDto.getStart_date())
                 .end_date(classSaveDto.getEnd_date())
+                /*.current_day(now.getDayOfYear())*/
                 .maker_id(id)
+                .maker_nickname(user.get().getNickname())
+                .maker_profile(user.get().getProfileUrl(user.get().getProfile()))
                 .build();
         return classEntity;
 
@@ -114,7 +120,7 @@ public class ClassService {
 
     @Transactional
     public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
-        classParticipantRepository.deleteByUseridAndClassid(user.getId(), classEntity.getId());
+        classParticipantRepository.deleteByUseridAndMeetingid(user.getId(), classEntity.getId());
     }
 
 /*    public void deleteAllParticipant(){

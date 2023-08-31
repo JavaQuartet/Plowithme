@@ -3,6 +3,7 @@ package com.example.Plowithme.dto.request.meeting;
 
 import com.example.Plowithme.dto.request.mypage.MessageFindDto;
 import com.example.Plowithme.entity.ClassEntity;
+import com.example.Plowithme.entity.Date;
 import com.example.Plowithme.entity.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,7 @@
 package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
+import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
@@ -50,7 +51,7 @@ public class BoardController {
 
     @PostMapping(value = "/board/posting")
     @Operation(summary = "커뮤니티 게시글 등록")
-    private ResponseEntity<CommonResponse> savePosting(@Valid @CurrentUser User currentUser, @RequestBody BoardDto boardDto) {
+    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, @RequestBody BoardDto boardDto) {
 
         System.out.println("boardDto=" + boardDto);
         boardService.save(currentUser, boardDto);
@@ -60,9 +61,9 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("/board/{id}")
+    @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")
-    public ResponseEntity<CommonResponse> delete(@Valid @RequestBody Long id) {
+    public ResponseEntity<CommonResponse> delete(@Valid @PathVariable("postId") Long postId, @RequestBody Long id) {
         boardService.delete(id);
 
         CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "게시글 삭제 성공");
@@ -71,11 +72,12 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @PatchMapping("/board/{id}")
+//    @PatchMapping("/board/{postId}")
 //    @Operation(summary = "게시글 수정")
-//    public ResponseEntity<CommonResponse> update(@Valid @RequestBody @PathVariable Long id) {
-//       BoardEntity boardEntity=boardService.getPostById(id);
-//       boardService.updatePost(boardEntity);
+//    public ResponseEntity<CommonResponse> update(@RequestBody @PathVariable("postId") Long postId, @CurrentUser User currentUser, BoardDto boardDto) {
+//
+//       boardService.findByPostId(postId);
+//       boardService.updatePost(postId,currentUser);
 //
 //        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
 //        log.info("게시글 수정 완료");
@@ -106,18 +108,18 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/board/{id}")
+    @GetMapping("/board/{postId}")
     @Operation(summary = "게시글 상세 조회")
-    public ResponseEntity<CommonResponse> findByPostId(@PathVariable("id") Long id) {
+    public ResponseEntity<CommonResponse> findByPostId(@PathVariable("postId") Long postId) {
         /*
         해당 게시글의 조회수를 하나 올리고
         게시글 데이터를 가져와서 BoardDetail에 출력
          */
 
-        boardService.updatePostHits(id);
-        BoardDto boardDto = boardService.findByPostId(id);
+        boardService.updatePostHits(postId);
+        BoardDto boardDto = boardService.findByPostId(postId);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 상세 조회 성공", boardService.findByPostId(id));
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 상세 조회 성공", boardService.findByPostId(postId));
         log.info("게시글 상세 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

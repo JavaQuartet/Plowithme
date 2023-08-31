@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor //기본 생성자 자동 생성
 @AllArgsConstructor //필드를 모두 매개변수 라는 생성자 만들어 줌
 public class CommentDto {
-    private Long id;
+   // private Long id;
     private String writer;
     private String contents;
 
@@ -34,7 +34,7 @@ public class CommentDto {
 
     public static CommentDto toCommentDto(Comment comment) {
         CommentDto commentDto=new CommentDto();
-        commentDto.setId(comment.getId());
+        //commentDto.setId(comment.getId());
         commentDto.setWriter(comment.getWriter());
         commentDto.setContents(comment.getContents());
         return commentDto;
