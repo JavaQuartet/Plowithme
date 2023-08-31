@@ -1,9 +1,6 @@
 package com.example.Plowithme.dto.request.meeting;
 
-import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.ClassFileEntity;
-import com.example.Plowithme.entity.ClassParticipantsEntity;
-import com.example.Plowithme.entity.Region;
+import com.example.Plowithme.entity.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -11,6 +11,7 @@ import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
+import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.ClassService;
 import com.example.Plowithme.service.ImageService;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -43,6 +45,7 @@ public class ClassController {
     private final ClassParticipantRepository classParticipantRepository;
     private final ClassRepository classRepository;
     private final ImageService imageService;
+    private final UserRepository userRepository;
 
 
 /*
@@ -116,7 +119,7 @@ userService.findOne();
 //    }
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
-    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "classSavaDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
+    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "classSaveDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
         ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
         if(file != null){
             String imageName = imageService.saveImage(file);
@@ -128,43 +131,15 @@ userService.findOne();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // 수정 필요 공지
-/*    @PostMapping("/{id}")
-    public String save2(@ModelAttribute ClassDTO classDTO , Model model){ // 공지 설정
-        System.out.println("classDTO = " + classDTO);
-        classService.save(classDTO);
-        model.addAttribute("class", classDTO);
-        return "ClassDetail";
-    }*/
 
-
-
-
-
-
-
-
-
-
-/*    @GetMapping("/{id}")// 참여 안한 모임
-    public ResponseEntity<CommonResponse> findById(@PathVariable Long id, Model model, @CurrentUser User user) {// 모임 세부정보로 이동
-        ClassDTO classDTO = classService.findById(id);
-
-        if(classParticipantRepository.findById(user.getId()).isPresent()){
-            classService.unjoinedclass(id);
-            classService.downstatus(id);
-        }
-
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 세부정보 이동", classDTO);
-        *//*model.addAttribute("class", classDTO);*//*
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }*/
 
 
     @GetMapping("/{id}")// 모임 상세
     @Operation(summary = "모임 상세")
     public ResponseEntity<CommonResponse> findById(@PathVariable("id") Long id, @CurrentUser User user) {// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
+        Optional<User> class_maker = userRepository.findById(classDTO.getMaker_id());
+
         for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
             if (user.getId() == classParticipantsEntity.getUserid()){
                 CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
@@ -173,14 +148,8 @@ userService.findOne();
         }
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여 안한모임 세부정보 이동", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-/*        if(classParticipantRepository.findByUserid(user.getId()).isPresent() && classParticipantRepository.findByClassid(classDTO.getId()).isPresent()){
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        }else{
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여 안한모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }*/
     }
+
 
     @PostMapping("/{id}")// 참여하기 참여취소 버튼
     @Operation(summary = "참여, 참여취소")
@@ -189,50 +158,22 @@ userService.findOne();
 
         ClassEntity classEntity = classRepository.findById(id).get();
 
-        for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
-            if (user.getId() == classParticipantsEntity.getUserid()){
+        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
+            if (user.getId() == classParticipantsEntity.getUserid()) {
                 classService.downstatus(id);
                 classService.deleteparticipant(classEntity, user);
-                CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 나가기", classDTO);
+                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기", classDTO);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
 
         classService.updatestatus(id);
         classService.participant(classEntity, user);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 참여하기", classDTO);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
-
-/*        if(classParticipantRepository.findByUserid(user.getId()).isPresent() && classParticipantRepository.findByClassid(classDTO.getId()).isPresent()){// 모임 참여취소
-            classService.downstatus(id);
-            classService.deleteparticipant(classDTO, user);
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        }else{// 모임 참여하기
-            classService.updatestatus(id);
-            classService.participant(classDTO, user);
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 참여하기", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }*/
     }
 
-/*    @GetMapping("/joined/{id}") // 참여한 모임
-    public String joinedclass(@PathVariable Long id, Model model, @CurrentUser User user){
-
-        ClassDTO classDTO = classService.findById(id);
-        if(classParticipantRepository.findById(user.getId()).isPresent() == false) {
-            classService.updatestatus(id);
-            classService.participant(classDTO, user);
-        }
-
-        model.addAttribute("class", classDTO);
-        if(user.getId().equals(classDTO.getMaker_id())){
-            return "MyClass";
-        }else{
-            return "JoinClass";
-        }
-    }*/
 
 
     @PostMapping("/joined/{id}")// 모임 수정

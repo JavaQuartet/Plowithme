@@ -1,5 +1,4 @@
 package com.example.Plowithme.repository;
-
 import com.example.Plowithme.entity.ClassEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -5,6 +5,7 @@ import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.lang.model.element.NestingKind;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +55,20 @@ public class ClassEntity{
     @Column
     private String end_date; // 도착 시간
 
+    /*@Column
+    private int current_day; // 현재 날짜 (일)*/
+
     @Column
     private double distance; // 걸은 거리
 
     @Column
     private Long maker_id; // 만든사람의 아이디
+
+    @Column
+    private String maker_nickname;
+
+    @Column
+    private String maker_profile;
 
 //    @Column
 //    private Region region; // 지역 태그

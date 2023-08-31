@@ -23,10 +23,13 @@ public class ClassParticipantsEntity {
     private Long userid;
 
     @Column
-    private Long classid;
+    private Long meeting_id;
 
-    /*@Column
-    private Profile profileImageName;*/
+    @Column
+    private String profile_image;
+
+    @Column
+    private String user_nickname;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id")
@@ -35,12 +38,15 @@ public class ClassParticipantsEntity {
 
 
 
-    public static ClassParticipantsEntity toSaveParticiantEntity(ClassEntity classEntity,User user){
+    public static ClassParticipantsEntity toSaveParticiantEntity(ClassEntity classEntity, User user){
         ClassParticipantsEntity classParticipantsEntity = new ClassParticipantsEntity();
 
         classParticipantsEntity.setUserid(user.getId());
-        /*classParticipantsEntity.setProfileImageName(user.getProfile_image());*/
-        classParticipantsEntity.setClassid(classEntity.getId());
+        classParticipantsEntity.setMeeting_id(classEntity.getId());
+
+        classParticipantsEntity.setProfile_image(user.getProfileUrl(user.getProfile()));
+        classParticipantsEntity.setUser_nickname(user.getNickname());
+
         classParticipantsEntity.setClassEntity(classEntity);
         return classParticipantsEntity;
     }
