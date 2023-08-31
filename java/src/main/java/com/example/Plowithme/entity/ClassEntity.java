@@ -53,6 +53,15 @@ public class ClassEntity{
     private String start_date; // 시작 시간
 
     @Column
+    private int start_year;
+
+    @Column
+    private int start_month;
+
+    @Column
+    private int start_day;
+
+    @Column
     private String end_date; // 도착 시간
 
     /*@Column
