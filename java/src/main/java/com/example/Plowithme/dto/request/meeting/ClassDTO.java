@@ -33,7 +33,7 @@ public class ClassDTO {
 
     private int status;
 
-    private String start_region; //출발 위치
+    private String startRegion; //출발 위치
 
     private String end_region; //도착 위치
 
@@ -78,7 +78,7 @@ public class ClassDTO {
         classDTO.setMember_max(classEntity.getMember_max());
         classDTO.setMember_current(classEntity.getMember_current());
         classDTO.setStatus(classEntity.getStatus());
-        classDTO.setStart_region(classEntity.getStart_region());
+        classDTO.setStartRegion(classEntity.getStartRegion());
         classDTO.setEnd_region(classEntity.getEnd_region());
         classDTO.setDescription(classEntity.getDescription());
         classDTO.setStart_date(classEntity.getStart_date());

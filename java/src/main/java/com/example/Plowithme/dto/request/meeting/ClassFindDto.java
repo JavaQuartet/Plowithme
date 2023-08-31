@@ -33,7 +33,7 @@ public class ClassFindDto {
 
     public static ClassFindDto toDto(ClassEntity classEntity) {
         return new ClassFindDto(classEntity.getId(),classEntity.getTitle(),classEntity.getMember_max(), classEntity.getMember_current(),
-                classEntity.getStart_region(), classEntity.getDescription(), classEntity.getStart_date());
+                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_date());
     }
 
 }
