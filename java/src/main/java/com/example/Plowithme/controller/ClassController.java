@@ -41,7 +41,7 @@ import java.util.UUID;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/Class")
+@RequestMapping("/class")
 //@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 public class ClassController {
     private final ClassService classService;
