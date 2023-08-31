@@ -37,6 +37,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/Class")
+//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 public class ClassController {
     private final ClassService classService;
     private final UserService userService;

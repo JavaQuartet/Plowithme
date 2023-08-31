@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
