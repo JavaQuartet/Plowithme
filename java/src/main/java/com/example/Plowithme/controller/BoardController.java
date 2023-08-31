@@ -72,11 +72,12 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @PatchMapping("/board/{id}")
+//    @PatchMapping("/board/{postId}")
 //    @Operation(summary = "게시글 수정")
-//    public ResponseEntity<CommonResponse> update(@Valid @RequestBody @PathVariable Long id) {
-//       BoardEntity boardEntity=boardService.getPostById(id);
-//       boardService.updatePost(boardEntity);
+//    public ResponseEntity<CommonResponse> update(@RequestBody @PathVariable("postId") Long postId, @CurrentUser User currentUser, BoardDto boardDto) {
+//
+//       boardService.findByPostId(postId);
+//       boardService.updatePost(postId,currentUser);
 //
 //        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
 //        log.info("게시글 수정 완료");

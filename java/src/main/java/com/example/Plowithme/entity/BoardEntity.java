@@ -88,5 +88,15 @@ public class BoardEntity extends BaseEntity {
         return boardEntity;
     }
 
-
+    public static BoardEntity toUpdateEntity(BoardDto boardDto) {
+        BoardEntity boardEntity=new BoardEntity();
+        boardEntity.setPostId(boardEntity.getPostId());
+        boardEntity.setTitle(boardDto.getTitle());
+        boardEntity.setContents(boardDto.getContents());
+        boardEntity.setPostHits(boardDto.getPostHits());
+        boardEntity.setCategory(boardDto.getCategory());
+        //boardEntity.setPostImage(boardDto.getPostImage());
+        //boardEntity.setImagePath(boardDto.getImagePath());
+        return boardEntity;
+    }
 }

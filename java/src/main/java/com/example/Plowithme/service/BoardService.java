@@ -5,6 +5,7 @@ import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,10 @@ public class BoardService {
 
         BoardEntity boardEntity= new BoardEntity();
         boardEntity.setWriterId(currentUser.getId());
-        boardEntity.toSaveEntity(boardDto);
+        boardEntity.setContents(boardDto.getContents());
+        boardEntity.setCategory(boardDto.getCategory());
+        boardEntity.setTitle(boardDto.getTitle());
+        //toSaveEntity(boardDto);
         userRepository.save(user);
 
         boardRepository.save(boardEntity);
@@ -102,13 +107,26 @@ public class BoardService {
     }
 
 
-    //게시글 수정 기능
-//    public void updatePost(Long id, String title, String contents) {
-//        Optional<BoardEntity> board= boardRepository.findById(id);
-//        BoardEntity boardEntity= board.orElseThrow(() -> new NotFoundException("No post searched"));
-//        boardEntity.setTitle(title);
-//        boardEntity.setContents(contents);
-//        boardRepository.save(boardEntity);
+//    //게시글 수정 기능
+//    public void updatePost(Long postId,User currentUser) {
+//        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+//            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+//        });
+//
+//        if(!user.getId().equals(currentUser.getId())){
+//            throw new CommentException("접근 권한이 없습니다.");
+//        }
+//
+//        Optional<BoardEntity> board=boardRepository.findById(postId);
+//        BoardEntity boardEntity=board.orElseThrow(() -> new NotFoundException("No post searched"));
+//        BoardDto boardDto=BoardDto.toboardDto(boardEntity);
+//
+////        boardEntity.setTitle(boardDto.getTitle());
+////        boardEntity.setContents(boardDto.getContents());
+////        boardEntity.setCategory(boardDto.getCategory());
+//
+//        userRepository.save(user);
+//        boardRepository.save(BoardEntity.toUpdateEntity(boardDto));
 //
 //    }
 
