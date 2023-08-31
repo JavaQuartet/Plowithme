@@ -29,7 +29,7 @@ public class ClassSaveDto {
     private int member_max; // 설정해둔 인원수
 
     @NotEmpty
-    private String start_region; //출발 위치
+    private String startRegion; //출발 위치
 
     @NotEmpty
     private String end_region; //도착 위치

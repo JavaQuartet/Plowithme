@@ -38,7 +38,7 @@ public class ClassEntity{
     private int status; //모임 상태: 활성 = 1 , 종료= 0
 
     @Column
-    private String start_region; // 시작 지역
+    private String startRegion; // 시작 지역
 
     @Column
     private String end_region; // 도착 지역
@@ -153,7 +153,7 @@ public class ClassEntity{
         classEntity.setMember_max(classDTO.getMember_max());
         classEntity.setStatus(classDTO.getStatus());
 
-        classEntity.setStart_region(classDTO.getStart_region());
+        classEntity.setStartRegion(classDTO.getStartRegion());
         classEntity.setEnd_region(classDTO.getEnd_region());
 
         classEntity.setStart_date(classDTO.getStart_date());

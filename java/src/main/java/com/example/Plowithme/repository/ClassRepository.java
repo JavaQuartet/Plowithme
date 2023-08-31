@@ -31,5 +31,5 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
 //    )
 //    List<ClassEntity> findAllSearch(String keyword);
 
-    Page<ClassEntity> findByTitleContaining(String searchKey, Pageable pageable);
+    Page<ClassEntity> findByStartRegionContaining(String searchKey, Pageable pageable);
 }

@@ -63,7 +63,7 @@ public class ClassService {
                 .member_max(classSaveDto.getMember_max())
                 .member_current(1)
                 .status(1)
-                .start_region(classSaveDto.getStart_region())
+                .startRegion(classSaveDto.getStartRegion())
                 .end_region(classSaveDto.getEnd_region())
                 .description(classSaveDto.getDescription())
                 .start_date(classSaveDto.getStart_date())
@@ -166,7 +166,7 @@ public class ClassService {
     public List<ClassFindDto> searchStart_region(String keyword, Pageable pageable) {
 
 
-        List<ClassEntity> classEntities = classRepository.findByTitleContaining(keyword, pageable).stream().toList();
+        List<ClassEntity> classEntities = classRepository.findByStartRegionContaining(keyword, pageable).stream().toList();
         List<ClassFindDto> classFindDtos = new ArrayList<>();
 
         for(ClassEntity classEntity : classEntities){
