@@ -29,10 +29,10 @@ public class ClassEntity{
     private String title; // 모임 이름
 
     @Column
-    private int member_max; // 모임 전원
+    private Integer member_max; // 모임 전원
 
     @Column
-    private int member_current;// 모임 인원
+    private Integer member_current;// 모임 인원
 
     @Column
     private int status; //모임 상태: 활성 = 1 , 종료= 0
@@ -53,13 +53,13 @@ public class ClassEntity{
     private String start_date; // 시작 시간
 
     @Column
-    private int start_year;
+    private Integer start_year;
 
     @Column
-    private int start_month;
+    private Integer start_month;
 
     @Column
-    private int start_day;
+    private Integer start_day;
 
     @Column
     private String end_date; // 도착 시간
@@ -68,7 +68,7 @@ public class ClassEntity{
     private int current_day; // 현재 날짜 (일)*/
 
     @Column
-    private double distance; // 걸은 거리
+    private Double distance; // 걸은 거리
 
     @Column
     private Long maker_id; // 만든사람의 아이디
@@ -89,7 +89,7 @@ public class ClassEntity{
     private List<ClassFileEntity> classFileEntityList = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.REMOVE , orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
 
@@ -167,6 +167,12 @@ public class ClassEntity{
         return classEntity;
     }
 
+/*
+    public void endClass(double distance){
+        this.distance = distance;
+        this.status = 0;
+    }
+*/
 
     public String getImageUrl(String image_name) {
         try {

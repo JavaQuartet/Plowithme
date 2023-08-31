@@ -20,9 +20,9 @@ public class ClassFindDto {
 
     private String title;
 
-    private int member_max; // 설정해둔 인원수
+    private Integer member_max; // 설정해둔 인원수
 
-    private int member_current; // 현재 참여한 인원수
+    private Integer member_current; // 현재 참여한 인원수
 
     private String startRegion; //출발 위치
 

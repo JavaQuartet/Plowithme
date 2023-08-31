@@ -4,6 +4,7 @@ import com.example.Plowithme.dto.request.meeting.ClassDTO;
 
 import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
 import com.example.Plowithme.dto.request.meeting.ClassFindDto;
+import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.ClassEntity;
 
@@ -175,49 +176,51 @@ userService.findOne();
     }
 
 
-
-    @PostMapping("/joined/{id}")// 모임 수정
-    @Operation(summary = "모임 수정 저장")
-    public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassDTO classDTO,@PathVariable("id") Long id, @CurrentUser User user_id) {
-        ClassEntity classEntity = classRepository.findById(id).get();
-        ClassDTO Class = classService.update(classEntity, user_id);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", Class);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-        //return "redirect:/joined/" + classDTO.getId();
-    }
-
-
     // 모임 수정 페이지 이동
-    @GetMapping("/class_update/{id}")
+/*    @GetMapping("/{id}")
     @Operation(summary = "모임 수정")
     public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id){
         ClassDTO classDTO = classService.findById(id);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+    }*/
 
+    @PatchMapping("/{id}")// 모임 수정
+    @Operation(summary = "모임 수정 저장")
+    public ResponseEntity<CommonResponse> update(@Valid @RequestPart ClassUpdateDto classDTO ,@PathVariable("id") Long id, @CurrentUser User user_id) {
+        ClassDTO updatedClass = classService.updated(id, classDTO);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", updatedClass);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+        //return "redirect:/joined/" + classDTO.getId();
+    }
 
     //모임 삭제
     @DeleteMapping ("/{id}")
     @Operation(summary = "모임 삭제")
     public ResponseEntity<CommonResponse> delete(@PathVariable("id") Long id) {
-        classService.delete(id);
+        ClassEntity classEntity = classRepository.findById(id).get();
+        classService.delete(classEntity);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 삭제");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
 
-    //모임종료 후기 작성 칸으로 넘어갈 수 있게끔 수정
-    @PostMapping("/ended/{id}")
+    //모임종료
+    @PatchMapping("/ended/{id}")
     @Operation(summary = "모임 종료")
-    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassDTO classDTO) {
-        ClassEntity classEntity = classRepository.findById(id).get();
-        ClassDTO Class = classService.update(classEntity, user);
-        classService.end_class(Class);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 종료");
+    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassUpdateDto classDTO) {
+        ClassDTO classDTO1 = classService.findById(id);
+        if(classDTO1.getStatus() == 0){
+            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "이미 종료된 모임입니다");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            classService.updated(id, classDTO);
+            /*classService.end_class(classDTO);*/
+            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 종료");
 
-        /*classService.delete(id);*/
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+            /*classService.delete(id);*/
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 }
