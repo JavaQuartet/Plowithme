@@ -23,7 +23,7 @@ public class ClassParticipantsEntity {
     private Long userid;
 
     @Column
-    private Long meeting_id;
+    private Long meetingid;
 
     @Column
     private String profile_image;
@@ -42,7 +42,7 @@ public class ClassParticipantsEntity {
         ClassParticipantsEntity classParticipantsEntity = new ClassParticipantsEntity();
 
         classParticipantsEntity.setUserid(user.getId());
-        classParticipantsEntity.setMeeting_id(classEntity.getId());
+        classParticipantsEntity.setMeetingid(classEntity.getId());
 
         classParticipantsEntity.setProfile_image(user.getProfileUrl(user.getProfile()));
         classParticipantsEntity.setUser_nickname(user.getNickname());
