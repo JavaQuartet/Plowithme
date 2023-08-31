@@ -5,6 +5,7 @@ import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -53,6 +54,7 @@ public class BoardService {
         BoardEntity boardEntity= new BoardEntity();
         boardEntity.setWriterId(currentUser.getId());
         boardEntity.setContents(boardDto.getContents());
+        boardEntity.setCategory(boardDto.getCategory());
         boardEntity.setTitle(boardDto.getTitle());
         //toSaveEntity(boardDto);
         userRepository.save(user);
@@ -105,16 +107,28 @@ public class BoardService {
     }
 
 
-    //게시글 수정 기능
-    public void updatePost(Long postId, BoardDto boardDto) {
-        Optional<BoardEntity> board= boardRepository.findById(postId);
-        BoardEntity boardEntity= board.orElseThrow(() -> new NotFoundException("No post searched"));
-
-        boardEntity.setTitle(boardDto.getTitle());
-        boardEntity.setContents(boardDto.getContents());
-        boardRepository.save(boardEntity);
-
-    }
+//    //게시글 수정 기능
+//    public void updatePost(Long postId,User currentUser) {
+//        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+//            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+//        });
+//
+//        if(!user.getId().equals(currentUser.getId())){
+//            throw new CommentException("접근 권한이 없습니다.");
+//        }
+//
+//        Optional<BoardEntity> board=boardRepository.findById(postId);
+//        BoardEntity boardEntity=board.orElseThrow(() -> new NotFoundException("No post searched"));
+//        BoardDto boardDto=BoardDto.toboardDto(boardEntity);
+//
+////        boardEntity.setTitle(boardDto.getTitle());
+////        boardEntity.setContents(boardDto.getContents());
+////        boardEntity.setCategory(boardDto.getCategory());
+//
+//        userRepository.save(user);
+//        boardRepository.save(BoardEntity.toUpdateEntity(boardDto));
+//
+//    }
 
 
 }
