@@ -2,9 +2,13 @@ package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.dto.request.community.BoardSaveDto;
+import com.example.Plowithme.dto.request.community.BoardUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.CommentException;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
+import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
@@ -24,6 +28,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 //@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Getter
 @Setter
@@ -36,6 +42,7 @@ public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
     private final CommentService commentService;
+    private final BoardRepository boardRepository;
 
 //    @GetMapping("/board")
 //    @Operation(summary = "커뮤니티 페이지 조회")
@@ -72,18 +79,19 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @PatchMapping("/board/{postId}")
-//    @Operation(summary = "게시글 수정")
-//    public ResponseEntity<CommonResponse> update(@RequestBody @PathVariable("postId") Long postId, @CurrentUser User currentUser, BoardDto boardDto) {
-//
-//       boardService.findByPostId(postId);
-//       boardService.updatePost(postId,currentUser);
-//
-//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
-//        log.info("게시글 수정 완료");
-//        return ResponseEntity.status(HttpStatus.OK).body(response);
-//
-//    }
+    @PatchMapping("/board/{postId}")
+    @Operation(summary = "게시글 수정")
+    public ResponseEntity<CommonResponse> update(@PathVariable("postId") Long postId, @CurrentUser User currentUser,@RequestBody BoardUpdateDto boardUpdateDto) {
+       // BoardDto boardDto = boardService.findByPostId(postId);
+        BoardEntity boardEntity = boardRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("못 찾음"));
+        boardService.updatePost(currentUser, boardEntity, boardUpdateDto);
+
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
+        log.info("게시글 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
 
 //    @PostMapping("/member/{id}")
 //    public String update(@ModelAttribute MemberDto memberDto) {
