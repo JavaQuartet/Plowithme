@@ -7,6 +7,7 @@ import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
+import com.example.Plowithme.repository.ClassNoticeRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -26,6 +27,7 @@ public class ClassService {
     private final ClassRepository classRepository;
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
+    private final ClassNoticeRepository classNoticeRepository;
 
 //    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
 ///*        if(classDTO.getClassFile().isEmpty()){*/
@@ -106,6 +108,12 @@ public class ClassService {
         } else {
             return null;
         }
+    }
+
+    // 모임 공지
+    public void notice(ClassEntity classEntity, String notice){
+        ClassNoticeEntity classNoticeEntity = ClassNoticeEntity.toSaveNoticeEntity(classEntity, notice);
+        classNoticeRepository.save(classNoticeEntity);
     }
 
 
@@ -230,25 +238,22 @@ public class ClassService {
             entity.setNotice(classDTO.getNotice());
         }
 
-/*        for (ClassParticipantsEntity user : classDTO.getClassParticipantsEntityList()) {
-            Optional<User> optionalUser = userRepository.findById(user.getUserid());
-            optionalUser.get().setClass_count(optionalUser.get().getClass_count() + 1);
-            optionalUser.get().setClass_distance(optionalUser.get().getClass_distance() + classDTO.getDistance());
-            userRepository.save(optionalUser.get());
-        }*/
-
         ClassDTO classDTO1 = findById(id);
 
         return classDTO1;
     }
 
     @Transactional
-    public void end_class(ClassDTO classDTO) {
-        for (ClassParticipantsEntity user : classDTO.getClassParticipantsEntityList()) {
-            Optional<User> optionalUser = userRepository.findById(user.getUserid());
-            optionalUser.get().setClass_count(optionalUser.get().getClass_count() + 1);
-            optionalUser.get().setClass_distance(optionalUser.get().getClass_distance() + classDTO.getDistance());
-            userRepository.save(optionalUser.get());
+    public void end_class(ClassDTO classDTO, Double distance, Long id) {
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+
+        classEntity.setStatus(0);
+        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
+            User user = userRepository.findById(classParticipantsEntity.getUserid()).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+            if (classDTO.getDistance() != null) {
+                user.setClass_distance(user.getClass_distance() + distance);
+            }
+            user.setClass_count(user.getClass_count() + 1);
         }
     }
 }
