@@ -63,10 +63,10 @@ public class BoardController {
 
     @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")
-    public ResponseEntity<CommonResponse> delete(@Valid @PathVariable("postId") Long postId, @RequestBody Long id) {
-        boardService.delete(id);
+    public ResponseEntity<CommonResponse> delete(@CurrentUser User currentUser, @PathVariable("postId") Long postId) {
+        boardService.delete(currentUser, postId);
 
-        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "게시글 삭제 성공");
+        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "게시글 삭제 성공", null);
         //디비에 값을 저장하는 거라 저장한 값을 보여줄 필요없고 저장되었다는 결과만 반환해주면 됨.
         log.info("게시글 삭제 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);

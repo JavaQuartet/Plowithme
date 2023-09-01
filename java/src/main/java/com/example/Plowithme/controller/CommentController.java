@@ -42,7 +42,7 @@ public class CommentController {
 
     private final BoardRepository boardRepository;
 
-    @PostMapping("/{postId}/commenting")
+    @PostMapping("/{postId}/comments")
     @Operation(summary = "댓글 작성")
     //컨트롤러에서 바디를 자바객체로 받기 위해서는 @restbody 를 반드시 명시해야함
     public ResponseEntity<CommonResponse> save(@Valid @PathVariable("postId") Long postId, @CurrentUser User currentUser, @RequestBody CommentDto commentDto) {
@@ -58,12 +58,12 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{postId}/DeleteComments")
+    @DeleteMapping("/comments/{id}")
     @Operation(summary = "댓글 삭제")
-    public ResponseEntity<CommonResponse> delete(@Valid @CurrentUser User currentUser, @PathVariable("postId") Long postId, @RequestBody Long id) {
+    public ResponseEntity<CommonResponse> delete(@CurrentUser User currentUser, @RequestBody @PathVariable("id") Long id) {
         commentService.deleteComment(currentUser, id);
 
-        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 삭제 성공");
+        CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 삭제 성공", commentRepository.findById(id));
         //디비에 값을 저장하는 거라 저장한 값을 보여줄 필요없고 저장되었다는 결과만 반환해주면 됨.
         log.info("댓글 삭제 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);

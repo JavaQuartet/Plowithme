@@ -1,11 +1,8 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.entity.BoardEntity;
-import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -14,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,8 +90,20 @@ public class BoardService {
     }
 
     //게시글 삭제 기능
-    public void delete(Long id) {
-        boardRepository.deleteById(id);
+    public String delete(User currentUser, Long postId) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        if (boardRepository.findById(postId).get().getWriterId()==currentUser.getId()) {
+            userRepository.save(user);
+            boardRepository.deleteById(postId);
+            return "ok";
+        }
+        return null;
     }
 
     public List<BoardDto> getFilter(Specification<BoardEntity> spec) {

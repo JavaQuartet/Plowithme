@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -88,7 +89,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
-                                .requestMatchers("/board", "/board/{postId}", "/board/{postId}/comments").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/board/**").permitAll()
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
 
