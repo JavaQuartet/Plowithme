@@ -146,11 +146,15 @@ userService.findOne();
     @Operation(summary = "모임 상세")
     public ResponseEntity<CommonResponse> findById(@PathVariable("id") Long id, @CurrentUser User user) {// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
-        Optional<User> class_maker = userRepository.findById(classDTO.getMaker_id());
+        /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
+        if (user.getId().equals(classDTO.getMaker_id())){
+            CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(),"내가 만든 모임 이동", classDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
         for(ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()){
             if (user.getId() == classParticipantsEntity.getUserid()){
-                CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"참여한 모임 세부정보 이동", classDTO);
+                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"참여한 모임 세부정보 이동", classDTO);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
@@ -179,7 +183,6 @@ userService.findOne();
         classService.participant(classEntity, user);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
 
@@ -222,7 +225,7 @@ userService.findOne();
     @DeleteMapping ("/{id}")
     @Operation(summary = "모임 삭제")
     public ResponseEntity<CommonResponse> delete(@PathVariable("id") Long id) {
-        ClassEntity classEntity = classRepository.findById(id).get();
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
         classService.delete(classEntity);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 삭제");
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -233,14 +236,14 @@ userService.findOne();
     //모임종료
     @PatchMapping("/ended/{id}")
     @Operation(summary = "모임 종료")
-    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassUpdateDto classDTO) {
+    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassUpdateDto classUpdateDto) {
         ClassDTO classDTO1 = classService.findById(id);
         if(classDTO1.getStatus() == 0){
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "이미 종료된 모임입니다");
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(), "이미 종료된 모임입니다");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }else {
-            classService.updated(id, classDTO);
-            /*classService.end_class(classDTO);*/
+            classService.updated(id, classUpdateDto);
+            classService.end_class(classDTO1, classUpdateDto.getDistance(), id);
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 종료");
 
             /*classService.delete(id);*/
