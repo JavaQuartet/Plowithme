@@ -29,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -205,6 +206,16 @@ userService.findOne();
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
         //return "redirect:/joined/" + classDTO.getId();
+    }
+
+    @PatchMapping("/notice/{id}")
+    @Operation(summary = "공지사항")
+    public ResponseEntity<CommonResponse> getNotice(@PathVariable("id") Long id, @RequestBody ClassUpdateDto classUpdateDto){
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+        classService.notice(classEntity, classUpdateDto.getNotice());
+        classService.updated(id, classUpdateDto);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"공지 저장 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     //모임 삭제

@@ -7,6 +7,7 @@ import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
+import com.example.Plowithme.repository.ClassNoticeRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -26,6 +27,7 @@ public class ClassService {
     private final ClassRepository classRepository;
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
+    private final ClassNoticeRepository classNoticeRepository;
 
 //    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
 ///*        if(classDTO.getClassFile().isEmpty()){*/
@@ -106,6 +108,12 @@ public class ClassService {
         } else {
             return null;
         }
+    }
+
+    // 모임 공지
+    public void notice(ClassEntity classEntity, String notice){
+        ClassNoticeEntity classNoticeEntity = ClassNoticeEntity.toSaveNoticeEntity(classEntity, notice);
+        classNoticeRepository.save(classNoticeEntity);
     }
 
 
