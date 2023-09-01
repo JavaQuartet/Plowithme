@@ -26,10 +26,10 @@ public class ClassSaveDto {
     private String title;
 
     @Min(2)
-    private int member_max; // 설정해둔 인원수
+    private Integer member_max; // 설정해둔 인원수
 
     @NotEmpty
-    private String start_region; //출발 위치
+    private String startRegion; //출발 위치
 
     @NotEmpty
     private String end_region; //도착 위치
@@ -42,6 +42,14 @@ public class ClassSaveDto {
 
 
     private String end_date;
+
+    private Integer start_year;
+
+    private Integer start_month;
+
+    private Integer start_day;
+
+    private Double distance;
 
 
 }

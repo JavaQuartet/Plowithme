@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ClassParticipantRepository extends JpaRepository<ClassParticipantsEntity, Long> {
-    Optional<ClassParticipantsEntity> deleteByUseridAndMeetingid(Long userid, Long id);
+    Optional<ClassParticipantsEntity> deleteClassParticipantsEntityByUseridAndMeetingid(Long userid, Long id);
 
-
+    Optional<ClassParticipantsEntity> deleteClassParticipantsEntitiesByClassEntity(ClassEntity classEntity);
 }

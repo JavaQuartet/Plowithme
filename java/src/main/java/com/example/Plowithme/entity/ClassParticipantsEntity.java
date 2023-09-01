@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Profile;
 
+import javax.swing.*;
+
 @Entity
 @Getter
 @Setter

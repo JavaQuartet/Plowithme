@@ -20,9 +20,9 @@ public class ClassFindDto {
 
     private String title;
 
-    private int member_max; // 설정해둔 인원수
+    private Integer member_max; // 설정해둔 인원수
 
-    private int member_current; // 현재 참여한 인원수
+    private Integer member_current; // 현재 참여한 인원수
 
     private String startRegion; //출발 위치
 
@@ -33,7 +33,7 @@ public class ClassFindDto {
 
     public static ClassFindDto toDto(ClassEntity classEntity) {
         return new ClassFindDto(classEntity.getId(),classEntity.getTitle(),classEntity.getMember_max(), classEntity.getMember_current(),
-                classEntity.getStart_region(), classEntity.getDescription(), classEntity.getStart_date());
+                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_date());
     }
 
 }

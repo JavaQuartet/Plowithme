@@ -22,7 +22,6 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     void downStatus(@Param("id") Long id);
 
 
-
 /*    @Modifying
     @Query(value = "update User u set u.total_distance = u.total_distance + u.distance where u.id=:id")
     void endclass(@Param("id") Long id);*/
@@ -31,5 +30,5 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
 //    )
 //    List<ClassEntity> findAllSearch(String keyword);
 
-    Page<ClassEntity> findByTitleContaining(String searchKey, Pageable pageable);
+    Page<ClassEntity> findByStartRegionContaining(String searchKey, Pageable pageable);
 }

@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Slf4j
 @RequiredArgsConstructor
 @RestController

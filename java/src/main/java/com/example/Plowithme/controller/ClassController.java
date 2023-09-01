@@ -4,11 +4,14 @@ import com.example.Plowithme.dto.request.meeting.ClassDTO;
 
 import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
 import com.example.Plowithme.dto.request.meeting.ClassFindDto;
+import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.dumy;
 import com.example.Plowithme.entity.ClassEntity;
 
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
+import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -38,7 +41,8 @@ import java.util.UUID;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/Class")
+@RequestMapping("/class")
+//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 public class ClassController {
     private final ClassService classService;
     private final UserService userService;
@@ -66,7 +70,28 @@ public class ClassController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @PostConstruct
+    public void initializing() {
+        for (int i = 0; i < 50; i++) {
 
+            ClassEntity classEntity = ClassEntity.builder()
+                    .title("제목"+i)
+                    .member_max(4)
+                    .member_current(1)
+                    .status(1)
+                    .startRegion(dumy.nNick())
+                    .end_region(dumy.nNick())
+                    .description("설명"+i)
+                    .start_date("1")
+                    .end_date("2")
+                    .distance(0.0)
+                    .image_name("default-image.jpeg")
+                    .maker_id((long) 4)
+                    .build();
+
+            classRepository.save(classEntity);
+        }
+    }
 
 
 /*    @GetMapping("/class_save")// 모임 만들기 화면
@@ -98,25 +123,7 @@ userService.findOne();
     }
 
 
-//    @PostConstruct
-//    public void initializing() {
-//        for (int i = 0; i < 50; i++) {
-//
-//        ClassEntity classEntity = ClassEntity.builder()
-//                .title( UUID.randomUUID().toString()+" = 안녕"+i+" 랄라" )
-//                .member_max(4)
-//                .member_current(1)
-//                .status(1)
-//                .start_region("서대문구")
-//                .end_region("종로구")
-//                .description("l")
-//                .start_date("1")
-//                .end_date("2")
-//                .build();
-//
-//            classRepository.save(classEntity);
-//        }
-//    }
+
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
     public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "classSaveDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
@@ -162,62 +169,71 @@ userService.findOne();
             if (user.getId() == classParticipantsEntity.getUserid()) {
                 classService.downstatus(id);
                 classService.deleteparticipant(classEntity, user);
-                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기", classDTO);
+                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기");
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
 
         classService.updatestatus(id);
         classService.participant(classEntity, user);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기", classDTO);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
-    }
-
-
-
-    @PostMapping("/joined/{id}")// 모임 수정
-    @Operation(summary = "모임 수정 저장")
-    public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassDTO classDTO,@PathVariable("id") Long id, @CurrentUser User user_id) {
-        ClassEntity classEntity = classRepository.findById(id).get();
-        ClassDTO Class = classService.update(classEntity, user_id);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료", Class);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-        //return "redirect:/joined/" + classDTO.getId();
     }
 
 
     // 모임 수정 페이지 이동
-    @GetMapping("/class_update/{id}")
+/*    @GetMapping("/{id}")
     @Operation(summary = "모임 수정")
     public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id){
         ClassDTO classDTO = classService.findById(id);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+    }*/
 
+    @PatchMapping("/{id}")// 모임 수정
+    @Operation(summary = "모임 수정 저장")
+    public ResponseEntity<CommonResponse> update(@Valid @RequestPart(value ="classUpdateDto") ClassUpdateDto classUpdateDto ,@PathVariable("id") Long id, @CurrentUser User user_id, @RequestPart(value ="file", required = false) MultipartFile file) {
+        ClassDTO updatedClass = classService.updated(id, classUpdateDto);
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+
+        if(file != null){
+            String imageName = imageService.updateImage(file, classEntity.getImage_name());
+            classEntity.setImage_name(imageName);
+        }
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+        //return "redirect:/joined/" + classDTO.getId();
+    }
 
     //모임 삭제
     @DeleteMapping ("/{id}")
     @Operation(summary = "모임 삭제")
     public ResponseEntity<CommonResponse> delete(@PathVariable("id") Long id) {
-        classService.delete(id);
+        ClassEntity classEntity = classRepository.findById(id).get();
+        classService.delete(classEntity);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 삭제");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
 
-    //모임종료 후기 작성 칸으로 넘어갈 수 있게끔 수정
-    @PostMapping("/ended/{id}")
+    //모임종료
+    @PatchMapping("/ended/{id}")
     @Operation(summary = "모임 종료")
-    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassDTO classDTO) {
-        ClassEntity classEntity = classRepository.findById(id).get();
-        ClassDTO Class = classService.update(classEntity, user);
-        classService.end_class(Class);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 종료");
+    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("id") Long id, @RequestBody ClassUpdateDto classDTO) {
+        ClassDTO classDTO1 = classService.findById(id);
+        if(classDTO1.getStatus() == 0){
+            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "이미 종료된 모임입니다");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            classService.updated(id, classDTO);
+            /*classService.end_class(classDTO);*/
+            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 종료");
 
-        /*classService.delete(id);*/
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+            /*classService.delete(id);*/
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 }
