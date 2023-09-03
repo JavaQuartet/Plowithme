@@ -15,8 +15,9 @@ import lombok.*;
 public class BoardDto {
     private Long postId;
     private String title;
+    private Long writerId;
     private String contents;
-    private int category;
+    private Integer category;
 //    private String postImage;
 //    private String imagePath;
     private LocalDateTime CreateDate;
@@ -27,6 +28,7 @@ public class BoardDto {
         BoardDto boardDto = new BoardDto();
         boardDto.setPostId(boardEntity.getPostId());
         boardDto.setTitle(boardEntity.getTitle());
+        boardDto.setWriterId(boardEntity.getWriterId());
         boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
         boardDto.setCreateDate(boardEntity.getCreateDate());
