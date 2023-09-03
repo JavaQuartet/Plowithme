@@ -50,7 +50,7 @@ public class BoardEntity extends BaseEntity {
     private List<Comment> commentList=new ArrayList<>();
 
     //user:board=1:n
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제하라
     private User user;
