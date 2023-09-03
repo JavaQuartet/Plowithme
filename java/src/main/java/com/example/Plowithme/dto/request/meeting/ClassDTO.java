@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClassDTO {
 
-    /*private Long id;*/
+    private Long id;
 
 
     // 모임 수정에 사용
@@ -73,7 +73,7 @@ public class ClassDTO {
     public static ClassDTO toClassDTO(ClassEntity classEntity){
         ClassDTO classDTO = new ClassDTO();
 
-        /*classDTO.setId(classEntity.getId());*/
+        classDTO.setId(classEntity.getId());
         classDTO.setTitle(classEntity.getTitle());
         classDTO.setMember_max(classEntity.getMember_max());
         classDTO.setMember_current(classEntity.getMember_current());

@@ -163,7 +163,7 @@ userService.findOne();
     }
 
 
-    @PostMapping("/{id}")// 참여하기 참여취소 버튼
+/*    @PostMapping("/{id}")// 참여하기 참여취소 버튼
     @Operation(summary = "참여, 참여취소")
     public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user) {
         ClassDTO classDTO = classService.findById(id);
@@ -174,11 +174,40 @@ userService.findOne();
             if (user.getId() == classParticipantsEntity.getUserid()) {
                 classService.downstatus(id);
                 classService.deleteparticipant(classEntity, user);
-                CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 나가기");
+                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
 
+        classService.updatestatus(id);
+        classService.participant(classEntity, user);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }*/
+
+    @PostMapping("/unjoin/{id}")
+    @Operation(summary = "모임 나가기")
+    public ResponseEntity<CommonResponse> unjoinClass(@PathVariable("id") Long id, @CurrentUser User user) {
+
+        ClassEntity classEntity = classRepository.findById(id).get();
+        classService.downstatus(id);
+        classService.deleteparticipant(classEntity, user);
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/join/{id}")
+    @Operation(summary = "모임 참여")
+    public ResponseEntity<CommonResponse> joinClass(@PathVariable("id") Long id, @CurrentUser User user) {
+        ClassDTO classDTO = classService.findById(id);
+
+        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
+            if (user.getId() == classParticipantsEntity.getUserid()) {
+                CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(), "이미 참여했습니다");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        }
+        ClassEntity classEntity = classRepository.findById(id).get();
         classService.updatestatus(id);
         classService.participant(classEntity, user);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
