@@ -8,7 +8,6 @@ import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.MessageRepository;
 import com.example.Plowithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +59,9 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public List<MessageFindDto> receivedMessage(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
+        User user = userRepository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException("유저를 찾을 수 없습니다.")
+        );
 
 
         List<Message> messages = messageRepository.findAllByReceiver(user);
@@ -78,18 +77,17 @@ public class MessageService {
 
 
 
-
     // 받은 쪽지 삭제
     @Transactional
     public Object deleteMessageByReceiver(Long id, User currentUser) {
 
-        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() ->
+             new ResourceNotFoundException("유저를 찾을 수 없습니다.")
+        );
 
-        Message message = messageRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundException("메시지를 찾을 수 없습니다.");
-        });
+        Message message = messageRepository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException("메시지를 찾을 수 없습니다.")
+        );
 
 
         if(user == message.getSender()) {
@@ -124,13 +122,11 @@ public class MessageService {
     // 보낸 편지 삭제
     @Transactional
     public Object deleteMessageBySender(Long id, User currentUser) {
-        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다.")
+        );
 
-        Message message = messageRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundException("메시지를 찾을 수 없습니다.");
-        });
+        Message message = messageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("메시지를 찾을 수 없습니다.")
+        );
 
 
         if(user == message.getSender()) {

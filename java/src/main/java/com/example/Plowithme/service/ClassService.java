@@ -12,13 +12,12 @@ import com.example.Plowithme.repository.ClassRepository;
 import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClassService {
@@ -170,9 +169,35 @@ public class ClassService {
 //
 //        return
 //    }
+    //회원 지역 기준 모임 조회
+    @Transactional
+    public List<ClassDTO> findClassByRegion(Pageable pageable, User currentUser) {
+
+        Set<Long> set = new HashSet<>();
+        List<String> regions = List.of(currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3());
+        List<ClassDTO> classDtos = new ArrayList<>();
+
+        for (String region : regions) {
+            List<ClassEntity> classEntities = classRepository.findByStartRegionContaining(region, pageable).stream().toList();
+            log.info("======================11==============================",region);
+            log.info("======================11==============================");
+            for (ClassEntity classEntity : classEntities) {
+                if ((classEntity.getStatus() == 1) && (!set.contains(classEntity.getId()))){ // 모집중인 모임
+                    System.out.println("classEntity.getId() = " + classEntity.getId());
+                    log.info("======================22===============================");
+                    set.add(classEntity.getId());
+                    classDtos.add(ClassDTO.toClassDTO(classEntity));
+                }
+            }
+        }
+        return classDtos;
+    }
+
+
+
     //모임 검색
     @Transactional
-    public List<ClassFindDto> searchStart_region(String keyword, Pageable pageable) {
+    public List<ClassFindDto> searchStartRegion(String keyword, Pageable pageable) {
 
 
         List<ClassEntity> classEntities = classRepository.findByStartRegionContaining(keyword, pageable).stream().toList();

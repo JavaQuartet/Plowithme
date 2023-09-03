@@ -122,15 +122,8 @@ public class User implements UserDetails {
 //        return Objects.equals(id, that.id);
 //    }
 
-    //게시글과 연관관계 생성 - User 엔티티 코드
-//    @OneToMany(mappedBy = "user")
-//    private List<Board> boards = new ArrayList<>();
-//
-    //Board 엔티티에 추가해야하는 연관관계 코드 참고하세욥~~~
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
+
+
 
 
     public void updatePassword(String password) {

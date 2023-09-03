@@ -11,4 +11,5 @@ public class BoardSpecifications {
         return ((root, query, criteriaBuilder) ->
                 root.get("category").in(categories));
     }
+
 }
