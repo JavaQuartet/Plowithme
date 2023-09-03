@@ -1,4 +1,5 @@
 package com.example.Plowithme.repository;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.entity.ClassEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,8 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     Page<ClassEntity> findClassByStartRegion(String key1, String key2, String key3, Pageable pageable);
   //  Page<ClassEntity> findByStartRegionContaining(String searchKey1, String searchKey2, String searchKey3, Pageable pageable);
     Page<ClassEntity> findByStartRegionContaining(String searchKey, Pageable pageable);
+
+    /*List<ClassEntity> findAllByMaker_idAndStatus(Long userId, int Status);*/
 
 
 }

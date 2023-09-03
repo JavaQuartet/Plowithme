@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -150,6 +151,14 @@ userService.findOne();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+/*    @GetMapping("/myflogging/join")
+    public ResponseEntity<CommonResponse> findJoinClass(@CurrentUser User currentUser){
+        List<ClassDTO> classDTOList = classService.findByUserAndStatus(currentUser.getId());
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "내가 참여한 모임 리스트", classDTOList);
+        log.info("참여한 모임 리스트 조회");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }*/
 
     @GetMapping("/search")
     @Operation(summary =  "모임 지역 검색")
@@ -186,8 +195,8 @@ userService.findOne();
         /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
         if (user == null){
-            CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(),"로그인 안한 유저", classDTO);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(),"로그인 안한 유저", classDTO);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         if (user.getId().equals(classDTO.getMaker_id())) {
@@ -202,8 +211,6 @@ userService.findOne();
         }
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
-
 
     }
 
@@ -249,8 +256,8 @@ userService.findOne();
         ClassDTO classDTO = classService.findById(id);
 
         if (user == null){
-            CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "로그인 필요");
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+            CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(), "로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 /*            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);*/
         }
