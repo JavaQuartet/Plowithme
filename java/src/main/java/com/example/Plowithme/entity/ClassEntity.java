@@ -89,6 +89,9 @@ public class ClassEntity{
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
+    private List<ClassNoticeEntity> classNoticeEntityList = new ArrayList<>();
+
 
 
 

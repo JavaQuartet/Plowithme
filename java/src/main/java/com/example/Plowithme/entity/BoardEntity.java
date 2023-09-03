@@ -41,7 +41,7 @@ public class BoardEntity extends BaseEntity {
 
     @Column(name="board_category")
     //@NotBlank(message = "카테고리를 선택해주세요.")
-    private int category;
+    private Integer category;
 
     @Column
     private long postHits;
@@ -80,6 +80,7 @@ public class BoardEntity extends BaseEntity {
     public static BoardEntity toSaveEntity(BoardDto boardDto) {
         BoardEntity boardEntity=new BoardEntity();
         boardEntity.setTitle(boardDto.getTitle());
+        boardEntity.setWriterId(Long.valueOf(boardDto.getWriterId()));
         boardEntity.setContents(boardDto.getContents());
         boardEntity.setPostHits(boardDto.getPostHits());
         boardEntity.setCategory(boardDto.getCategory());
@@ -94,6 +95,7 @@ public class BoardEntity extends BaseEntity {
         BoardEntity boardEntity=new BoardEntity();
         boardEntity.setPostId(boardEntity.getPostId());
         boardEntity.setTitle(boardDto.getTitle());
+        boardEntity.setWriterId(Long.valueOf(boardDto.getWriterId()));
         boardEntity.setContents(boardDto.getContents());
         boardEntity.setPostHits(boardDto.getPostHits());
         boardEntity.setCategory(boardDto.getCategory());

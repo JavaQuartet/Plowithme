@@ -1,9 +1,6 @@
 package com.example.Plowithme.dto.request.meeting;
 
-import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.ClassParticipantsEntity;
-import com.example.Plowithme.entity.Date;
-import com.example.Plowithme.entity.Region;
+import com.example.Plowithme.entity.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -18,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ClassDTO {
 
-    private Long id;
+
+    private Long class_Id;
 
     // 모임 수정에 사용
     private String title;
@@ -69,11 +67,13 @@ public class ClassDTO {
     // 참여자 모임
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
+    private List<ClassNoticeEntity> classNoticeEntityList = new ArrayList<>();
+
 
     public static ClassDTO toClassDTO(ClassEntity classEntity){
         ClassDTO classDTO = new ClassDTO();
 
-        classDTO.setId(classEntity.getId());
+        classDTO.setClass_Id(classEntity.getId());
         classDTO.setTitle(classEntity.getTitle());
         classDTO.setMember_max(classEntity.getMember_max());
         classDTO.setMember_current(classEntity.getMember_current());
@@ -94,6 +94,7 @@ public class ClassDTO {
         classDTO.setImage_url(classEntity.getImageUrl(classEntity.getImage_name()));
 
         classDTO.setClassParticipantsEntityList(classEntity.getClassParticipantsEntityList());
+        classDTO.setClassNoticeEntityList(classEntity.getClassNoticeEntityList());
 
         return classDTO;
     }

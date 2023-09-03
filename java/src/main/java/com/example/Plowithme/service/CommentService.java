@@ -12,9 +12,9 @@ import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +84,13 @@ public class CommentService {
 
     //댓글 삭제
     public void deleteComment(User currentUser, Long id) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+        userRepository.save(user);
         commentRepository.deleteById(id);
     }
 

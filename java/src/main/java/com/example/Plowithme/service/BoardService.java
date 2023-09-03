@@ -1,9 +1,8 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardSaveDto;
+import com.example.Plowithme.dto.request.community.BoardUpdateDto;
 import com.example.Plowithme.entity.BoardEntity;
-import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +51,12 @@ public class BoardService {
 
         BoardEntity boardEntity= new BoardEntity();
         boardEntity.setWriterId(currentUser.getId());
+        boardEntity.setUser(currentUser);
         boardEntity.setContents(boardDto.getContents());
         boardEntity.setCategory(boardDto.getCategory());
         boardEntity.setTitle(boardDto.getTitle());
         //toSaveEntity(boardDto);
-        userRepository.save(user);
+       // userRepository.save(user);
 
         boardRepository.save(boardEntity);
         //{jpa 제공하는) 레파지토리 save메소드 호출
@@ -94,8 +93,20 @@ public class BoardService {
     }
 
     //게시글 삭제 기능
-    public void delete(Long id) {
-        boardRepository.deleteById(id);
+    public String delete(User currentUser, Long postId) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        if (boardRepository.findById(postId).get().getWriterId()==currentUser.getId()) {
+            userRepository.save(user);
+            boardRepository.deleteById(postId);
+            return "ok";
+        }
+        return null;
     }
 
     public List<BoardDto> getFilter(Specification<BoardEntity> spec) {
@@ -107,28 +118,36 @@ public class BoardService {
     }
 
 
-//    //게시글 수정 기능
-//    public void updatePost(Long postId,User currentUser) {
-//        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> {
-//            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-//        });
-//
-//        if(!user.getId().equals(currentUser.getId())){
-//            throw new CommentException("접근 권한이 없습니다.");
-//        }
-//
+    @Transactional //DB에 반영이 안 됐는데 @Transactional 넣으니 해결됨...
+    //게시글 수정 기능
+    public void updatePost(User currentUser,BoardEntity boardEntity, BoardUpdateDto boardUpdateDto) {
+        if (boardEntity.getWriterId().equals(currentUser.getId())) {
+            //BoardEntity boardEntity=BoardEntity.toSaveEntity(boardDto);
+            //userRepository.save(user);
+           //boardRepository.save(boardEntity);
+            if (boardUpdateDto.getTitle() != null) {
+                boardEntity.setTitle(boardUpdateDto.getTitle());
+            }
+            if (boardUpdateDto.getContents() != null) {
+                boardEntity.setContents(boardUpdateDto.getContents());
+            }
+            if (boardUpdateDto.getCategory() != null) {
+                boardEntity.setCategory(boardUpdateDto.getCategory());
+            }
+
+        } else throw new CommentException("게시글 수정 권한이 없습니다.");
+
+
+
 //        Optional<BoardEntity> board=boardRepository.findById(postId);
 //        BoardEntity boardEntity=board.orElseThrow(() -> new NotFoundException("No post searched"));
-//        BoardDto boardDto=BoardDto.toboardDto(boardEntity);
-//
-////        boardEntity.setTitle(boardDto.getTitle());
-////        boardEntity.setContents(boardDto.getContents());
-////        boardEntity.setCategory(boardDto.getCategory());
-//
-//        userRepository.save(user);
-//        boardRepository.save(BoardEntity.toUpdateEntity(boardDto));
-//
-//    }
+      //  BoardDto boardDto=BoardDto.toboardDto(boardEntity);
+
+//        boardEntity.setTitle(boardDto.getTitle());
+//        boardEntity.setContents(boardDto.getContents());
+//        boardEntity.setCategory(boardDto.getCategory());
+
+    }
 
 
 }

@@ -100,6 +100,8 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers("/test/**").permitAll()
+                                .requestMatchers("/class").permitAll()
+                                .requestMatchers("/class/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
 
                                 .requestMatchers("/C:/**").permitAll()
