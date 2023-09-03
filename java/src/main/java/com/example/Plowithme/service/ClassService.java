@@ -75,8 +75,6 @@ public class ClassService {
                 .distance((double) 0)
                 .build();
         return classEntity;
-
-
     }
 
 

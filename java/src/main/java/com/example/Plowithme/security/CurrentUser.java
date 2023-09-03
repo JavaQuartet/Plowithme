@@ -1,5 +1,6 @@
 package com.example.Plowithme.security;
 
+import jakarta.annotation.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.lang.annotation.*;
@@ -9,4 +10,5 @@ import java.lang.annotation.*;
 @Documented
 @AuthenticationPrincipal
 public @interface CurrentUser {
+
 }
