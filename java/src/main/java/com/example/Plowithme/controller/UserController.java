@@ -145,7 +145,7 @@ public class UserController {
      */
 
     //모임 참여자 프로필 조회: 프로필 사진+닉네임
-    @GetMapping("/classes/{classId}/profile")
+    @GetMapping("/class/{classId}/profile")
     public ResponseEntity<CommonResponse> findClassProfiles(@PathVariable("classId") Long id) {
 
         List<JoinedClassProfileFindDto> joinedClassProfileFindDtos = userService.findClassProfiles(id);

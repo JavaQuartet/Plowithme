@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ClassDTO {
 
-    private Long class_Id;
 
+    private Long class_Id;
 
     // 모임 수정에 사용
     private String title;

@@ -55,6 +55,8 @@ public class BoardEntity extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제하라
     private User user;
 
+
+
     /*
     @Column
     private String postWriter;

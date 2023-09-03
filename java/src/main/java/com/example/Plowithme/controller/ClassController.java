@@ -65,36 +65,59 @@ public class ClassController {
 */
 
 
-    @GetMapping ("")// 모임 불러오기
+   // @GetMapping("")// 모임 불러오기
     @Operation(summary = "모임 리스트")
-    public ResponseEntity<CommonResponse> findAll(Model model){
+    public ResponseEntity<CommonResponse> findAll(Model model) {
         List<ClassDTO> classDTOList = classService.findAll();
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"전제 모임 리스트", classDTOList);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDTOList);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostConstruct
-    public void initializing() {
-        for (int i = 0; i < 50; i++) {
 
-            ClassEntity classEntity = ClassEntity.builder()
-                    .title("제목"+i)
-                    .member_max(4)
-                    .member_current(1)
-                    .status(1)
-                    .startRegion(dumy.nNick())
-                    .end_region(dumy.nNick())
-                    .description("설명"+i)
-                    .start_date("1")
-                    .end_date("2")
-                    .distance(0.0)
-                    .image_name("default-image.jpeg")
-                    .maker_id((long) 4)
-                    .build();
 
-            classRepository.save(classEntity);
-        }
-    }
+//    @PostConstruct
+//    public void initializing() {
+//        for (int i = 0; i < 50; i++) {
+////            ClassSaveDto classSaveDto = ClassSaveDto.builder()
+//
+//
+//            ClassEntity classEntity = ClassEntity.builder()
+//                    .title("제목" + i)
+//                    .member_max(4)
+//                    .startRegion("경기도 부천시 역곡동 산43-1 가톨릭대학교 성심교정")
+//                    .end_region("경기도 부천시 괴안동 113-8 역곡유림빌딩")
+//                    .description("설명" + i)
+//                    .start_date("2023/03/04")
+//                    .end_date("2023/03/04")
+//                    .start_day(5)
+//                    .start_month(7)
+//                    .start_year(2000)
+//                    .distance(0.0)
+//                    .image_name("default-image.jpeg")
+//                    .maker_id((long) i)
+//                    .build();
+//
+//            classService.saveClass()
+//            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
+//
+//            User user = userRepository.findById((long) i).get();
+//            classService.participant(classEntity, user);
+//            findById(user)
+//        }
+//    }
+
+
+//            ClassEntity classEntity = classService.saveClass(classSaveDto,(long)i);
+//            .findById(i)
+//            classService.participant(classEntity, user);
+//
+//
+//                    .title("제목"+i)
+//
+//
+//
+//        }
+//    }
 
 
 /*    @GetMapping("/class_save")// 모임 만들기 화면
@@ -116,10 +139,21 @@ userService.findOne();
     }*/
 
 
+    @GetMapping("")
+    @Operation(summary = "회원 지역 모임 조회")
+    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
+        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
+        log.info("회원 지역 모임 조회");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
     @GetMapping("/search")
     @Operation(summary =  "모임 지역 검색")
     public ResponseEntity<CommonResponse> searchStartRegion(Pageable pageable, @RequestParam("keyword") String keyword) {
-        List<ClassFindDto> classFindDtos  = classService.searchStart_region(keyword, pageable);
+        List<ClassFindDto> classFindDtos  = classService.searchStartRegion(keyword, pageable);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 지역 검색 완료", classFindDtos );
         log.info("모임 지역 검색 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
