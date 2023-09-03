@@ -75,6 +75,7 @@ public class ClassController {
 
 
 
+
 //    @PostConstruct
 //    public void initializing() {
 //        for (int i = 0; i < 50; i++) {
@@ -180,27 +181,30 @@ userService.findOne();
 
     @GetMapping("/{classId}")// 모임 상세
     @Operation(summary = "모임 상세")
-    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @Nullable @CurrentUser User user) throws Exception{// 모임 세부정보로 이동
+    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @Nullable @CurrentUser User user){// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
         /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
-        if (user != null) {
-            if (user.getId().equals(classDTO.getMaker_id())) {
-                CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
-            }
-            for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
-                if (user.getId() == classParticipantsEntity.getUserid()) {
-                    CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-                }
-            }
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }else{
-            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안한 유저", classDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        if (user == null){
+            CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(),"로그인 안한 유저", classDTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+
+        if (user.getId().equals(classDTO.getMaker_id())) {
+            CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
+        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
+            if (user.getId() == classParticipantsEntity.getUserid()) {
+                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+        }
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+
+
     }
 
 
@@ -241,12 +245,14 @@ userService.findOne();
 
     @PostMapping("/join/{classId}")
     @Operation(summary = "모임 참여")
-    public ResponseEntity<CommonResponse> joinClass(@PathVariable("classId") Long id, @CurrentUser User user) throws Exception{
+    public ResponseEntity<CommonResponse> joinClass(@PathVariable("classId") Long id, @CurrentUser User user){
         ClassDTO classDTO = classService.findById(id);
 
-        if (user.getId() == null){
-            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        if (user == null){
+            CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "로그인 필요");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+/*            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);*/
         }
 
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
