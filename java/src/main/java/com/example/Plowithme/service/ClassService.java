@@ -132,6 +132,8 @@ public class ClassService {
 
     @Transactional
     public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
+        //classRepository.deleteClassEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
+
         classParticipantRepository.deleteClassParticipantsEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
     }
 

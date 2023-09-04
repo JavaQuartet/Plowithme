@@ -94,7 +94,6 @@ public class ClassEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-
 //
 //    public static ClassEntity toSaveEntity(ClassDTO classDTO, User user_id){
 //
