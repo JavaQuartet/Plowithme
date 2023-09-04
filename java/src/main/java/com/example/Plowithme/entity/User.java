@@ -69,6 +69,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> BoardList=new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",  fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<ClassEntity> classEntities =new ArrayList<>();
+
+
     //권한 목록
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

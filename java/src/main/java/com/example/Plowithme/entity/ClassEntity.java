@@ -4,6 +4,8 @@ import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.lang.model.element.NestingKind;
 import java.nio.file.Paths;
@@ -25,7 +27,7 @@ public class ClassEntity{
     @Column(name = "class_id")
     private Long id;
 
-    @Column(length = 10)
+    @Column
     private String title; // 모임 이름
 
     @Column
@@ -88,7 +90,9 @@ public class ClassEntity{
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassNoticeEntity> classNoticeEntityList = new ArrayList<>();
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 //

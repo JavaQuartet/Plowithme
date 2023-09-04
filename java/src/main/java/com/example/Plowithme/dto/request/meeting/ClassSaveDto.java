@@ -21,17 +21,17 @@ import java.util.List;
 @Builder
 public class ClassSaveDto {
 
-    @NotEmpty
-    @Size(max = 10)
+//    @NotEmpty
+//    @Size(max = 10)
     private String title;
 
-    @Min(2)
+//    @Min(2)
     private Integer member_max; // 설정해둔 인원수
 
-    @NotEmpty
+//    @NotEmpty
     private String startRegion; //출발 위치
 
-    @NotEmpty
+//    @NotEmpty
     private String end_region; //도착 위치
 
     private String notice;

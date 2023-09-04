@@ -22,6 +22,7 @@ import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -66,11 +68,7 @@ public class ClassController {
 */
 
 
-<<<<<<< HEAD
     @GetMapping("")// 모임 불러오기
-=======
-    @GetMapping("/")// 모임 불러오기
->>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
     @Operation(summary = "모임 리스트")
     public ResponseEntity<CommonResponse> findAll(Model model) {
         List<ClassDTO> classDTOList = classService.findAll();
@@ -88,13 +86,10 @@ public class ClassController {
 //            ClassEntity classEntity = ClassEntity.builder()
 //                    .title("제목" + i)
 //                    .member_max(4)
-<<<<<<< HEAD
 //                    .startRegion(dumy.nNick())
-//                    .end_region("경기도 부천시 괴안동 113-8 역곡유림빌딩")
-=======
+
 //                    .startRegion("서울 서초구 동광로19길 10")
 //                    .end_region("대전 서구 둔산로 100")
->>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
 //                    .description("설명" + i)
 //                    .start_date("2023/03/07")
 //                    .end_date("2023/09/03")
@@ -106,19 +101,18 @@ public class ClassController {
 //                    .image_name("default-image.jpeg")
 //                   .maker_id((long) i)
 //                    .build();
-<<<<<<< HEAD
+
 //
 //            classRepository.save(classEntity);
 ////            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
 //
 //            User user = userRepository.findById((long) i).get();
-=======
+
 
 //          ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
 //          classRepository.save(classSaveDto);
 
 //           User user = userRepository.findById((long) i).get();
->>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
 //            classService.participant(classEntity, user);
 //  findById(user)
 //        }
@@ -346,5 +340,17 @@ userService.findOne();
             /*classService.delete(id);*/
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
+    }
+
+
+
+    //현재 유저의 모임 조회
+    @GetMapping("/me")
+    @Operation(summary = "현재 유저 모임 조회")
+    public ResponseEntity<CommonResponse> findCurrentUserClasses(@RequestParam("category") Integer category, @CurrentUser User currentUser){
+
+        List<ClassFindDto> classFindDtos = classService.findMyClasses(currentUser, category);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 유저 모임 조회 완료",classFindDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
