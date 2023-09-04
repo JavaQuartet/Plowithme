@@ -180,7 +180,9 @@ public class ClassService {
     public List<ClassDTO> findClassByRegion(Pageable pageable, User currentUser) {
 
         Set<Long> set = new HashSet<>();
-        List<String> regions = List.of(currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3());
+        List<String> regions = List.of(currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_2(),currentUser.getRegion().getDepth_1());
+
+
         List<ClassDTO> classDtos = new ArrayList<>();
 
         for (String region : regions) {

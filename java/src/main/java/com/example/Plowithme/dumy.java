@@ -13,10 +13,12 @@ public class dumy {
     //지역 랜덤 생성
     public static String nNick() {
         List<String> 시 = Arrays.asList("서울 ", "부산 ", "경기도 ", "광주 ", "대전 ", "대구 ");
-        List<String> 구 = Arrays.asList("종로구", "서대문구", "강남구", "강동구", "강북구", "관악구", "구로구");
+        List<String> 구 = Arrays.asList("종로구 ", "서대문구 ", "강남구 ", "강동구 ", "강북구 ", "관악구 ", "구로구 ");
+        List<String> 동 = Arrays.asList("영천동", "신사동", "논현동");
         Collections.shuffle(시);
         Collections.shuffle(구);
-        String text = 시.get(0) + 구.get(0);
+        Collections.shuffle(동);
+        String text = 시.get(0) + 구.get(0) + 동.get(0);
         return text;
     }
 

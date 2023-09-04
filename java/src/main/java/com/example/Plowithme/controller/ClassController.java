@@ -65,7 +65,7 @@ public class ClassController {
 */
 
 
-   // @GetMapping("")// 모임 불러오기
+    @GetMapping("")// 모임 불러오기
     @Operation(summary = "모임 리스트")
     public ResponseEntity<CommonResponse> findAll(Model model) {
         List<ClassDTO> classDTOList = classService.findAll();
@@ -84,7 +84,7 @@ public class ClassController {
 //            ClassEntity classEntity = ClassEntity.builder()
 //                    .title("제목" + i)
 //                    .member_max(4)
-//                    .startRegion("경기도 부천시 역곡동 산43-1 가톨릭대학교 성심교정")
+//                    .startRegion(dumy.nNick())
 //                    .end_region("경기도 부천시 괴안동 113-8 역곡유림빌딩")
 //                    .description("설명" + i)
 //                    .start_date("2023/03/04")
@@ -97,14 +97,14 @@ public class ClassController {
 //                    .maker_id((long) i)
 //                    .build();
 //
-//            classService.saveClass()
-//            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
+//            classRepository.save(classEntity);
+////            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
 //
 //            User user = userRepository.findById((long) i).get();
 //            classService.participant(classEntity, user);
 //            findById(user)
 //        }
-//    }
+//        }
 
 
 //            ClassEntity classEntity = classService.saveClass(classSaveDto,(long)i);
@@ -118,7 +118,7 @@ public class ClassController {
 //
 //        }
 //    }
-
+//    }
 
 /*    @GetMapping("/class_save")// 모임 만들기 화면
     public String saveForm(){return "ClassSave";}*/
@@ -139,15 +139,15 @@ userService.findOne();
     }*/
 
 
-    @GetMapping("")
-    @Operation(summary = "회원 지역 모임 조회")
-    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
-        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
-
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
-        log.info("회원 지역 모임 조회");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+//   @GetMapping("/s")
+//    @Operation(summary = "회원 지역 모임 조회")
+//    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
+//        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
+//        log.info("회원 지역 모임 조회");
+//        return ResponseEntity.status(HttpStatus.OK).body(response);
+//    }
 
 
     @GetMapping("/search")
@@ -163,7 +163,7 @@ userService.findOne();
 
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
-    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "classSaveDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
+    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "saveDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
         ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
         if(file != null){
             String imageName = imageService.saveImage(file);
