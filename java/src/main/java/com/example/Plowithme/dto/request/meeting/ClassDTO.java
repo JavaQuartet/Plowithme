@@ -61,8 +61,6 @@ public class ClassDTO {
 
     private Double distance; // 걸은 거리
 
-    private String image_url;
-    /*private Region region; // 지역 태그*/
 
     // 참여자 모임
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
@@ -90,8 +88,6 @@ public class ClassDTO {
         classDTO.setStart_year(classEntity.getStart_year());
         classDTO.setStart_month(classEntity.getStart_month());
         classDTO.setStart_day(classEntity.getStart_day());
-
-        classDTO.setImage_url(classEntity.getImageUrl(classEntity.getImage_name()));
 
         classDTO.setClassParticipantsEntityList(classEntity.getClassParticipantsEntityList());
         classDTO.setClassNoticeEntityList(classEntity.getClassNoticeEntityList());

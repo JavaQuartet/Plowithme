@@ -4,6 +4,8 @@ import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.lang.model.element.NestingKind;
 import java.nio.file.Paths;
@@ -25,7 +27,7 @@ public class ClassEntity{
     @Column(name = "class_id")
     private Long id;
 
-    @Column(length = 10)
+    @Column
     private String title; // 모임 이름
 
     @Column
@@ -82,17 +84,15 @@ public class ClassEntity{
 //    @Column
 //    private Region region; // 지역 태그
 
-    @Column
-    private String image_name;
-
-
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassNoticeEntity> classNoticeEntityList = new ArrayList<>();
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 //
@@ -173,13 +173,5 @@ public class ClassEntity{
         this.status = 0;
     }
 */
-
-    public String getImageUrl(String image_name) {
-        try {
-            return Paths.get("uploads/profiles").resolve(this.image_name).toUri().toURL().toString();
-
-        }catch (Exception e){
-            throw new FileException("파일을 조회할 수 없습니다.");}
-    }
 
 }

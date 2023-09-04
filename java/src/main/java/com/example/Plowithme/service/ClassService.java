@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,10 +48,7 @@ public class ClassService {
         }*/
 //    }
 
-    public ClassEntity saveClass(ClassSaveDto classSaveDto, Long id) {
-        /*LocalDate now = LocalDate.now();*/
-        Optional<User> user = userRepository.findById(id);
-
+    public ClassEntity saveClass(ClassSaveDto classSaveDto, User user) {
         ClassEntity classEntity = ClassEntity.builder()
                 .title(classSaveDto.getTitle())
                 .member_max(classSaveDto.getMember_max())
@@ -64,12 +62,11 @@ public class ClassService {
                 .start_month(classSaveDto.getStart_month())
                 .start_day(classSaveDto.getStart_day())
                 .end_date(classSaveDto.getEnd_date())
-                /*.current_day(now.getDayOfYear())*/
-                .image_name("default-image.jpeg")
-                .maker_id(id)
-                .maker_nickname(user.get().getNickname())
-                .maker_profile(user.get().getProfileUrl(user.get().getProfile()))
-                .distance((double) 0)
+                .maker_id(user.getId())
+                .maker_nickname(user.getNickname())
+                .maker_profile(user.getProfileUrl(user.getProfile()))
+                .distance(classSaveDto.getDistance())
+                .user(user)
                 .build();
         return classEntity;
     }
@@ -194,17 +191,17 @@ public class ClassService {
     public List<ClassDTO> findClassByRegion(Pageable pageable, User currentUser) {
 
         Set<Long> set = new HashSet<>();
-        List<String> regions = List.of(currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_3());
+        List<String> regions = List.of(currentUser.getRegion().getDepth_3(),currentUser.getRegion().getDepth_2(),currentUser.getRegion().getDepth_1());
+
+
         List<ClassDTO> classDtos = new ArrayList<>();
 
         for (String region : regions) {
             List<ClassEntity> classEntities = classRepository.findByStartRegionContaining(region, pageable).stream().toList();
-            log.info("======================11==============================",region);
-            log.info("======================11==============================");
+
             for (ClassEntity classEntity : classEntities) {
                 if ((classEntity.getStatus() == 1) && (!set.contains(classEntity.getId()))){ // 모집중인 모임
                     System.out.println("classEntity.getId() = " + classEntity.getId());
-                    log.info("======================22===============================");
                     set.add(classEntity.getId());
                     classDtos.add(ClassDTO.toClassDTO(classEntity));
                 }
@@ -244,8 +241,8 @@ public class ClassService {
 
     @Transactional
     public ClassDTO updated(Long id, ClassUpdateDto classDTO) {
-        ClassEntity entity = classRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+        ClassEntity entity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+
 
         /*User user = userRepository.findById(user_id.getId());*/
 
@@ -304,4 +301,42 @@ public class ClassService {
             user.setClass_count(user.getClass_count() + 1);
         }
     }
+
+    @Transactional
+    public List<ClassFindDto> findMyClasses(User currentUser, Integer category){
+        if(!(category==1 || category==2 || category==3)){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+        userRepository.findById(currentUser.getId()).orElseThrow(() -> new AccessDeniedException("접근 권한이 없습니다."));
+
+        List<ClassFindDto> classFindDtos = new ArrayList<>();
+        List<ClassEntity> classEntities = currentUser.getClassEntities();
+
+        if (category==1) { //완료 모임
+            for (ClassEntity classEntity : classEntities) {
+                if ((classEntity.getStatus() == 0)) { // 모집중인 모임
+                    classFindDtos.add(ClassFindDto.toDto(classEntity));
+                }
+            }
+        }
+        if(category==2){ //모집중 모임
+            for (ClassEntity classEntity : classEntities) {
+                if ((classEntity.getStatus() == 1)) { // 모집중인 모임
+                    classFindDtos.add(ClassFindDto.toDto(classEntity));
+                }
+            }
+
+        }
+
+        if(category==3){ //내가 만든 모임
+            for (ClassEntity classEntity : classEntities) {
+                if (classEntity.getMaker_id().equals(currentUser.getId())){ // 모집중인 모임
+                    classFindDtos.add(ClassFindDto.toDto(classEntity));
+                }
+            }
+
+        }
+        return classFindDtos;
+    }
+
 }
