@@ -23,5 +23,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSp
 
    // BoardEntity findByPostImageAndImagePath();
 
-    BoardEntity findByImagePath(String imagePath);
+   // BoardEntity findByImagePath(String imagePath);
+
+    BoardEntity findByPostImage(String postImage);
 }

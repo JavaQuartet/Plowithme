@@ -75,10 +75,10 @@ public class BoardController {
 
     @PostMapping(value = "/board/postingImage")
     @Operation(summary = "커뮤니티 게시글 중 이미지 등록하는 기능")
-    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, @ModelAttribute MultipartFile image) {
+    private ResponseEntity<CommonResponse> savePosting(@ModelAttribute MultipartFile image) {
         if(!image.isEmpty()) {
             try {
-                boardService.saveImage(currentUser, image);
+                boardService.saveImage(image);
             } catch (Exception e) {
                 throw new RuntimeException("이미지 파일을 가져오는 것에 실패했습니다.");
             }
@@ -89,20 +89,20 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(value = "/board/{imagePath}")
-    @Operation(summary = "게시글 이미지 조회 기능")
-    private ResponseEntity<CommonResponse> showImage(@PathVariable("imagePath") String imagePath) throws Exception {
+    @GetMapping(value = "/board/postImage/{postImage}")
+    @Operation(summary = "게시글 이미지 조회")
+    private ResponseEntity<CommonResponse> showImage(@RequestParam(name = "postImage", required=false) String postImage) throws Exception {
 
        // BoardDto ImageDto=boardService.getImage(imagePath, boardDto);
-        if (!imagePath.isEmpty()) {
+        if (postImage!=null) {
             try {
-                boardService.getImage(imagePath);
+                boardService.getImage(postImage);
             } catch (Exception e) {
                 throw new FileException("이미지를 불러오지 못했습니다.");
             }
         } else throw new Exception("조회할 이미지가 없습니다.");
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", boardService.getImage(imagePath));
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", boardService.getImage(postImage));
         log.info("이미지 조회 완료");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -124,7 +124,6 @@ public class BoardController {
        // BoardDto boardDto = boardService.findByPostId(postId);
         BoardEntity boardEntity = boardRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("못 찾음"));
         boardService.updatePost(currentUser, boardEntity, boardUpdateDto);
-
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"게시글 수정 성공");
         log.info("게시글 수정 완료");

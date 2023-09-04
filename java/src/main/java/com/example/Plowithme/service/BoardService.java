@@ -173,18 +173,18 @@ public class BoardService {
     }
 
     //게시글 이미지 등록 기능
-    public void saveImage(User currentUser, MultipartFile image) throws Exception {
+    public void saveImage(MultipartFile image) throws Exception {
 
-        User user = userRepository.findById(currentUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
-
-        if(!user.getId().equals(currentUser.getId())){
-            throw new AccessDeniedException("접근 권한이 없습니다.");
-        }
-
-        User optionalUserEntity=userRepository.findById(currentUser.getId()).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
+//        User user = userRepository.findById(currentUser.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
+//
+//        if(!user.getId().equals(currentUser.getId())){
+//            throw new AccessDeniedException("접근 권한이 없습니다.");
+//        }
+//
+//        User optionalUserEntity=userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+//            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+//        });
 
         BoardEntity boardEntity= new BoardEntity();
 
@@ -215,11 +215,11 @@ public class BoardService {
 
     }
 
-    public String getImage(String imagePath) throws Exception {
-            BoardEntity board=boardRepository.findByImagePath(imagePath);
+    public String getImage(String postImage) throws Exception {
+            BoardEntity board=boardRepository.findByPostImage(postImage);
             if (!board.getPostImage().isEmpty()) {
                 //BoardEntity boardEntity = board.getPostImage();
-                return board.getPostImage();
+                return board.getImagePath();
                // return ImageDto;
             } else throw new FileException("이미지 파일을 조회할 수 없습니다.");
         }
