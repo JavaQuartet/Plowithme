@@ -202,7 +202,7 @@ public class BoardService {
         boardEntity.setPostImage(postImage);
         boardEntity.setImagePath("/postImages/" + postImage);
 
-        boardRepository.save(boardEntity);
+//        boardRepository.save(boardEntity);
 //        UUID uuid = UUID.randomUUID();
 //        String postImage = uuid + "_" + image.getOriginalFilename();
 
