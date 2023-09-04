@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.context.annotation.Profile;
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ import javax.swing.*;
 @Entity
 @Getter
 @Setter
+/*@OnDelete(action = OnDeleteAction.CASCADE)*/
 @Table(name = "class_participant_table")
 public class ClassParticipantsEntity {
 

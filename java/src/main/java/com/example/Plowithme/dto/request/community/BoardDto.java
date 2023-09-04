@@ -18,8 +18,8 @@ public class BoardDto {
     private Long writerId;
     private String contents;
     private Integer category;
-//    private String postImage;
-//    private String imagePath;
+    private String postImage;
+    private String imagePath;
     private LocalDateTime CreateDate;
     private LocalDateTime UpdateDate;
     private long postHits; //조회수

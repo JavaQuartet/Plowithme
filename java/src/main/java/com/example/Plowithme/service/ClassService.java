@@ -132,9 +132,14 @@ public class ClassService {
 
     @Transactional
     public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
+<<<<<<< HEAD
         //classRepository.deleteClassEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
 
+=======
+        /*ClassParticipantsEntity classParticipantsEntity = classParticipantRepository.findClassParticipantsEntityByUseridAndClassEntity(user.getId(), classEntity).orElseThrow(()->new ResourceNotFoundException("참여자를 찾을 수 없습니다."));*/
+>>>>>>> 10886c143c7237db73f7fa0ac475b5efa82090b2
         classParticipantRepository.deleteClassParticipantsEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
+        /*classEntity.classParticiantsDelete(classParticipantsEntity);*/
     }
 
     /*    public void deleteAllParticipant(){

@@ -141,6 +141,9 @@ public class ClassEntity{
 //    }
 //
 
+    public void classParticiantsDelete(ClassParticipantsEntity classParticipantsEntity){
+        this.getClassParticipantsEntityList().remove(classParticipantsEntity);
+    }
 
     //모임 수정
     public static ClassEntity toUpdateEntity(ClassEntity classDTO, User user_id){

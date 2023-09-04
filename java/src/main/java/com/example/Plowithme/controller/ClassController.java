@@ -224,12 +224,12 @@ userService.findOne();
     }
 
 
-/*    @PostMapping("/{id}")// 참여하기 참여취소 버튼
+/*    @PostMapping("/{classId}")// 참여하기 참여취소 버튼
     @Operation(summary = "참여, 참여취소")
-    public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user) {
+    public ResponseEntity<CommonResponse> classbutton(@PathVariable("classId") Long id, @CurrentUser User user) {
         ClassDTO classDTO = classService.findById(id);
 
-        ClassEntity classEntity = classRepository.findById(id).get();
+        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
 
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
             if (user.getId() == classParticipantsEntity.getUserid()) {
@@ -246,15 +246,23 @@ userService.findOne();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }*/
 
-    @PostMapping("/unjoin/{classId}")
+    @PostMapping   ("/{classId}")
     @Operation(summary = "모임 나가기")
     public ResponseEntity<CommonResponse> unjoinClass(@PathVariable("classId") Long id, @CurrentUser User user) {
 
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
-        classService.downstatus(id);
-        classService.deleteparticipant(classEntity, user);
-        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        for (ClassParticipantsEntity classParticipantsEntity : classEntity.getClassParticipantsEntityList()) {
+            if (user.getId() == classParticipantsEntity.getUserid()) {
+                classService.downstatus(id);
+                classService.deleteparticipant(classEntity, user);
+                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+        }
+
+        CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(), "이미 나간 모임입니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @PostMapping("/join/{classId}")
