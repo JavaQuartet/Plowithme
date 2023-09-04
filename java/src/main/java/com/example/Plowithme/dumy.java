@@ -1,14 +1,19 @@
 package com.example.Plowithme;
 
+import com.example.Plowithme.controller.ClassController;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.entity.ClassEntity;
+import com.example.Plowithme.entity.User;
+import com.example.Plowithme.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class dumy {
+
+
 
     //지역 랜덤 생성
     public static String nNick() {
@@ -31,6 +36,9 @@ public class dumy {
         }
         return text;
     }
+
+
+
     public static String nNo2() {
         return (int)(Math.random() * 99)+1 +"";
     }
