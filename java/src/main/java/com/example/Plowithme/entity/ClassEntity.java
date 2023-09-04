@@ -82,10 +82,6 @@ public class ClassEntity{
 //    @Column
 //    private Region region; // 지역 태그
 
-    @Column
-    private String image_name;
-
-
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
@@ -173,13 +169,5 @@ public class ClassEntity{
         this.status = 0;
     }
 */
-
-    public String getImageUrl(String image_name) {
-        try {
-            return Paths.get("uploads/profiles").resolve(this.image_name).toUri().toURL().toString();
-
-        }catch (Exception e){
-            throw new FileException("파일을 조회할 수 없습니다.");}
-    }
 
 }

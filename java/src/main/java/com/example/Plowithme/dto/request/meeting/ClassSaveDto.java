@@ -37,7 +37,7 @@ public class ClassSaveDto {
 
     private String description;
 
-    @NotEmpty
+
     private String start_date;
 
     private String end_date;

@@ -139,15 +139,15 @@ userService.findOne();
     }*/
 
 
-//   @GetMapping("/s")
-//    @Operation(summary = "회원 지역 모임 조회")
-//    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
-//        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
-//
-//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
-//        log.info("회원 지역 모임 조회");
-//        return ResponseEntity.status(HttpStatus.OK).body(response);
-//    }
+   @GetMapping("/region")
+    @Operation(summary = "회원 지역 모임 조회")
+    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
+        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
+        log.info("회원 지역 모임 조회");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
 
     @GetMapping("/search")
@@ -163,12 +163,9 @@ userService.findOne();
 
     @PostMapping("")// 만든 모임 저장, Class페이지로 이동
     @Operation(summary = "모임 저장")
-    public ResponseEntity<CommonResponse> save(@Valid @RequestPart(value = "saveDto") ClassSaveDto classSaveDto, @RequestPart(value ="file", required = false) MultipartFile file, @CurrentUser User user){
-        ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
-        if(file != null){
-            String imageName = imageService.saveImage(file);
-            classEntity.setImage_name(imageName);
-        }
+    public ResponseEntity<CommonResponse> save(@Valid @RequestBody ClassSaveDto classSaveDto, @CurrentUser User user){
+        ClassEntity classEntity = classService.saveClass(classSaveDto, user);
+
         classService.participant(classEntity, user);
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"모임 저장 완료", classEntity.getId()); // 생성된 모임 id 반환
@@ -275,18 +272,11 @@ userService.findOne();
 
     @PatchMapping("/{classId}")// 모임 수정
     @Operation(summary = "모임 수정 저장")
-    public ResponseEntity<CommonResponse> update(@Valid @RequestPart(value ="classUpdateDto") ClassUpdateDto classUpdateDto ,@PathVariable("classId") Long id, @CurrentUser User user_id, @RequestPart(value ="file", required = false) MultipartFile file) {
-        ClassDTO updatedClass = classService.updated(id, classUpdateDto);
-        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
-
-        if(file != null){
-            String imageName = imageService.updateImage(file, classEntity.getImage_name());
-            classEntity.setImage_name(imageName);
-        }
+    public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassUpdateDto classUpdateDto ,@PathVariable("classId") Long id, @CurrentUser User user_id) {
+        classService.updated(id, classUpdateDto);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
-        //return "redirect:/joined/" + classDTO.getId();
     }
 
     @PatchMapping("/notice/{classId}")

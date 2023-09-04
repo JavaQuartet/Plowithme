@@ -49,10 +49,7 @@ public class ClassService {
         }*/
 //    }
 
-    public ClassEntity saveClass(ClassSaveDto classSaveDto, Long id) {
-        /*LocalDate now = LocalDate.now();*/
-        Optional<User> user = userRepository.findById(id);
-
+    public ClassEntity saveClass(ClassSaveDto classSaveDto, User user) {
         ClassEntity classEntity = ClassEntity.builder()
                 .title(classSaveDto.getTitle())
                 .member_max(classSaveDto.getMember_max())
@@ -66,12 +63,10 @@ public class ClassService {
                 .start_month(classSaveDto.getStart_month())
                 .start_day(classSaveDto.getStart_day())
                 .end_date(classSaveDto.getEnd_date())
-                /*.current_day(now.getDayOfYear())*/
-                .image_name("default-image.jpeg")
-                .maker_id(id)
-                .maker_nickname(user.get().getNickname())
-                .maker_profile(user.get().getProfileUrl(user.get().getProfile()))
-                .distance((double) 0)
+                .maker_id(user.getId())
+                .maker_nickname(user.getNickname())
+                .maker_profile(user.getProfileUrl(user.getProfile()))
+                .distance(classSaveDto.getDistance())
                 .build();
         return classEntity;
     }
@@ -221,8 +216,8 @@ public class ClassService {
 
     @Transactional
     public ClassDTO updated(Long id, ClassUpdateDto classDTO) {
-        ClassEntity entity = classRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+        ClassEntity entity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
+
 
         /*User user = userRepository.findById(user_id.getId());*/
 
