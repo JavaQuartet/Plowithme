@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.awt.color.ICC_ColorSpace;
+
 @Repository
 //*래파지토리로 작업할 때는 반드시 엔티티로 넘겨줘야 함
 public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSpecificationExecutor<BoardEntity> {
@@ -17,5 +19,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSp
     @Modifying
     @Query(value = "update BoardEntity b set b.postHits=b.postHits+1 where b.postId=:postId")
     void updatePostHits(@Param("postId") Long postId);
+
 
 }

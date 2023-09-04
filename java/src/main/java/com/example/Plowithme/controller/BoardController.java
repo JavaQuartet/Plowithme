@@ -3,6 +3,7 @@ package com.example.Plowithme.controller;
 import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.dto.request.community.BoardUpdateDto;
+import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
@@ -13,6 +14,7 @@ import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
 import com.example.Plowithme.service.CommentService;
+import com.example.Plowithme.service.UserService;
 import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,7 +46,7 @@ public class BoardController {
     private final UserRepository userRepository;
     private final CommentService commentService;
     private final BoardRepository boardRepository;
-
+    private final UserService userService;
 //    @GetMapping("/board")
 //    @Operation(summary = "커뮤니티 페이지 조회")
 //    private ResponseEntity <CommonResponse> getBoard() {
@@ -131,6 +134,19 @@ public class BoardController {
         log.info("게시글 상세 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+
+//    @GetMapping("/board/{postId}/writerPage")
+//    public ResponseEntity<CommonResponse> findProfile(@PathVariable("postId") Long postId, BoardDto boardDto, User user) {
+//
+//        BoardDto forProfileDto=boardService.findByPostId(postId);
+//        ProfileFindDto profileFindDto = boardService.findWriterProfile(forProfileDto.getWriterId());
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "프로필 조회 완료", profileFindDto);
+//        log.info("프로필 조회 완료");
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + user.getProfile() + "\"").body(response);
+//    }
 
 }
 
