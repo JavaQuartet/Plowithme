@@ -81,7 +81,7 @@ public class BoardController {
             } catch (Exception e) {
                 throw new RuntimeException("이미지 파일을 불러오는 것에 실패했습니다.");
             }
-        }
+        } else return null;
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"이미지 업로드 성공");
         log.info("이미지 업로드 완료");
