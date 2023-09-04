@@ -16,12 +16,12 @@ import java.util.List;
 @Repository
 public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     @Modifying
-    @Query(value = "update ClassEntity c set c.status=c.status + 1 where c.id=:id")
+    @Query(value = "update ClassEntity c set c.member_current=c.member_current + 1 where c.id=:id")
     void updateStatus(@Param("id") Long id);
 
 
     @Modifying
-    @Query(value = "update ClassEntity c set c.status=c.status - 1 where c.id=:id")
+    @Query(value = "update ClassEntity c set c.member_current=c.member_current - 1 where c.id=:id")
     void downStatus(@Param("id") Long id);
 
 

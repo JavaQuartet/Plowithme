@@ -197,7 +197,7 @@ userService.findOne();
 
     @GetMapping("/{classId}")// 모임 상세
     @Operation(summary = "모임 상세")
-    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @Nullable @CurrentUser User user){// 모임 세부정보로 이동
+    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @CurrentUser User user){// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
         /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
@@ -210,20 +210,21 @@ userService.findOne();
             CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         }
+
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
             if (user.getId() == classParticipantsEntity.getUserid()) {
                 CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
+
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
 
 
-/*
-    @PostMapping("/{id}")// 참여하기 참여취소 버튼
+/*    @PostMapping("/{id}")// 참여하기 참여취소 버튼
     @Operation(summary = "참여, 참여취소")
     public ResponseEntity<CommonResponse> classbutton(@PathVariable("id") Long id, @CurrentUser User user) {
         ClassDTO classDTO = classService.findById(id);
@@ -243,8 +244,7 @@ userService.findOne();
         classService.participant(classEntity, user);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
         return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-*/
+    }*/
 
     @PostMapping("/unjoin/{classId}")
     @Operation(summary = "모임 나가기")
@@ -265,8 +265,6 @@ userService.findOne();
         if (user == null){
             CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(), "로그인 필요");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-/*            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);*/
         }
 
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
@@ -327,14 +325,13 @@ userService.findOne();
     //모임종료
     @PatchMapping("/ended/{classId}")
     @Operation(summary = "모임 종료")
-    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("classId") Long id, @RequestBody ClassUpdateDto classUpdateDto) {
+    public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("classId") Long id) {
         ClassDTO classDTO1 = classService.findById(id);
         if(classDTO1.getStatus() == 0){
             CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(), "이미 종료된 모임입니다");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }else {
-            classService.updated(id, classUpdateDto);
-            classService.end_class(classDTO1, classUpdateDto.getDistance(), id);
+            classService.end_class(classDTO1, id);
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 종료");
 
             /*classService.delete(id);*/
