@@ -21,4 +21,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSp
     void updatePostHits(@Param("postId") Long postId);
 
 
+   // BoardEntity findByPostImageAndImagePath();
+
+    BoardEntity findByImagePath(String imagePath);
 }

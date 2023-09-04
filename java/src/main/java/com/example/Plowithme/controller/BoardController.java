@@ -8,6 +8,7 @@ import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
+import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -79,7 +80,7 @@ public class BoardController {
             try {
                 boardService.saveImage(currentUser, image);
             } catch (Exception e) {
-                throw new RuntimeException("이미지 파일을 불러오는 것에 실패했습니다.");
+                throw new RuntimeException("이미지 파일을 가져오는 것에 실패했습니다.");
             }
         } else return null;
 
@@ -88,16 +89,23 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    @GetMapping(value = "/board/postingImage")
-//    @Operation(summary = "게시글 이미지 조회 기능")
-//    private ResponseEntity<CommonResponse> getImage(BoardDto boardDto) {
-//
-//        BoardDto ImageDto=boardService.showImage(boardDto);
-//
-//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", ImageDto);
-//        log.info("이미지 조회 완료");
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
+    @GetMapping(value = "/board/{imagePath}")
+    @Operation(summary = "게시글 이미지 조회 기능")
+    private ResponseEntity<CommonResponse> showImage(@PathVariable("imagePath") String imagePath) throws Exception {
+
+       // BoardDto ImageDto=boardService.getImage(imagePath, boardDto);
+        if (!imagePath.isEmpty()) {
+            try {
+                boardService.getImage(imagePath);
+            } catch (Exception e) {
+                throw new FileException("이미지를 불러오지 못했습니다.");
+            }
+        } else throw new Exception("조회할 이미지가 없습니다.");
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", boardService.getImage(imagePath));
+        log.info("이미지 조회 완료");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")

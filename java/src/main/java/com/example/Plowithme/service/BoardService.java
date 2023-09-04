@@ -2,7 +2,6 @@ package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.dto.request.community.BoardUpdateDto;
-import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
@@ -18,10 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -219,30 +214,14 @@ public class BoardService {
 
 
     }
-//
-//    public BoardDto showImage(BoardDto boardDto) {
-//        boardRepository.find(boardDto.getPostImage());
-//    }
-//
 
-//    @Transactional
-//    public ProfileFindDto findWriterProfile(BoardDto forProfileDto, Long writerId) {
-//
-//        User user = userRepository.findById(forProfileDto.getWriterId()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
-//
-//        try {
-//            ProfileFindDto profileFindDto = ProfileFindDto.builder()
-//                    .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
-//                    .nickname(user.getNickname())
-//                    .introduction(user.getIntroduction())
-//                    .build();
-//            return profileFindDto;
-//
-//        } catch (Exception e) {
-//            throw new FileException("파일을 조회할 수 없습니다.");
-//        }
-//    }
-
-
+    public String getImage(String imagePath) throws Exception {
+            BoardEntity board=boardRepository.findByImagePath(imagePath);
+            if (!board.getPostImage().isEmpty()) {
+                //BoardEntity boardEntity = board.getPostImage();
+                return board.getPostImage();
+               // return ImageDto;
+            } else throw new FileException("이미지 파일을 조회할 수 없습니다.");
+        }
 
 }
