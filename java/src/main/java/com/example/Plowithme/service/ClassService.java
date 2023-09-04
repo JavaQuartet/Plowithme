@@ -289,14 +289,14 @@ public class ClassService {
     }
 
     @Transactional
-    public void end_class(ClassDTO classDTO, Double distance, Long id) {
+    public void end_class(ClassDTO classDTO, Long id) {
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
 
         classEntity.setStatus(0);
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
             User user = userRepository.findById(classParticipantsEntity.getUserid()).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
             if (classDTO.getDistance() != null) {
-                user.setClass_distance(user.getClass_distance() + distance);
+                user.setClass_distance(user.getClass_distance() + classEntity.getDistance());
             }
             user.setClass_count(user.getClass_count() + 1);
         }
