@@ -66,7 +66,7 @@ public class ClassController {
 */
 
 
-   // @GetMapping("")// 모임 불러오기
+    @GetMapping("/")// 모임 불러오기
     @Operation(summary = "모임 리스트")
     public ResponseEntity<CommonResponse> findAll(Model model) {
         List<ClassDTO> classDTOList = classService.findAll();
@@ -80,31 +80,30 @@ public class ClassController {
 //    @PostConstruct
 //    public void initializing() {
 //        for (int i = 0; i < 50; i++) {
-////            ClassSaveDto classSaveDto = ClassSaveDto.builder()
-//
-//
+//            ClassSaveDto classSaveDto = ClassSaveDto.builder()
 //            ClassEntity classEntity = ClassEntity.builder()
 //                    .title("제목" + i)
 //                    .member_max(4)
-//                    .startRegion("경기도 부천시 역곡동 산43-1 가톨릭대학교 성심교정")
-//                    .end_region("경기도 부천시 괴안동 113-8 역곡유림빌딩")
+//                    .startRegion("서울 서초구 동광로19길 10")
+//                    .end_region("대전 서구 둔산로 100")
 //                    .description("설명" + i)
-//                    .start_date("2023/03/04")
-//                    .end_date("2023/03/04")
-//                    .start_day(5)
-//                    .start_month(7)
-//                    .start_year(2000)
-//                    .distance(0.0)
+//                    .start_date("2023/03/07")
+//                    .end_date("2023/09/03")
+//                    .start_day(9)
+//                    .start_month(3)
+//                    .start_year(2003)
+//                    .distance(1.1)
+//                    .notice("공지입니다.")
 //                    .image_name("default-image.jpeg")
-//                    .maker_id((long) i)
+//                   .maker_id((long) i)
 //                    .build();
-//
-//            classService.saveClass()
-//            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
-//
-//            User user = userRepository.findById((long) i).get();
+
+//          ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
+//          classRepository.save(classSaveDto);
+
+//           User user = userRepository.findById((long) i).get();
 //            classService.participant(classEntity, user);
-//            findById(user)
+//  findById(user)
 //        }
 //    }
 
