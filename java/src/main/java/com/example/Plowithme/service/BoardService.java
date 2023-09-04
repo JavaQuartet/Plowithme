@@ -219,6 +219,11 @@ public class BoardService {
 
 
     }
+//
+//    public BoardDto showImage(BoardDto boardDto) {
+//        boardRepository.find(boardDto.getPostImage());
+//    }
+//
 
 //    @Transactional
 //    public ProfileFindDto findWriterProfile(BoardDto forProfileDto, Long writerId) {

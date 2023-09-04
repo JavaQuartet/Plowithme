@@ -88,6 +88,17 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+//    @GetMapping(value = "/board/postingImage")
+//    @Operation(summary = "게시글 이미지 조회 기능")
+//    private ResponseEntity<CommonResponse> getImage(BoardDto boardDto) {
+//
+//        BoardDto ImageDto=boardService.showImage(boardDto);
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", ImageDto);
+//        log.info("이미지 조회 완료");
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
+
     @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")
     public ResponseEntity<CommonResponse> delete(@CurrentUser User currentUser, @PathVariable("postId") Long postId) {
