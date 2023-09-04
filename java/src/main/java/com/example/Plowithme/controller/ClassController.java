@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,7 +66,11 @@ public class ClassController {
 */
 
 
+<<<<<<< HEAD
     @GetMapping("")// 모임 불러오기
+=======
+    @GetMapping("/")// 모임 불러오기
+>>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
     @Operation(summary = "모임 리스트")
     public ResponseEntity<CommonResponse> findAll(Model model) {
         List<ClassDTO> classDTOList = classService.findAll();
@@ -75,34 +80,47 @@ public class ClassController {
 
 
 
+
 //    @PostConstruct
 //    public void initializing() {
 //        for (int i = 0; i < 50; i++) {
-////            ClassSaveDto classSaveDto = ClassSaveDto.builder()
-//
-//
+//            ClassSaveDto classSaveDto = ClassSaveDto.builder()
 //            ClassEntity classEntity = ClassEntity.builder()
 //                    .title("제목" + i)
 //                    .member_max(4)
+<<<<<<< HEAD
 //                    .startRegion(dumy.nNick())
 //                    .end_region("경기도 부천시 괴안동 113-8 역곡유림빌딩")
+=======
+//                    .startRegion("서울 서초구 동광로19길 10")
+//                    .end_region("대전 서구 둔산로 100")
+>>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
 //                    .description("설명" + i)
-//                    .start_date("2023/03/04")
-//                    .end_date("2023/03/04")
-//                    .start_day(5)
-//                    .start_month(7)
-//                    .start_year(2000)
-//                    .distance(0.0)
+//                    .start_date("2023/03/07")
+//                    .end_date("2023/09/03")
+//                    .start_day(9)
+//                    .start_month(3)
+//                    .start_year(2003)
+//                    .distance(1.1)
+//                    .notice("공지입니다.")
 //                    .image_name("default-image.jpeg")
-//                    .maker_id((long) i)
+//                   .maker_id((long) i)
 //                    .build();
+<<<<<<< HEAD
 //
 //            classRepository.save(classEntity);
 ////            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
 //
 //            User user = userRepository.findById((long) i).get();
+=======
+
+//          ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
+//          classRepository.save(classSaveDto);
+
+//           User user = userRepository.findById((long) i).get();
+>>>>>>> f1f018d4b38f1f9004bec465361e12ae729ce400
 //            classService.participant(classEntity, user);
-//            findById(user)
+//  findById(user)
 //        }
 //        }
 
@@ -149,6 +167,14 @@ userService.findOne();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+/*    @GetMapping("/myflogging/join")
+    public ResponseEntity<CommonResponse> findJoinClass(@CurrentUser User currentUser){
+        List<ClassDTO> classDTOList = classService.findByUserAndStatus(currentUser.getId());
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "내가 참여한 모임 리스트", classDTOList);
+        log.info("참여한 모임 리스트 조회");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }*/
 
     @GetMapping("/search")
     @Operation(summary =  "모임 지역 검색")
@@ -177,27 +203,28 @@ userService.findOne();
 
     @GetMapping("/{classId}")// 모임 상세
     @Operation(summary = "모임 상세")
-    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @Nullable @CurrentUser User user) throws Exception{// 모임 세부정보로 이동
+    public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @Nullable @CurrentUser User user){// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
         /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
-        if (user != null) {
-            if (user.getId().equals(classDTO.getMaker_id())) {
-                CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
-            }
-            for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
-                if (user.getId() == classParticipantsEntity.getUserid()) {
-                    CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-                }
-            }
-            CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }else{
-            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안한 유저", classDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        if (user == null){
+            CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(),"로그인 안한 유저", classDTO);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        if (user.getId().equals(classDTO.getMaker_id())) {
+            CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
+        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
+            if (user.getId() == classParticipantsEntity.getUserid()) {
+                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+        }
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
 
@@ -238,12 +265,14 @@ userService.findOne();
 
     @PostMapping("/join/{classId}")
     @Operation(summary = "모임 참여")
-    public ResponseEntity<CommonResponse> joinClass(@PathVariable("classId") Long id, @CurrentUser User user) throws Exception{
+    public ResponseEntity<CommonResponse> joinClass(@PathVariable("classId") Long id, @CurrentUser User user){
         ClassDTO classDTO = classService.findById(id);
 
-        if (user.getId() == null){
-            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        if (user == null){
+            CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(), "로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+/*            CommonResponse response = new CommonResponse(HttpStatus.NO_CONTENT.value(),"로그인 안함 -> 로그인 페이지로 이동", classDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);*/
         }
 
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {

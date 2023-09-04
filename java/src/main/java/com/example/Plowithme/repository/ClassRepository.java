@@ -1,4 +1,5 @@
 package com.example.Plowithme.repository;
+import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.entity.ClassEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,8 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     void endclass(@Param("id") Long id);*/
 
     Page<ClassEntity> findByStartRegionContaining(String searchKey, Pageable pageable);
+
+    /*List<ClassEntity> findAllByMaker_idAndStatus(Long userId, int Status);*/
 
 
 }

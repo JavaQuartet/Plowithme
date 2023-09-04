@@ -50,6 +50,7 @@ public class ClassParticipantsEntity {
         classParticipantsEntity.setUser_nickname(user.getNickname());
 
         classParticipantsEntity.setClassEntity(classEntity);
+
         return classParticipantsEntity;
     }
 }

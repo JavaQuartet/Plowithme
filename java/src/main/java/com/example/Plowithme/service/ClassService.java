@@ -102,6 +102,8 @@ public class ClassService {
         }
     }
 
+
+
     // 모임 공지
     public void notice(ClassEntity classEntity, String notice){
         ClassNoticeEntity classNoticeEntity = ClassNoticeEntity.toSaveNoticeEntity(classEntity, notice);
@@ -196,6 +198,17 @@ public class ClassService {
         return classDtos;
     }
 
+/*    public List<ClassDTO> findByUserAndStatus(Long user_id){
+        List<ClassDTO> classDTOList = new ArrayList<>();
+        List<ClassEntity> classEntityList = classRepository.findAllByMaker_idAndStatus(user_id, 0);
+
+        for (ClassEntity classEntity : classEntityList){
+            ClassDTO classDTO = findById(classEntity.getId());
+            classDTOList.add(classDTO);
+        }
+
+        return classDTOList;
+    }*/
 
 
     //모임 검색

@@ -2,9 +2,11 @@ package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
 import com.example.Plowithme.dto.request.community.BoardUpdateDto;
+import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
+import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +151,25 @@ public class BoardService {
 //        boardEntity.setCategory(boardDto.getCategory());
 
     }
+
+//    @Transactional
+//    public ProfileFindDto findWriterProfile(BoardDto forProfileDto, Long writerId) {
+//
+//        User user = userRepository.findById(forProfileDto.getWriterId()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+//
+//        try {
+//            ProfileFindDto profileFindDto = ProfileFindDto.builder()
+//                    .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
+//                    .nickname(user.getNickname())
+//                    .introduction(user.getIntroduction())
+//                    .build();
+//            return profileFindDto;
+//
+//        } catch (Exception e) {
+//            throw new FileException("파일을 조회할 수 없습니다.");
+//        }
+//    }
+
 
 
 }

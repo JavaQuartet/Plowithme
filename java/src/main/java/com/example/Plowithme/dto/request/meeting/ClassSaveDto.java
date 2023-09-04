@@ -34,6 +34,7 @@ public class ClassSaveDto {
     @NotEmpty
     private String end_region; //도착 위치
 
+    private String notice;
 
     private String description;
 
@@ -50,6 +51,9 @@ public class ClassSaveDto {
 
     private Double distance;
 
+    private String image_name;
+
+    private Long maker_id;
 
 }
 
