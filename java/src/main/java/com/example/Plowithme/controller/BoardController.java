@@ -74,7 +74,7 @@ public class BoardController {
 
     @PostMapping(value = "/board/postingImage")
     @Operation(summary = "커뮤니티 게시글 중 이미지 등록하는 기능")
-    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, MultipartFile image) {
+    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, @ModelAttribute MultipartFile image) {
         if(!image.isEmpty()) {
             try {
                 boardService.saveImage(currentUser, image);

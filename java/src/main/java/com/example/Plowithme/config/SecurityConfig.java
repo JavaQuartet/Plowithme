@@ -97,7 +97,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize
-
+                                //.requestMatchers("/board/postingImage").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/class").permitAll()
