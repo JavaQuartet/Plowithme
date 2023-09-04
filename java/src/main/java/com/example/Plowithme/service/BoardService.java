@@ -15,11 +15,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +37,8 @@ public class BoardService {
   //  private final BoardEntity boardEntity;
 
     private final UserRepository userRepository;
+
+   // private final Path root = Paths.get("uploads/profiles");
 
     public void save(User currentUser, BoardDto boardDto) {
         /*
@@ -53,15 +61,32 @@ public class BoardService {
         //변환된 entity를 가져와야 하므로 BoardEntity boardEntity=~~
 
         BoardEntity boardEntity= new BoardEntity();
-        boardEntity.setWriterId(currentUser.getId());
-        boardEntity.setUser(currentUser);
-        boardEntity.setContents(boardDto.getContents());
-        boardEntity.setCategory(boardDto.getCategory());
-        boardEntity.setTitle(boardDto.getTitle());
+//        String dir = "D://";
+//        UUID uuid = UUID.randomUUID();
+//        String postImage = uuid + "_" + image.getOriginalFilename();
+//        File saveFile = new File(dir, postImage);
+////        if (!saveFile.exists()) {
+//            image.transferTo(saveFile);
+//            boardEntity.setPostImage(postImage);
+//            boardEntity.setImagePath("/postImages/" + postImage);
+//            boardEntity.setWriterId(currentUser.getId());
+
+            boardEntity.setUser(currentUser);
+            boardEntity.setContents(boardDto.getContents());
+            boardEntity.setCategory(boardDto.getCategory());
+            boardEntity.setTitle(boardDto.getTitle());
+            boardRepository.save(boardEntity);
+//        } throw new IOException ("이미지 파일이 존재하지 않습니다");
+
+//        boardEntity.setWriterId(currentUser.getId());
+//        boardEntity.setUser(currentUser);
+//        boardEntity.setContents(boardDto.getContents());
+//        boardEntity.setCategory(boardDto.getCategory());
+//        boardEntity.setTitle(boardDto.getTitle());
         //toSaveEntity(boardDto);
        // userRepository.save(user);
 
-        boardRepository.save(boardEntity);
+      //  boardRepository.save(boardEntity);
         //{jpa 제공하는) 레파지토리 save메소드 호출
 
     }
@@ -149,6 +174,49 @@ public class BoardService {
 //        boardEntity.setTitle(boardDto.getTitle());
 //        boardEntity.setContents(boardDto.getContents());
 //        boardEntity.setCategory(boardDto.getCategory());
+
+    }
+
+    //게시글 이미지 등록 기능
+    public void saveImage(User currentUser, MultipartFile image) throws Exception {
+
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("로그인이 필요합니다."));
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        User optionalUserEntity=userRepository.findById(currentUser.getId()).orElseThrow(() -> {
+            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
+        });
+
+        BoardEntity boardEntity= new BoardEntity();
+
+        String dir = "D://";
+        UUID uuid = UUID.randomUUID();
+        String postImage = uuid + "_" + image.getOriginalFilename();
+        File saveFile = new File(dir, postImage);
+
+        image.transferTo(saveFile);
+        boardEntity.setPostImage(postImage);
+        boardEntity.setImagePath("/postImages/" + postImage);
+
+        boardRepository.save(boardEntity);
+//        UUID uuid = UUID.randomUUID();
+//        String postImage = uuid + "_" + image.getOriginalFilename();
+
+        //File saveFile = new File(postImage);
+
+//        if (!image.isEmpty()) {
+//            Path path = Paths.get(postImage).toAbsolutePath();
+//            image.transferTo(path.toFile());
+//            //Files.copy(image.getInputStream(), this.root.resolve(postImage));
+//            boardEntity.setPostImage(postImage);
+//            boardEntity.setImagePath("/postImages/" + postImage);
+//        } throw new IOException("이미지 파일 업로드에 실패하였습니다.");
+
+
 
     }
 

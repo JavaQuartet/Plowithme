@@ -29,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,6 +72,22 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping(value = "/board/postingImage")
+    @Operation(summary = "커뮤니티 게시글 중 이미지 등록하는 기능")
+    private ResponseEntity<CommonResponse> savePosting(@CurrentUser User currentUser, MultipartFile image) {
+        if(!image.isEmpty()) {
+            try {
+                boardService.saveImage(currentUser, image);
+            } catch (Exception e) {
+                throw new RuntimeException("이미지 파일을 불러오는 것에 실패했습니다.");
+            }
+        }
+
+        CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"이미지 업로드 성공");
+        log.info("이미지 업로드 완료");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
     @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")
     public ResponseEntity<CommonResponse> delete(@CurrentUser User currentUser, @PathVariable("postId") Long postId) {
@@ -84,7 +101,7 @@ public class BoardController {
 
     @PatchMapping("/board/{postId}")
     @Operation(summary = "게시글 수정")
-    public ResponseEntity<CommonResponse> update(@PathVariable("postId") Long postId, @CurrentUser User currentUser,@RequestBody BoardUpdateDto boardUpdateDto) {
+    public ResponseEntity<CommonResponse> update(@PathVariable("postId") Long postId, @CurrentUser User currentUser, @RequestBody BoardUpdateDto boardUpdateDto) {
        // BoardDto boardDto = boardService.findByPostId(postId);
         BoardEntity boardEntity = boardRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("못 찾음"));
         boardService.updatePost(currentUser, boardEntity, boardUpdateDto);

@@ -1,6 +1,7 @@
 package com.example.Plowithme.entity;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -67,14 +68,17 @@ public class BoardEntity extends BaseEntity {
 
     @Column
     private String updateDate;
+*/
 
-    @Column
+
+    @Column @Nullable
     private String postImage;
 
-    @Column
+
+    @Column @Nullable
     private String imagePath;
 
-*/
+
 
     //엔티티 객체를 객체로 만들어서 호출하는 게 아닌 그냥 클래스 메소드로 정의
     public static BoardEntity toSaveEntity(BoardDto boardDto) {
