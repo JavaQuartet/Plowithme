@@ -95,15 +95,15 @@ public class ClassController {
 //                    .distance(1.1)
 //                    .notice("공지입니다.")
 //                    .image_name("default-image.jpeg")
-//                   .maker_id((long) i)
+//                    .maker_id((long) i)
 //                    .build();
-
+//
 //          ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
 //          classRepository.save(classSaveDto);
-
-//           User user = userRepository.findById((long) i).get();
+//
+//            User user = userRepository.findById((long) i).get();
 //            classService.participant(classEntity, user);
-//  findById(user)
+//            findById(user);
 //        }
 //    }
 
@@ -145,7 +145,7 @@ userService.findOne();
     public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
         List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDtos);
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전체 모임 리스트", classDtos);
         log.info("회원 지역 모임 조회");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

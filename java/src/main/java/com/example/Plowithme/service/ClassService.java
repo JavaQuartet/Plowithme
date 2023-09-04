@@ -1,11 +1,8 @@
 package com.example.Plowithme.service;
 
 
-import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
-import com.example.Plowithme.dto.request.meeting.ClassFindDto;
-import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
+import com.example.Plowithme.dto.request.meeting.*;
 import com.example.Plowithme.entity.*;
-import com.example.Plowithme.dto.request.meeting.ClassDTO;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassNoticeRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
@@ -16,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 @Slf4j
@@ -85,6 +83,20 @@ public class ClassService {
         }
         return classDTOList;
     }
+
+//    public List<JoinedClassProfileFindDto> makePartiUser(User user, @RequestParam("i") Long id) {
+//            for (int i = 0; i < 3; i++) {
+//            JoinedClassProfileFindDto chosenUserDto=UserService.findProfile((long)i);
+//            List<User> PartiUserList = new ArrayList<>();
+//            for (User chosenUserDto:PartiUserList) {
+//                PartiUserList.add(chosenUserDto.get());
+//            }
+//            ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveParticiantEntity(classEntity, user);
+//            classParticipantRepository.save(classParticipantsEntity);
+//            return PartiUserList;
+//
+//        }
+
 
     @Transactional
     public void updatestatus(Long id) {
