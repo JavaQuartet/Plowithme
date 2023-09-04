@@ -28,6 +28,8 @@ public class ClassFindDto {
 
     private String description;
 
+    private String start_date;
+
     private Integer start_year;
 
     private Integer start_month;
@@ -37,7 +39,7 @@ public class ClassFindDto {
 
     public static ClassFindDto toDto(ClassEntity classEntity) {
         return new ClassFindDto(classEntity.getId(),classEntity.getTitle(),classEntity.getMember_max(), classEntity.getMember_current(),
-                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_year(), classEntity.getStart_month(), classEntity.getStart_day());
+                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_date(), classEntity.getStart_year(), classEntity.getStart_month(), classEntity.getStart_day());
     }
 
 }

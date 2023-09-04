@@ -350,7 +350,9 @@ userService.findOne();
     public ResponseEntity<CommonResponse> findCurrentUserClasses(@RequestParam("category") Integer category, @CurrentUser User currentUser){
 
         List<ClassFindDto> classFindDtos = classService.findMyClasses(currentUser, category);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 유저 모임 조회 완료",classFindDtos);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 유저 모임 조회 완료", classFindDtos);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }

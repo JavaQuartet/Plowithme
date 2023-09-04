@@ -307,7 +307,8 @@ public class ClassService {
         if(!(category==1 || category==2 || category==3)){
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
-        userRepository.findById(currentUser.getId()).orElseThrow(() -> new AccessDeniedException("접근 권한이 없습니다."));
+
+        if(currentUser == null){ throw new AccessDeniedException("접근 권한이 없습니다.");}
 
         List<ClassFindDto> classFindDtos = new ArrayList<>();
         List<ClassEntity> classEntities = currentUser.getClassEntities();
