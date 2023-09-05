@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.IOException;
 import java.util.HashMap;
 @Slf4j
 @RestControllerAdvice
@@ -52,6 +53,7 @@ public class GlobalExceptionHandler {
 //        log.error("=====error occurred===== Unauthorized : " + e.getMessage());
 //        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 //    }
+
 
 
     //존재하지 않는 리소스 호출

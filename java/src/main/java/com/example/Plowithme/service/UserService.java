@@ -32,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ClassRepository classRepository;
+    private final ImageService imageService;
 
 
     @Transactional
@@ -127,33 +128,35 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
 
-        if (file.isEmpty()) {
-            throw new FileException("파일이 없습니다.");
-        }
+        user.setProfile(imageService.updateImage(file, user.getProfile()));
 
-        //확장자 제한
-        String fileName = file.getOriginalFilename();
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-        if (!ext.equals("jpeg") && !ext.equals("jpg") && !ext.equals("png")) {
-            throw new FileException("업로드가 불가능한 확장자입니다.");
-        }
-
-        String profileName = UUID.randomUUID() + file.getOriginalFilename();
-        try {
-
-            if (!user.getProfile().equals("default-image.png")) { //기본 이미지
-                //원래 사진 삭제
-                Path files = root.resolve(user.getProfile());
-                Files.deleteIfExists(files);
-            }
-            //프로필 사진 추가
-            Files.copy(file.getInputStream(), this.root.resolve(profileName));
-
-            user.setProfile(profileName);
-
-        } catch (Exception e) {
-            throw new FileException("파일을 수정할 수 없습니다.");
-        }
+//        if (file.isEmpty()) {
+//            throw new FileException("파일이 없습니다.");
+//        }
+//
+//        //확장자 제한
+//        String fileName = file.getOriginalFilename();
+//        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+//        if (!ext.equals("jpeg") && !ext.equals("jpg") && !ext.equals("png")) {
+//            throw new FileException("업로드가 불가능한 확장자입니다.");
+//        }
+//
+//        String profileName = UUID.randomUUID() + file.getOriginalFilename();
+//        try {
+//
+//            if (!user.getProfile().equals("default-image.png")) { //기본 이미지
+//                //원래 사진 삭제
+//                Path files = root.resolve(user.getProfile());
+//                Files.deleteIfExists(files);
+//            }
+//            //프로필 사진 추가
+//            Files.copy(file.getInputStream(), this.root.resolve(profileName));
+//
+//            user.setProfile(profileName);
+//
+//        } catch (Exception e) {
+//            throw new FileException("파일을 수정할 수 없습니다.");
+//        }
 
     }
 
@@ -164,7 +167,8 @@ public class UserService {
 
         try {
             ProfileFindDto profileFindDto = ProfileFindDto.builder()
-                    .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
+                    .profile_url(user.getProfile())
+                   // .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
                     .nickname(user.getNickname())
                     .introduction(user.getIntroduction())
                     .build();
@@ -186,7 +190,7 @@ public class UserService {
         for (ClassParticipantsEntity classParticipantsEntity : joinList) {
             User user = userRepository.findById(classParticipantsEntity.getUserid()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
-            joinedClassProfileFindDtos.add(JoinedClassProfileFindDto.toDto(user));
+            joinedClassProfileFindDtos.add(JoinedClassProfileFindDto.toDto(user, user.getProfile()));
         }
         return joinedClassProfileFindDtos;
     }

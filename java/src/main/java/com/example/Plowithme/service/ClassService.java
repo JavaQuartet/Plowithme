@@ -26,6 +26,7 @@ public class ClassService {
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
     private final ClassNoticeRepository classNoticeRepository;
+    private final ImageService imageService;
 
 //    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
 ///*        if(classDTO.getClassFile().isEmpty()){*/
@@ -64,7 +65,7 @@ public class ClassService {
                 .end_date(classSaveDto.getEnd_date())
                 .maker_id(user.getId())
                 .maker_nickname(user.getNickname())
-                .maker_profile(user.getProfileUrl(user.getProfile()))
+                .maker_profile(user.getProfile())
                 .distance(classSaveDto.getDistance())
                 .user(user)
                 .build();
@@ -314,15 +315,23 @@ public class ClassService {
     }
 
     @Transactional
-    public List<ClassFindDto> findMyClasses(User currentUser, Integer category){
-        if(!(category==1 || category==2 || category==3)){
+    public List<ClassFindDto> findMyClasses(User currentUser, Integer category) {
+        if (!(category == 0 || category == 1 || category == 2 || category == 3)) {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
-        if(currentUser == null){ throw new AccessDeniedException("접근 권한이 없습니다.");}
+        if (currentUser == null) {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
 
         List<ClassFindDto> classFindDtos = new ArrayList<>();
         List<ClassEntity> classEntities = currentUser.getClassEntities();
+
+        if (category == 0) {//내 모임
+            for (ClassEntity classEntity : classEntities) {
+                classFindDtos.add(ClassFindDto.toDto(classEntity));
+            }
+        }
 
         if (category==1) { //완료 모임
             for (ClassEntity classEntity : classEntities) {
