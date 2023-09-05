@@ -49,7 +49,7 @@ public class ClassParticipantsEntity {
         classParticipantsEntity.setUserid(user.getId());
         classParticipantsEntity.setMeetingid(classEntity.getId());
 
-        classParticipantsEntity.setProfile_image(user.getProfileUrl(user.getProfile()));
+        classParticipantsEntity.setProfile_image(user.getProfile());
         classParticipantsEntity.setUser_nickname(user.getNickname());
 
         classParticipantsEntity.setClassEntity(classEntity);

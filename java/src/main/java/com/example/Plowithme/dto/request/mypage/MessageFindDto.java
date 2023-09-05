@@ -27,6 +27,6 @@ public class MessageFindDto {
         return new MessageFindDto(message.getId(),
                 message.getContent(),
                 message.getSender().getNickname(),
-                message.getReceiver().getNickname(),message.getSender().getProfileUrl(message.getSender().getProfile()),message.getReceiver().getProfileUrl(message.getReceiver().getProfile()), message.getCreate_date());
+                message.getReceiver().getNickname(),message.getSender().getProfile(),message.getReceiver().getProfile(), message.getCreate_date());
     }
 }

@@ -54,7 +54,7 @@ public class AuthService {
                 .birth(registerDto.getBirth())
                 .class_count(0)
                 .class_distance(0)
-                .profile("default-image.png")
+                .profile("https://plowithmebucket.s3.ap-northeast-2.amazonaws.com/default-image.png")
                 .introduction("")
                 .build();
 

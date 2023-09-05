@@ -1,5 +1,7 @@
 package com.example.Plowithme.entity;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.example.Plowithme.config.S3Config;
 import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
 import lombok.*;
@@ -137,13 +139,8 @@ public class User implements UserDetails {
 //        this.password = passwordEncoder.encode(password);
 //    }
 
-    public String getProfileUrl(String profile) {
-    try {
-        return Paths.get("uploads/profiles").resolve(this.profile).toUri().toURL().toString();
 
-        }catch (Exception e){
-        throw new FileException("파일을 조회할 수 없습니다.");}
-    }
+
 
 }
 

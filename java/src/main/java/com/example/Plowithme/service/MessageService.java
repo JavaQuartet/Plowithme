@@ -19,6 +19,7 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     //쪽지 쓰기
     @Transactional
