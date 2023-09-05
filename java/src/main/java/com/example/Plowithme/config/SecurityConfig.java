@@ -1,19 +1,15 @@
 package com.example.Plowithme.config;
 
-import com.example.Plowithme.exception.handler.JwtAccessDeniedHandler;
 import com.example.Plowithme.security.JwtAuthEntryPoint;
 import com.example.Plowithme.security.JwtAuthticationFilter;
-import com.example.Plowithme.security.JwtExceptionFilter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -46,29 +41,14 @@ import java.util.List;
 )
 public class SecurityConfig {
 
-    private UserDetailsService userDetailsService;
 
     private JwtAuthEntryPoint authenticationEntryPoint;
 
     private JwtAuthticationFilter authenticationFilter;
 
-    private JwtExceptionFilter jwtExceptionFilter;
     @Qualifier("customAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
 
-
-
-//    //ADMIN 계정 설정 - 일단 시큐리티 유저로 설정
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withUsername("admin")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-//        userDetailsManager.createUser(admin);
-//        return userDetailsManager;
-//    }
 
 
     @Bean
@@ -85,26 +65,19 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
-          //      .cors(cors -> cors.disable())
-                //.cors(cors -> );
                 .cors(cors -> corsConfigurationSource())
                 .csrf(AbstractHttpConfigurer::disable)
                         .exceptionHandling( exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
-                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
                 )
 
                 .authorizeHttpRequests((authorize) ->
-                        //authorize.anyRequest().authenticated()
                         authorize
                                 //.requestMatchers("/board/postingImage").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/class/search","/class/region").permitAll()
                                 .requestMatchers("/test/**").permitAll()
-                                .requestMatchers("/class").permitAll()
-                                .requestMatchers("/class/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
-
-                                .requestMatchers("/C:/**").permitAll()
 
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
@@ -114,16 +87,15 @@ public class SecurityConfig {
                 ).sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .exceptionHandling( exception -> exception
-//                        .authenticationEntryPoint(authenticationEntryPoint)
-//                        //.accessDeniedHandler(new JwtAccessDeniedHandler())
-//                )
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
-//                .addFilterBefore(jwtExceptionFilter, JwtAuthticationFilter.class)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
+
+    /**
+     cors 설정
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -139,32 +111,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails ramesh = User.builder()
-//                .username("ramesh")
-//                .password(passwordEncoder().encode("ramesh"))
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(ramesh, admin);
-//    }
-//
-//         .authenticationProvider(authenticationProvider)
-//            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//            .logout((logout) ->
-//            //logout.deleteCookies("remove")
-//            //.invalidateHttpSession(false)
-//            logout.logoutUrl("/api/v1/auth/logout")
-//            // .logoutSuccessUrl("/logout-success")
-//            .addLogoutHandler(logoutHandler)
-//                            .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-//            )
 
 
     public UserDetailsService userDetailsService() {

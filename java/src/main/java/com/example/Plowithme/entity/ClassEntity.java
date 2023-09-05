@@ -1,14 +1,8 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.request.meeting.ClassDTO;
-import com.example.Plowithme.exception.custom.FileException;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.lang.model.element.NestingKind;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "class")
-/*@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)*/
 public class ClassEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,19 +48,16 @@ public class ClassEntity{
     private String start_date; // 시작 시간
 
     @Column
-    private Integer start_year;
+    private Integer start_year; // 시작 년
 
     @Column
-    private Integer start_month;
+    private Integer start_month; // 시작 월
 
     @Column
-    private Integer start_day;
+    private Integer start_day; // 시작 일
 
     @Column
     private String end_date; // 도착 시간
-
-    /*@Column
-    private int current_day; // 현재 날짜 (일)*/
 
     @Column
     private Double distance; // 걸은 거리
@@ -76,13 +66,10 @@ public class ClassEntity{
     private Long maker_id; // 만든사람의 아이디
 
     @Column
-    private String maker_nickname;
+    private String maker_nickname; // 만든이 닉네임
 
     @Column
-    private String maker_profile;
-
-//    @Column
-//    private Region region; // 지역 태그
+    private String maker_profile; // 만든이 프로필
 
     @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY)
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
@@ -94,52 +81,6 @@ public class ClassEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-//
-//    public static ClassEntity toSaveEntity(ClassDTO classDTO, User user_id){
-//
-//        ClassEntity classEntity = new ClassEntity();
-//
-//        classEntity.setTitle(classDTO.getTitle());
-//        classEntity.setMember(classDTO.getMember());
-//        classEntity.setStatus(1);
-////        classEntity.setStart_region(classDTO.getStart_region());
-//        classEntity.setEnd_region(classDTO.getEnd_region());
-//
-//        classEntity.setStart_date(classDTO.getStart_date());
-//        classEntity.setEnd_date(classDTO.getEnd_date());
-//
-//        classEntity.setDescription(classDTO.getDescription());
-//
-//        classEntity.setNotice(classEntity.getNotice());
-//        classEntity.setRegion(classEntity.getRegion());
-//
-//
-//        classEntity.setMaker_id(user_id.getId());
-//        return classEntity;
-//    }
-
-//
-//    public static ClassEntity toSaveFileEntity(ClassDTO classDTO, User user_id){
-//        ClassEntity classEntity = new ClassEntity();
-//
-//        classEntity.setTitle(classDTO.getTitle());
-//        classEntity.setMember(classDTO.getMember());
-//        classEntity.setStatus(1);
-//        classEntity.setStart_region(classDTO.getStart_region());
-//        classEntity.setEnd_region(classDTO.getEnd_region());
-//
-//        classEntity.setStart_date(classDTO.getStart_date());
-//        classEntity.setStart_date(classDTO.getEnd_date());
-//
-//        classEntity.setDescription(classDTO.getDescription());
-//
-//        classEntity.setNotice(classEntity.getNotice());
-//
-//
-//        classEntity.setMaker_id(user_id.getId());
-//        return classEntity;
-//    }
-//
 
     public void classParticipantsDelete(ClassParticipantsEntity classParticipantsEntity){
         this.getClassParticipantsEntityList().remove(classParticipantsEntity);

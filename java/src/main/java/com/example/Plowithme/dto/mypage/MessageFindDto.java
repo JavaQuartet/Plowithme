@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request.mypage;
+package com.example.Plowithme.dto.mypage;
 
 
 import com.example.Plowithme.entity.Message;
@@ -15,12 +15,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class MessageFindDto {
+
     private Long massageId;
+
     private String content;
+
     private String senderNickname;
+
     private String receiverNickname;
+
     private String sender_profile_url;
+
     private String receiver_profile_url;
+
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime create_date;
     public static MessageFindDto toDto(Message message) {

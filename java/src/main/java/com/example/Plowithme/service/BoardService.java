@@ -1,12 +1,10 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardUpdateDto;
-import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
+import com.example.Plowithme.dto.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardUpdateDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
-import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -18,10 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,13 +1,10 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardSaveDto;
-import com.example.Plowithme.dto.request.community.BoardUpdateDto;
-import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
+import com.example.Plowithme.dto.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.UserRepository;
@@ -18,13 +15,11 @@ import com.example.Plowithme.service.UserService;
 import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,9 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
-//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Getter
 @Setter
 @RequestMapping

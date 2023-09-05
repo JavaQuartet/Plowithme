@@ -16,7 +16,6 @@ import javax.swing.*;
 @Entity
 @Getter
 @Setter
-/*@OnDelete(action = OnDeleteAction.CASCADE)*/
 @Table(name = "class_participant_table")
 public class ClassParticipantsEntity {
 
@@ -25,16 +24,16 @@ public class ClassParticipantsEntity {
     private Long participant_id;
 
     @Column
-    private Long userid;
+    private Long userid; //가입한 유저 id
 
     @Column
-    private Long meetingid;
+    private Long meetingid; //가입한 모임 id
 
     @Column
-    private String profile_image;
+    private String profile_image; //프로필 url
 
     @Column
-    private String user_nickname;
+    private String user_nickname; //닉네임
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id")

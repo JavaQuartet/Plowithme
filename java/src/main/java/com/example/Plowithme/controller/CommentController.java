@@ -1,8 +1,6 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.community.CommentDto;
-import com.example.Plowithme.dto.request.community.CommentSaveDto;
-import com.example.Plowithme.dto.request.user.CurrentUserDto;
+import com.example.Plowithme.dto.community.CommentDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.repository.BoardRepository;
@@ -21,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Slf4j
 @Controller
 @RestController

@@ -1,20 +1,12 @@
 package com.example.Plowithme.security;
 
-import com.example.Plowithme.exception.custom.TokenException;
-import com.example.Plowithme.exception.error.ErrorCode;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -64,23 +56,12 @@ public class JwtAuthticationFilter extends OncePerRequestFilter {
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-//                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//                log.info("authentication:", authentication);
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//                logger.info("============토큰 유효함 ===========");
             }
         } catch (Exception e) {
             request.setAttribute("exception", e);
-            log.info("==================예외 감지");
+            log.error("토큰 검증 예외 감지");
         }
-//            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
-//                     SignatureException | IllegalArgumentException e) {
-//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired，登陆已过期");
-//            }
-
-
         filterChain.doFilter(request, response);
-
     }
 
     //http 헤더로부터 bearer 토큰을 가져옴
@@ -91,7 +72,6 @@ public class JwtAuthticationFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7, bearerToken.length());
         }
-
         return null;
     }
 

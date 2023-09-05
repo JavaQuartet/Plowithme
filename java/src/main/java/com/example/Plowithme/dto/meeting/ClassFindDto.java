@@ -1,30 +1,24 @@
-package com.example.Plowithme.dto.request.meeting;
+package com.example.Plowithme.dto.meeting;
 
-
-import com.example.Plowithme.dto.request.mypage.MessageFindDto;
 import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.Date;
-import com.example.Plowithme.entity.Message;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ClassFindDto {
 
     private Long class_Id;
 
     private String title;
 
-    private Integer member_max; // 설정해둔 인원수
+    private Integer member_max;
 
-    private Integer member_current; // 현재 참여한 인원수
+    private Integer member_current;
 
-    private String startRegion; //출발 위치
+    private String startRegion;
 
     private String description;
 

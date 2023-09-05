@@ -1,7 +1,6 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.community.CommentDto;
-import com.example.Plowithme.dto.request.community.CommentSaveDto;
+import com.example.Plowithme.dto.community.CommentDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.Comment;
 import com.example.Plowithme.entity.User;
@@ -10,7 +9,6 @@ import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
 import com.example.Plowithme.repository.CommentRepository;
 import com.example.Plowithme.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -1,11 +1,8 @@
-package com.example.Plowithme.dto.request.mypage;
+package com.example.Plowithme.dto.mypage;
 
 
 import com.example.Plowithme.entity.Region;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

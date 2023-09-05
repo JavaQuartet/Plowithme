@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request.community;
+package com.example.Plowithme.dto.community;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

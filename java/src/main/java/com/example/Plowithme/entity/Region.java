@@ -1,7 +1,6 @@
 package com.example.Plowithme.entity;
 
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
 @Embeddable
@@ -9,13 +8,13 @@ import lombok.Getter;
 public class Region {
 
 
-    private String depth_1; //시
+    private String depth_1; // 도/시
 
-    private String depth_2; //시+구
+    private String depth_2; // 군/구
 
-    private String depth_3; //동
+    private String depth_3; // 법정동/법정리
 
-    private String address;
+    private String address; // 전체 주소
     protected Region() {
     }
     public Region(String depth_1, String depth_2, String depth_3, String address) {

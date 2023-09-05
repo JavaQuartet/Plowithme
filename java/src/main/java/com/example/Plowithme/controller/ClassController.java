@@ -1,187 +1,83 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.meeting.ClassDTO;
+import com.example.Plowithme.dto.meeting.ClassDTO;
 
-import com.example.Plowithme.dto.request.meeting.ClassSaveDto;
-import com.example.Plowithme.dto.request.meeting.ClassFindDto;
-import com.example.Plowithme.dto.request.meeting.ClassUpdateDto;
+import com.example.Plowithme.dto.meeting.ClassSaveDto;
+import com.example.Plowithme.dto.meeting.ClassFindDto;
+import com.example.Plowithme.dto.meeting.ClassUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
-import com.example.Plowithme.dumy;
 import com.example.Plowithme.entity.ClassEntity;
-
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
-import com.example.Plowithme.repository.ClassParticipantRepository;
 import com.example.Plowithme.repository.ClassRepository;
-import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.ClassService;
-import com.example.Plowithme.service.ImageService;
-import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.annotation.Nullable;
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/class")
-//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 public class ClassController {
+
     private final ClassService classService;
-    private final UserService userService;
-    private final ClassParticipantRepository classParticipantRepository;
+
     private final ClassRepository classRepository;
-    private final ImageService imageService;
-    private final UserRepository userRepository;
 
-
-/*
-    @GetMapping ("")// 모임 불러오기
-    public String findAll(Model model){
-        List<ClassDTO> classDTOList = classService.findAll();
-        model.addAttribute("classList", classDTOList);
-        return "Class";
-    }
-*/
-
-
-    @GetMapping("")// 모임 불러오기
+    @GetMapping("")
     @Operation(summary = "모임 리스트")
-    public ResponseEntity<CommonResponse> findAll(Model model) {
+    public ResponseEntity<CommonResponse> findAll() {
         List<ClassDTO> classDTOList = classService.findAll();
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전제 모임 리스트", classDTOList);
+        log.info("전제 모임 리스트 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-
-
-
-//    @PostConstruct
-//    public void initializing() {
-//        for (int i = 0; i < 50; i++) {
-//            ClassSaveDto classSaveDto = ClassSaveDto.builder()
-//            ClassEntity classEntity = ClassEntity.builder()
-//                    .title("제목" + i)
-//                    .member_max(4)
-//                    .startRegion(dumy.nNick())
-
-//                    .startRegion("서울 서초구 동광로19길 10")
-//                    .end_region("대전 서구 둔산로 100")
-//                    .description("설명" + i)
-//                    .start_date("2023/03/07")
-//                    .end_date("2023/09/03")
-//                    .start_day(9)
-//                    .start_month(3)
-//                    .start_year(2003)
-//                    .distance(1.1)
-//                    .notice("공지입니다.")
-//                    .image_name("default-image.jpeg")
-//                    .maker_id((long) i)
-//                    .build();
-
-//
-//            classRepository.save(classEntity);
-////            ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
-//
-//            User user = userRepository.findById((long) i).get();
-
-
-//          ClassEntity classEntity = classService.saveClass(classSaveDto, user.getId());
-//          classRepository.save(classSaveDto);
-//
-//            User user = userRepository.findById((long) i).get();
-//            classService.participant(classEntity, user);
-//            findById(user);
-//        }
-//        }
-
-
-//            ClassEntity classEntity = classService.saveClass(classSaveDto,(long)i);
-//            .findById(i)
-//            classService.participant(classEntity, user);
-//
-//
-//                    .title("제목"+i)
-//
-//
-//
-//        }
-//    }
-//    }
-
-/*    @GetMapping("/class_save")// 모임 만들기 화면
-    public String saveForm(){return "ClassSave";}*/
-
-
-/*    @PostMapping("")// 만든 모임 저장, Class페이지로 이동
-    public String save(@ModelAttribute ClassDTO classDTO, @CurrentUser User user, Model model) throws IOException {
-        System.out.println("classDTO = " + classDTO);
-userService.findOne();
-
-
-        classService.save(classDTO, user);
-        classService.participant(classDTO, user);
-
-        List<ClassDTO> classDTOList = classService.findAll();
-        model.addAttribute("classList", classDTOList);
-        return  "Class";
-    }*/
 
 
    @GetMapping("/region")
     @Operation(summary = "회원 지역 모임 조회")
-    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentuser) {
-        List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentuser);
+    public ResponseEntity<CommonResponse> findClassByRegion(Pageable pageable, @CurrentUser User currentUser) {
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전체 모임 리스트", classDtos);
-        log.info("회원 지역 모임 조회");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+       if(currentUser == null ){
+           List<ClassDTO> classDtos = classService.findAll();
+
+           CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "전체 모임 조회", classDtos);
+           log.info("전체 모임 조회 완료");
+           return ResponseEntity.status(HttpStatus.OK).body(response);
+       }else{
+           List<ClassDTO> classDtos  = classService.findClassByRegion(pageable, currentUser);
+
+           CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "회원 지역 기준 모임 조회", classDtos);
+           log.info("회원 지역 기준 모임 조회 완료");
+           return ResponseEntity.status(HttpStatus.OK).body(response);
+       }
+
     }
 
-/*    @GetMapping("/myflogging/join")
-    public ResponseEntity<CommonResponse> findJoinClass(@CurrentUser User currentUser){
-        List<ClassDTO> classDTOList = classService.findByUserAndStatus(currentUser.getId());
-
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "내가 참여한 모임 리스트", classDTOList);
-        log.info("참여한 모임 리스트 조회");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }*/
 
     @GetMapping("/search")
     @Operation(summary =  "모임 지역 검색")
     public ResponseEntity<CommonResponse> searchStartRegion(Pageable pageable, @RequestParam("keyword") String keyword) {
         List<ClassFindDto> classFindDtos  = classService.searchStartRegion(keyword, pageable);
+
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 지역 검색 완료", classFindDtos );
         log.info("모임 지역 검색 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
-
-    @PostMapping("")// 만든 모임 저장, Class페이지로 이동
+    @PostMapping("")
     @Operation(summary = "모임 저장")
     public ResponseEntity<CommonResponse> save(@Valid @RequestBody ClassSaveDto classSaveDto, @CurrentUser User user){
         ClassEntity classEntity = classService.saveClass(classSaveDto, user);
@@ -189,64 +85,42 @@ userService.findOne();
         classService.participant(classEntity, user);
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(),"모임 저장 완료", classEntity.getId()); // 생성된 모임 id 반환
+        log.info("전제 모임 리스트 조회 완료");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
-
-
-    @GetMapping("/{classId}")// 모임 상세
+    @GetMapping("/{classId}")
     @Operation(summary = "모임 상세")
     public ResponseEntity<CommonResponse> findById(@PathVariable("classId") Long id, @CurrentUser User user){// 모임 세부정보로 이동
         ClassDTO classDTO = classService.findById(id);
-        /*User class_maker = userRepository.findById(classDTO.getMaker_id()).orElseThrow(() -> new IllegalArgumentException());;*/
 
         if (user == null){
             CommonResponse response = new CommonResponse(HttpStatus.UNAUTHORIZED.value(),"로그인 안한 유저", classDTO);
+            log.info("로그인 안한 유저 조회 완료");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         if (user.getId().equals(classDTO.getMaker_id())) {
             CommonResponse response = new CommonResponse(HttpStatus.ACCEPTED.value(), "내가 만든 모임 이동", classDTO);
+            log.info("내가 만든 모임 조회 완료");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         }
 
         for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
             if (user.getId() == classParticipantsEntity.getUserid()) {
                 CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "참여한 모임 세부정보 이동", classDTO);
+                log.info("참여한 모임 세부정보 조회 완료");
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "참여 안한모임 세부정보 이동", classDTO);
+        log.info("참여한 모임 세부정보 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
 
-
-/*    @PostMapping("/{classId}")// 참여하기 참여취소 버튼
-    @Operation(summary = "참여, 참여취소")
-    public ResponseEntity<CommonResponse> classbutton(@PathVariable("classId") Long id, @CurrentUser User user) {
-        ClassDTO classDTO = classService.findById(id);
-
-        ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
-
-        for (ClassParticipantsEntity classParticipantsEntity : classDTO.getClassParticipantsEntityList()) {
-            if (user.getId() == classParticipantsEntity.getUserid()) {
-                classService.downstatus(id);
-                classService.deleteparticipant(classEntity, user);
-                CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
-                return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            }
-        }
-
-        classService.updatestatus(id);
-        classService.participant(classEntity, user);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }*/
-
-//    @PostMapping   ("/{classId}")
 
     @PostMapping("/unjoin/{classId}")
     @Operation(summary = "모임 나가기")
@@ -259,6 +133,7 @@ userService.findOne();
                 classService.downstatus(id);
                 classService.deleteparticipant(classEntity, user);
                 CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "모임 나가기");
+                log.info("모임 나가기 완료");
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
         }
@@ -266,6 +141,7 @@ userService.findOne();
         CommonResponse response = new CommonResponse(HttpStatus.BAD_REQUEST.value(), "이미 나간 모임입니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
+
 
     @PostMapping("/join/{classId}")
     @Operation(summary = "모임 참여")
@@ -287,28 +163,23 @@ userService.findOne();
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
         classService.updatestatus(id);
         classService.participant(classEntity, user);
+
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여하기");
+        log.info("모임 참여하기 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
-    // 모임 수정 페이지 이동
-/*    @GetMapping("/{id}")
-    @Operation(summary = "모임 수정")
-    public ResponseEntity<CommonResponse> ClassUpdateForm(@PathVariable("id") Long id){
-        ClassDTO classDTO = classService.findById(id);
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정", classDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }*/
-
-    @PatchMapping("/{classId}")// 모임 수정
+    @PatchMapping("/{classId}")
     @Operation(summary = "모임 수정 저장")
     public ResponseEntity<CommonResponse> update(@Valid @RequestBody ClassUpdateDto classUpdateDto ,@PathVariable("classId") Long id, @CurrentUser User user_id) {
         classService.updated(id, classUpdateDto);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 수정 완료");
+        log.info("모임 수정하기 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     @PatchMapping("/notice/{classId}")
     @Operation(summary = "공지사항")
@@ -317,22 +188,22 @@ userService.findOne();
         classService.notice(classEntity, classUpdateDto.getNotice());
         classService.updated(id, classUpdateDto);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"공지 저장 완료");
+        log.info("공지 저장 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    //모임 삭제
+
     @DeleteMapping ("/{classId}")
     @Operation(summary = "모임 삭제")
     public ResponseEntity<CommonResponse> delete(@PathVariable("classId") Long id) {
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
         classService.delete(classEntity);
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"모임 삭제");
+        log.info("모임 삭제 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
-
-    //모임종료
     @PatchMapping("/ended/{classId}")
     @Operation(summary = "모임 종료")
     public ResponseEntity<CommonResponse> endedclass(@CurrentUser User user, @PathVariable("classId") Long id) {
@@ -343,15 +214,12 @@ userService.findOne();
         }else {
             classService.end_class(classDTO1, id);
             CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 종료");
-
-            /*classService.delete(id);*/
+            log.info("모임 종료 완료");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
 
 
-
-    //현재 유저의 모임 조회
     @GetMapping("/me")
     @Operation(summary = "현재 유저 모임 조회")
     public ResponseEntity<CommonResponse> findCurrentUserClasses(@RequestParam("category") Integer category, @CurrentUser User currentUser){
@@ -359,6 +227,7 @@ userService.findOne();
         List<ClassFindDto> classFindDtos = classService.findMyClasses(currentUser, category);
 
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 유저 모임 조회 완료", classFindDtos);
+        log.info("현재 유저 모임 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
