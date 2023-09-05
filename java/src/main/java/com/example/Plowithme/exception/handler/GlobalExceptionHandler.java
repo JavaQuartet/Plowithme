@@ -1,9 +1,6 @@
 package com.example.Plowithme.exception.handler;
 
-import com.example.Plowithme.exception.custom.FileException;
-import com.example.Plowithme.exception.custom.TokenException;
-import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;
-import com.example.Plowithme.exception.custom.ResourceNotFoundException;
+import com.example.Plowithme.exception.custom.*;
 import com.example.Plowithme.exception.error.BaseException;
 import com.example.Plowithme.exception.error.ErrorCode;
 import com.example.Plowithme.exception.error.ErrorResponse;
@@ -11,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -181,6 +177,15 @@ public class GlobalExceptionHandler {
     //파일
     @ExceptionHandler(FileException.class)
     public ResponseEntity<ErrorResponse> handleFileException(FileException e){
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        log.error("=====error occurred===== UserFileException : " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+    }
+
+    //파일
+    @ExceptionHandler(ClassException.class)
+    public ResponseEntity<ErrorResponse> OutOfMaxParticipantException(ClassException e){
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         log.error("=====error occurred===== UserFileException : " + e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

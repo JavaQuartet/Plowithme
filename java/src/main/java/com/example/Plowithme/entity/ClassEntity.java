@@ -141,7 +141,7 @@ public class ClassEntity{
 //    }
 //
 
-    public void classParticiantsDelete(ClassParticipantsEntity classParticipantsEntity){
+    public void classParticipantsDelete(ClassParticipantsEntity classParticipantsEntity){
         this.getClassParticipantsEntityList().remove(classParticipantsEntity);
     }
 

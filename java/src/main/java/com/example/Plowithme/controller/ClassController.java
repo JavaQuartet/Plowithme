@@ -246,7 +246,9 @@ userService.findOne();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }*/
 
-    @PostMapping   ("/{classId}")
+//    @PostMapping   ("/{classId}")
+
+    @PostMapping("/unjoin/{classId}")
     @Operation(summary = "모임 나가기")
     public ResponseEntity<CommonResponse> unjoinClass(@PathVariable("classId") Long id, @CurrentUser User user) {
 
