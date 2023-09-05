@@ -3,6 +3,7 @@ package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.request.meeting.*;
 import com.example.Plowithme.entity.*;
+import com.example.Plowithme.exception.custom.ClassException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.ClassNoticeRepository;
 import com.example.Plowithme.repository.ClassParticipantRepository;
@@ -14,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 @Slf4j
@@ -125,16 +125,25 @@ public class ClassService {
     }
 
 
-    public void participant(ClassEntity classEntity, User user) {
+    public void participant(ClassEntity classEntity, User user){
+        if(classEntity.getMember_current()>=classEntity.getMember_max()){
+            throw new ClassException("정원이 초과되어 가입할 수 없습니다.");
+        }
         ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveParticiantEntity(classEntity, user);
         classParticipantRepository.save(classParticipantsEntity);
     }
 
     @Transactional
     public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
-        /*ClassParticipantsEntity classParticipantsEntity = classParticipantRepository.findClassParticipantsEntityByUseridAndClassEntity(user.getId(), classEntity).orElseThrow(()->new ResourceNotFoundException("참여자를 찾을 수 없습니다."));*/
+        //classRepository.deleteClassEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
+        if(classEntity.getMaker_id().equals(user.getId())){
+            throw new ClassException("모임장이므로 모임에서 나갈 수 없습니다.");
+        }
+
+        ClassParticipantsEntity classParticipantsEntity = classParticipantRepository.findClassParticipantsEntityByUseridAndClassEntity(user.getId(), classEntity).orElseThrow(()->new ResourceNotFoundException("참여자를 찾을 수 없습니다."));
+        classEntity.classParticipantsDelete(classParticipantsEntity);
         classParticipantRepository.deleteClassParticipantsEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
-        /*classEntity.classParticiantsDelete(classParticipantsEntity);*/
+
     }
 
     /*    public void deleteAllParticipant(){
@@ -309,7 +318,8 @@ public class ClassService {
         if(!(category==1 || category==2 || category==3)){
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
-        userRepository.findById(currentUser.getId()).orElseThrow(() -> new AccessDeniedException("접근 권한이 없습니다."));
+
+        if(currentUser == null){ throw new AccessDeniedException("접근 권한이 없습니다.");}
 
         List<ClassFindDto> classFindDtos = new ArrayList<>();
         List<ClassEntity> classEntities = currentUser.getClassEntities();

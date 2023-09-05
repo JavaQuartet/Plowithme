@@ -94,7 +94,6 @@ public class ClassEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-
 //
 //    public static ClassEntity toSaveEntity(ClassDTO classDTO, User user_id){
 //
@@ -142,7 +141,7 @@ public class ClassEntity{
 //    }
 //
 
-    public void classParticiantsDelete(ClassParticipantsEntity classParticipantsEntity){
+    public void classParticipantsDelete(ClassParticipantsEntity classParticipantsEntity){
         this.getClassParticipantsEntityList().remove(classParticipantsEntity);
     }
 
