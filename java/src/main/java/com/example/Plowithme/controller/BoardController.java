@@ -15,6 +15,7 @@ import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.BoardService;
 import com.example.Plowithme.service.CommentService;
+import com.example.Plowithme.service.ImageService;
 import com.example.Plowithme.service.UserService;
 import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +50,9 @@ public class BoardController {
     private final CommentService commentService;
     private final BoardRepository boardRepository;
     private final UserService userService;
-//    @GetMapping("/board")
+    private final ImageService imageService;
+
+    //    @GetMapping("/board")
 //    @Operation(summary = "커뮤니티 페이지 조회")
 //    private ResponseEntity <CommonResponse> getBoard() {
 //        CommonResponse response=new CommonResponse(HttpStatus.OK.value(), "커뮤니티 페이지 조회 성공");
@@ -78,7 +81,9 @@ public class BoardController {
     private ResponseEntity<CommonResponse> savePosting(@ModelAttribute MultipartFile image) {
         if(!image.isEmpty()) {
             try {
-                boardService.saveImage(image);
+                BoardDto boardDto = imageService.saveImage(image);
+
+                //postImage=BoardEntity.toSaveEntity(board);
             } catch (Exception e) {
                 throw new RuntimeException("이미지 파일을 가져오는 것에 실패했습니다.");
             }
