@@ -1,7 +1,7 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardUpdateDto;
+import com.example.Plowithme.dto.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardUpdateDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;

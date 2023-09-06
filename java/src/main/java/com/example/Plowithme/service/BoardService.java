@@ -1,7 +1,9 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardUpdateDto;
+import com.example.Plowithme.dto.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardUpdateDto;
+import com.example.Plowithme.dto.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardUpdateDto;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.CommentException;
