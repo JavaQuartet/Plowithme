@@ -1,6 +1,7 @@
 <div align="center">
-# Plowithme
 <img src="https://capsule-render.vercel.app/api?type=waving&color=008100&height=200&section=header&text=Plowithme&fontSize=90" />
+
+<h3>누구나 쉽고 간편하게 참여할 수 있는 플로깅 활동(간단한 설명 -> 변경하기)</h3>
 
 #언어</br>
 <img src="https://img.shields.io/badge/Java(JDK 17)-F80000?style=flat&logo=Oracle&logoColor=white"/>
@@ -34,6 +35,7 @@
 
 #API</br>
 <img src="https://img.shields.io/badge/Kakao Maps API-FFCD00?style=flat&logo=Kakao&logoColor=white"/>
+<img src="https://img.shields.io/badge/Pixabay API-2EC66D?style=flat&logo=Pixabay&logoColor=white"/>
 
 #프로젝트 형상관리</br>
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white"/>
@@ -44,13 +46,8 @@
 
 
 #개발자<br>
-
+<a href="https://github.com/dmsqor">홍정표<a>
+<a href="https://github.com/dmsqor">홍정표<a>
+<a href="https://github.com/dmsqor">홍정표<a>
+<a href="https://github.com/dmsqor">홍정표<a>
 </br>
-● 언어: Java(JDK 17), HTML/CSS, JavaScript
-● 서버: AWS EC2
-● OS: Window 11
-● 데이터 저장 및 관리: MariaDB 10.11.4, MyBatis
-● IDE: IntellliJ IDEA Community, VScode, HeldiSQL, git
-● 개발 도구: Spirng Boot 3.1.1, Lombok, React, tomcat, Spring Configuration Processor, Spring Boot DevTools
-</div>
-
