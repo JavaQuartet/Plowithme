@@ -110,6 +110,7 @@ public class User implements UserDetails {
     }
 
 
+    //비밀번호 수정
     public void updatePassword(String password) {
         this.password = password;
     }

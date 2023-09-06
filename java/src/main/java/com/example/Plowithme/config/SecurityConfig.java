@@ -41,7 +41,6 @@ import java.util.List;
 )
 public class SecurityConfig {
 
-
     private JwtAuthEntryPoint authenticationEntryPoint;
 
     private JwtAuthticationFilter authenticationFilter;
@@ -73,10 +72,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                //.requestMatchers("/board/postingImage").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/class/search","/class/region").permitAll()
-                                .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
 
                                 .requestMatchers("/swagger-ui/**").permitAll()
@@ -101,7 +98,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://43.200.172.177:8080");
+        config.addAllowedOrigin("http://3.39.75.222");
+        config.addAllowedOrigin("http://3.39.75.222:8080");
         config.addAllowedOrigin("http://localhost:3000");
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));

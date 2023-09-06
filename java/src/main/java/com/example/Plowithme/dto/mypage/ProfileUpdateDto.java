@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ProfileUpdateDto {
+
     @Size(min=2, max = 10)
     private String nickname;
 

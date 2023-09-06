@@ -14,15 +14,20 @@ import java.util.Map;
 @ToString
 @NoArgsConstructor
 public class ErrorResponse {
+
     private int code;
+
     private String message;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final HashMap<String, Object> detail = new HashMap<>();
+
     public ErrorResponse(int code, String message) {
         this.code = code;
         this.message = message;
 
     }
+
     public ErrorResponse(ErrorCode errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
@@ -34,7 +39,5 @@ public class ErrorResponse {
         if (!ObjectUtils.isEmpty(detail)) {
             this.detail.putAll(detail);
         }
-
     }
-
 }

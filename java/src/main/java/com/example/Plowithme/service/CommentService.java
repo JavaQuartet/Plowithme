@@ -29,14 +29,6 @@ public class CommentService {
 
     private final BoardRepository boardRepository;
 
-    //모든 댓글 내용 출력
-//    public List<Comment> getAllComments() {
-//        commentRepository.findAll();
-//    }
-
-//    public void setPostID(Comment comment, int postId) {
-//        comment.setPostId(postId);
-//    }
 
     public void saveComment(Long postId, User currentUser, CommentDto commentDto) {
 
@@ -48,7 +40,7 @@ public class CommentService {
             throw new CommentException("접근 권한이 없습니다.");
         }
 
-        //부모 엔티티(boardEntity) 조회
+
         BoardEntity optionalBoardEntity= boardRepository.findById(postId).orElseThrow(() -> {
             return new ResourceNotFoundException("포스트를 찾을 수 없습니다.");
         });
@@ -59,10 +51,6 @@ public class CommentService {
                 .boardEntity(optionalBoardEntity)
                 .build();
         commentRepository.save(comment);
-      //      commentRepository.save(comment);
-
-      //  comment.setWriter(currentUser.getNickname());
-
     }
 
     //Id를 통해 comment 찾기
@@ -87,7 +75,7 @@ public class CommentService {
         if(!user.getId().equals(currentUser.getId())){
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
-        userRepository.save(user);
+
         commentRepository.deleteById(id);
     }
 
@@ -102,23 +90,11 @@ public class CommentService {
         BoardEntity boardEntity=boardRepository.findById(postId).get();
         List<Comment> commentList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
 
-        //entitylist>dto list
+
         List<CommentDto> commentDtoList=new ArrayList<>();
         for (Comment comment : commentList) {
             CommentDto commentDto=CommentDto.toCommentDto(comment);
             commentDtoList.add(commentDto);
         } return commentDtoList;
     }
-
-//    @Transactional()
-//    public List<CommentDto> findAllCommentOfPost(Long postId) {
-//        //service가 데이터를 가져올 때 repository에게 시킨다
-//
-//        List<Comment> comments = commentRepository.findAllByPostId(postId);
-//        List<CommentDto> commentDtos = new ArrayList<>();
-//
-//        comments.forEach(s -> commentDtos.add(CommentDto.toCommentDto(s)));
-//        return commentDtos;
-//    }
-
 }

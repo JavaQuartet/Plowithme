@@ -2,8 +2,8 @@ package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.user.LoginDto;
 import com.example.Plowithme.dto.user.RegisterDto;
-import com.example.Plowithme.dto.response.CommonResponse;
-import com.example.Plowithme.dto.response.JwtAuthResponse;
+import com.example.Plowithme.dto.CommonResponse;
+import com.example.Plowithme.dto.user.JwtAuthDto;
 import com.example.Plowithme.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +27,7 @@ public class AuthController {
     public ResponseEntity<CommonResponse> login(@Valid @RequestBody LoginDto loginDto) {
         String token = authService.login(loginDto);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JwtAuthResponse(token) );
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JwtAuthDto(token) );
         log.info("로그인 완료");
         return ResponseEntity.ok().body(response);
     }

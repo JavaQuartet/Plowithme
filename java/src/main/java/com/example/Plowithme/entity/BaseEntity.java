@@ -15,11 +15,12 @@ import java.time.LocalDateTime;
 @Getter
 
 public class BaseEntity {
+
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createDate; //생성 날짜
 
     @UpdateTimestamp
     @Column(insertable = false)
-    private LocalDateTime UpdateDate;
+    private LocalDateTime UpdateDate; //수정 날짜
 }

@@ -22,15 +22,15 @@ public class Comment extends BaseEntity  {
     private Long id;
 
     @Column
-    private String writer;
+    private String writer; //작성자
 
     @Column
-    private String contents;
+    private String contents; //내용
 
-    //board:comment=1:n
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
-    @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제하라
+    @OnDelete(action = OnDeleteAction.CASCADE) //게시글이 삭제되면 댓글들도 같이 삭제
     private BoardEntity boardEntity;
 
 

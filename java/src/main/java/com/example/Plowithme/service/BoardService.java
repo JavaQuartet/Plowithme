@@ -30,12 +30,9 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-  //  private final BoardEntity boardEntity;
-
     private final UserRepository userRepository;
 
     private final ImageService imageService;
-   // private final Path root = Paths.get("uploads/profiles");
 
     public void save(User currentUser, BoardSaveDto boardSaveDto) {
 

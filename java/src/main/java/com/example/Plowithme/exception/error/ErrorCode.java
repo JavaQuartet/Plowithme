@@ -9,13 +9,12 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    //Common
-
+    /**Common*/
     METHOD_ARGUMENT_NOT_VALID(400, HttpStatus.BAD_REQUEST, "유효하지 않은 인자 입력"),
     UNKNOWN_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "확인된지 않은 에러"),
     PERMISSION_DENIED(401, HttpStatus.UNAUTHORIZED,"접근 거부"),
 
-    //로그인, 회원가입, 인증
+    /**로그인, 회원가입, 인증*/
     EMAIL_DUPLICATE(409,HttpStatus.CONFLICT, "이미 등록된 이메일입니다.");
 
 

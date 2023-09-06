@@ -7,7 +7,7 @@ import com.example.Plowithme.dto.mypage.AccountInfoUpdateDto;
 import com.example.Plowithme.dto.mypage.ProfileFindDto;
 import com.example.Plowithme.dto.mypage.ProfileUpdateDto;
 import com.example.Plowithme.dto.user.CurrentUserDto;
-import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.dto.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.ClassService;

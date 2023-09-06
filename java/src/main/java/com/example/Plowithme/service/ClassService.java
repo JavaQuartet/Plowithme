@@ -25,8 +25,11 @@ import java.util.*;
 public class ClassService {
 
     private final ClassRepository classRepository;
+
     private final ClassParticipantRepository classParticipantRepository;
+
     private final UserRepository userRepository;
+
     private final ClassNoticeRepository classNoticeRepository;
 
 

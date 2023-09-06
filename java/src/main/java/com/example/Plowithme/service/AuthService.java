@@ -24,8 +24,11 @@ import java.util.Collections;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
+
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtTokenProvider jwtTokenProvider;
 
 

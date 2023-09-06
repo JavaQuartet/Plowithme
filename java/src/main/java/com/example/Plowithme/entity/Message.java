@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 public class Message{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
@@ -25,10 +26,10 @@ public class Message{
     private String content; //내용
 
     @Column(nullable = false)
-    private boolean deletedBySender; //보낸 쪽 쪽지 삭제
+    private boolean deletedBySender; //보낸 쪽지 삭제
 
     @Column(nullable = false)
-    private boolean deletedByReceiver; // 받은 쪽 쪽지 삭제
+    private boolean deletedByReceiver; // 받은 쪽지 삭제
 
     @CreationTimestamp
     private LocalDateTime create_date; //생성 날짜

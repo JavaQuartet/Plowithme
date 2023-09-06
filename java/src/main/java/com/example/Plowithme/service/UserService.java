@@ -27,10 +27,12 @@ import java.util.List;
 @Service
 public class UserService {
 
-
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final ClassRepository classRepository;
+
     private final ImageService imageService;
 
 
@@ -88,7 +90,7 @@ public class UserService {
     }
 
 
-    //모임 총 횟수 조회
+    //개인의 모임 총 횟수 조회
     @Transactional
     public int classCount(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
@@ -97,7 +99,7 @@ public class UserService {
     }
 
 
-    //모임 총 거리 조회
+    //개인의 모임 총 거리 조회
     @Transactional
     public double classDistance(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
@@ -164,6 +166,4 @@ public class UserService {
         }
         return joinedClassProfileFindDtos;
     }
-
-
 }

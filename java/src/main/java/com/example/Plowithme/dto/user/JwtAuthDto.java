@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.response;
+package com.example.Plowithme.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,13 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtAuthResponse {
+public class JwtAuthDto {
+
     private String accessToken;
+
     private String tokenType = "Bearer";
 
-    public JwtAuthResponse(String accessToken) {
+    public JwtAuthDto(String accessToken) {
         this.accessToken = accessToken;
     }
 

@@ -19,9 +19,9 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
     private final AmazonS3 amazonS3;
 
 
@@ -103,6 +103,7 @@ public class ImageService {
 
         }
     }
+
 
     /**
      이미지 삭제

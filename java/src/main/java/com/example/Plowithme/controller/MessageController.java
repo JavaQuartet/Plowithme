@@ -2,7 +2,7 @@ package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.mypage.MessageFindDto;
 import com.example.Plowithme.dto.mypage.MessageSandDto;
-import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.dto.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
 import com.example.Plowithme.service.MessageService;
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ import java.util.List;
 public class MessageController {
 
     private final MessageService messageService;
+
     @PostMapping("/messages")
     @Operation(summary = "쪽지 전송")
     public ResponseEntity<CommonResponse> sendMessage(@Valid @RequestBody MessageSandDto messageSandDto, @CurrentUser User currentUser ) {

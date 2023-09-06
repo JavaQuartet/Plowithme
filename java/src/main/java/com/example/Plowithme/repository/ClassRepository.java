@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
+
     @Modifying
     @Query(value = "update ClassEntity c set c.member_current=c.member_current + 1 where c.id=:id")
     void updateStatus(@Param("id") Long id);

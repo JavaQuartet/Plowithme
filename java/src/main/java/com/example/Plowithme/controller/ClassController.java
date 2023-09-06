@@ -5,7 +5,7 @@ import com.example.Plowithme.dto.meeting.ClassDTO;
 import com.example.Plowithme.dto.meeting.ClassSaveDto;
 import com.example.Plowithme.dto.meeting.ClassFindDto;
 import com.example.Plowithme.dto.meeting.ClassUpdateDto;
-import com.example.Plowithme.dto.response.CommonResponse;
+import com.example.Plowithme.dto.CommonResponse;
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
