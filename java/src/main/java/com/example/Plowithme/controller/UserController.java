@@ -1,6 +1,7 @@
 package com.example.Plowithme.controller;
 
 
+import com.example.Plowithme.dto.meeting.ClassFindDto;
 import com.example.Plowithme.dto.meeting.JoinedClassProfileFindDto;
 import com.example.Plowithme.dto.mypage.AccountInfoFindDto;
 import com.example.Plowithme.dto.mypage.AccountInfoUpdateDto;
@@ -10,6 +11,7 @@ import com.example.Plowithme.dto.user.CurrentUserDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
+import com.example.Plowithme.service.ClassService;
 import com.example.Plowithme.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +33,8 @@ import java.util.List;
 public class UserController {
 
     public final UserService userService;
+
+    public final ClassService classService;
 
     /**
      회원정보
@@ -148,6 +152,19 @@ public class UserController {
         CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "모임 참여자 프로필 조회 완료", joinedClassProfileFindDtos );
         log.info("모임 참여자 프로필 조회 완료");
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/users/{id}/classes")
+    @Operation(summary = "현재 유저 모임 조회")
+    public ResponseEntity<CommonResponse> findCurrentUserClasses(@PathVariable("id") Long id, @RequestParam("category") Integer category){
+
+
+        List<ClassFindDto> classFindDtos = classService.findMyClasses(id, category);
+
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "현재 유저 모임 조회 완료", classFindDtos);
+        log.info("현재 유저 모임 조회 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
 }

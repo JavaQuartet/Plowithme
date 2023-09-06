@@ -240,17 +240,16 @@ public class ClassService {
 
     //현재 유저 모임 조회
     @Transactional
-    public List<ClassFindDto> findMyClasses(User currentUser, Integer category) {
+    public List<ClassFindDto> findMyClasses(Long id, Integer category) {
+
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
         if (!(category == 0 || category == 1 || category == 2 || category == 3)) {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
-        if (currentUser == null) {
-            throw new AccessDeniedException("접근 권한이 없습니다.");
-        }
-
         List<ClassFindDto> classFindDtos = new ArrayList<>();
-        List<ClassEntity> classEntities = currentUser.getClassEntities();
+        List<ClassEntity> classEntities = user.getClassEntities();
 
         if (category == 0) {//내 모임
             for (ClassEntity classEntity : classEntities) {
@@ -276,7 +275,7 @@ public class ClassService {
 
         if(category==3){ //내가 만든 모임
             for (ClassEntity classEntity : classEntities) {
-                if (classEntity.getMaker_id().equals(currentUser.getId())){ // 모집중인 모임
+                if (classEntity.getMaker_id().equals(user.getId())){ // 모집중인 모임
                     classFindDtos.add(ClassFindDto.toDto(classEntity));
                 }
             }
