@@ -45,9 +45,13 @@
 
 
 
-#개발자<br>
-<a href="https://github.com/dmsqor">홍정표<a>
-<a href="https://github.com/dmsqor">홍정표<a>
-<a href="https://github.com/dmsqor">홍정표<a>
-<a href="https://github.com/dmsqor">홍정표<a>
-</br>
+<h2>#개발자</h2>
+#프론트엔드</br>
+<a href="https://github.com/sj102300">[이승주]<a>
+<a href="https://github.com/pqpq0420">[수빈]<a>
+<a href="https://github.com/gusdk45">[현아]<a><br>
+#백엔드</br>
+<a href="https://github.com/ykimnida">[김연경]<a>
+<a href="https://github.com/sor999">[박현제]<a>
+<a href="https://github.com/dmsqor">[홍정표]<a>
+
