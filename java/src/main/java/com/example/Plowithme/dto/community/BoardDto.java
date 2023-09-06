@@ -18,7 +18,6 @@ public class BoardDto {
     private Long writerId;
     private String contents;
     private Integer category;
-    private String postImage;
     private String imagePath;
     private LocalDateTime CreateDate;
     private LocalDateTime UpdateDate;
@@ -32,6 +31,7 @@ public class BoardDto {
         boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
         boardDto.setCreateDate(boardEntity.getCreateDate());
+        boardDto.setImagePath(boardEntity.getImagePath());
         //boardDto.setUpdateDate(boardEntity.getUpdateDate());
         boardDto.setCategory(boardEntity.getCategory());
 

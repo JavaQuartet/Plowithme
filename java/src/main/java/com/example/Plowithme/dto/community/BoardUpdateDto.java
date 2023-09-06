@@ -1,6 +1,8 @@
 package com.example.Plowithme.dto.community;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -11,4 +13,5 @@ public class BoardUpdateDto {
     private String title;
     private String contents;
     private Integer category;
+
 }

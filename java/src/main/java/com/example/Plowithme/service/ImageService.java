@@ -87,7 +87,7 @@ public class ImageService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
 
-            if(oldImageUrl != "https://plowithmebucket.s3.ap-northeast-2.amazonaws.com/default-image.png") {
+            if(oldImageUrl != "https://plowithmebucket.s3.ap-northeast-2.amazonaws.com/default-image.png" || oldImageUrl != null) {
                 amazonS3.deleteObject(bucket, oldImageUrl.split("/")[3]);
             }
 

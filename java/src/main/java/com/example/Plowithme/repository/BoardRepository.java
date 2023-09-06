@@ -11,19 +11,10 @@ import org.springframework.stereotype.Repository;
 import java.awt.color.ICC_ColorSpace;
 
 @Repository
-//*래파지토리로 작업할 때는 반드시 엔티티로 넘겨줘야 함
 public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSpecificationExecutor<BoardEntity> {
 
-    //update board_table set board_postHits=board_postHits+1 where id=?
-    //b 는 boardEntity
     @Modifying
     @Query(value = "update BoardEntity b set b.postHits=b.postHits+1 where b.postId=:postId")
     void updatePostHits(@Param("postId") Long postId);
 
-
-   // BoardEntity findByPostImageAndImagePath();
-
-   // BoardEntity findByImagePath(String imagePath);
-
-    BoardEntity findByPostImage(String postImage);
 }

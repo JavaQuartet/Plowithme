@@ -1,6 +1,5 @@
 package com.example.Plowithme.controller;
 
-
 import com.example.Plowithme.dto.meeting.ClassFindDto;
 import com.example.Plowithme.dto.meeting.JoinedClassProfileFindDto;
 import com.example.Plowithme.dto.mypage.AccountInfoFindDto;

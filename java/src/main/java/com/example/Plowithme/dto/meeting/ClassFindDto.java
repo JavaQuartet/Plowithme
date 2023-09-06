@@ -30,10 +30,12 @@ public class ClassFindDto {
 
     private Integer start_day;
 
+    private Long maker_id;
+
 
     public static ClassFindDto toDto(ClassEntity classEntity) {
         return new ClassFindDto(classEntity.getId(),classEntity.getTitle(),classEntity.getMember_max(), classEntity.getMember_current(),
-                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_date(), classEntity.getStart_year(), classEntity.getStart_month(), classEntity.getStart_day());
+                classEntity.getStartRegion(), classEntity.getDescription(), classEntity.getStart_date(), classEntity.getStart_year(), classEntity.getStart_month(), classEntity.getStart_day(), classEntity.getMaker_id());
     }
 
 }

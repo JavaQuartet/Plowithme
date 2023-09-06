@@ -12,7 +12,6 @@ public interface ClassParticipantRepository extends JpaRepository<ClassParticipa
 
     Optional<ClassParticipantsEntity> deleteClassParticipantsEntityByUseridAndMeetingid(Long userid, Long meetingid);
 
-
     Optional<ClassParticipantsEntity> findClassParticipantsEntityByUseridAndClassEntity(Long userid, ClassEntity classEntity);
 
     Optional<ClassParticipantsEntity> deleteClassParticipantsEntitiesByClassEntity(ClassEntity classEntity);

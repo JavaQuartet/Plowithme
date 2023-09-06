@@ -113,19 +113,19 @@ public class SecurityConfig {
     }
 
 
-    public UserDetailsService userDetailsService() {
-        //인메모리에 username, password, role 설정
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("pwd")
-                        .roles("USER")
-                        .build();
-
-        System.out.println("password : " + user.getPassword());
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    public UserDetailsService userDetailsService() {
+//        //인메모리에 username, password, role 설정
+//        UserDetails user =
+//                User.withDefaultPasswordEncoder()
+//                        .username("user")
+//                        .password("pwd")
+//                        .roles("USER")
+//                        .build();
+//
+//        System.out.println("password : " + user.getPassword());
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
 
 }

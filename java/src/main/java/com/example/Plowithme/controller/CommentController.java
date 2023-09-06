@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RestController
@@ -69,7 +71,7 @@ public class CommentController {
     @Operation(summary = "댓글 목록 가져오기")
     public ResponseEntity<CommonResponse> getComments(@Valid @PathVariable("postId") Long postId) {
 
-        //List<CommentDto> commentDtoList=commentService.findAllCommentOfPost(postId);
+       // List<CommentDto> commentDtoList=commentService.findAllCommentOfPost(postId);
 
         CommonResponse response= new CommonResponse(HttpStatus.OK.value(), "댓글 목록 조회 성공", commentService.findAllCommentOfPost(postId));
         //디비에 값을 저장하는 거라 저장한 값을 보여줄 필요없고 저장되었다는 결과만 반환해주면 됨.
