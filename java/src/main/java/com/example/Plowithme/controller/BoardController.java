@@ -1,13 +1,10 @@
 package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.request.community.BoardDto;
-import com.example.Plowithme.dto.request.community.BoardSaveDto;
 import com.example.Plowithme.dto.request.community.BoardUpdateDto;
-import com.example.Plowithme.dto.request.mypage.ProfileFindDto;
 import com.example.Plowithme.dto.response.CommonResponse;
 import com.example.Plowithme.entity.BoardEntity;
 import com.example.Plowithme.entity.User;
-import com.example.Plowithme.exception.custom.CommentException;
 import com.example.Plowithme.exception.custom.FileException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
 import com.example.Plowithme.repository.BoardRepository;
@@ -20,13 +17,11 @@ import com.example.Plowithme.service.UserService;
 import com.example.Plowithme.specification.BoardSpecifications;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 //@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Getter
@@ -81,9 +75,9 @@ public class BoardController {
     private ResponseEntity<CommonResponse> savePosting(@ModelAttribute MultipartFile image) {
         if(!image.isEmpty()) {
             try {
-                BoardDto boardDto = imageService.saveImage(image);
-
-                //postImage=BoardEntity.toSaveEntity(board);
+                String imagePath = imageService.saveImage(image);
+                BoardEntity boardEntity= new BoardEntity();
+                boardEntity.setImagePath(imagePath);
             } catch (Exception e) {
                 throw new RuntimeException("이미지 파일을 가져오는 것에 실패했습니다.");
             }
@@ -94,23 +88,23 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(value = "/board/postImage/{postImage}")
-    @Operation(summary = "게시글 이미지 조회")
-    private ResponseEntity<CommonResponse> showImage(@RequestParam(name = "postImage", required=false) String postImage) throws Exception {
-
-       // BoardDto ImageDto=boardService.getImage(imagePath, boardDto);
-        if (postImage!=null) {
-            try {
-                boardService.getImage(postImage);
-            } catch (Exception e) {
-                throw new FileException("이미지를 불러오지 못했습니다.");
-            }
-        } else throw new Exception("조회할 이미지가 없습니다.");
-
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", boardService.getImage(postImage));
-        log.info("이미지 조회 완료");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+//    @GetMapping(value = "/board/postImage/{imagePath}")
+//    @Operation(summary = "게시글 이미지 조회")
+//    private ResponseEntity<CommonResponse> showImage(@RequestParam(name = "imagePath", required=false) String imagePath) {
+//
+//       // BoardDto ImageDto=boardService.getImage(imagePath, boardDto);
+//        if (imagePath!=null) {
+//            try {
+//              return imagePath;
+//            } catch (Exception e) {
+//                throw new FileException("이미지를 불러오지 못했습니다.");
+//            }
+//        } else throw new Exception("조회할 이미지가 없습니다.");
+//
+//        CommonResponse response = new CommonResponse(HttpStatus.OK.value(),"이미지 조회 성공", imagePath);
+//        log.info("이미지 조회 완료");
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 
     @DeleteMapping("/board/{postId}")
     @Operation(summary = "게시글 삭제")
