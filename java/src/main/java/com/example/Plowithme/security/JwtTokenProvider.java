@@ -1,7 +1,5 @@
 package com.example.Plowithme.security;
 
-import com.example.Plowithme.exception.custom.TokenException;
-import com.example.Plowithme.exception.error.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
@@ -46,14 +44,11 @@ public class JwtTokenProvider {
         String token = Jwts.builder()
                 .setHeaderParam("type", "JWT")
                 .setClaims(claims)
-                //  .signWith(jwtSecret, SignatureAlgorithm.HS256)
-                //.claim("rol", String.join(",", authentication.getAuthorities())
                 .setIssuedAt(currentDate)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                //.signWith(key())
                 .compact();
         return token;
     }
@@ -85,19 +80,14 @@ public class JwtTokenProvider {
 
             } catch (MalformedJwtException ex) {
                 log.error("잘못된 토큰");
-              //  throw new TokenException("잘못된 토큰");
             } catch (SignatureException ex) {
                 log.error("유효하지 않은 JWT signature");
-              //  throw new TokenException("잘못된 토큰");
             } catch (ExpiredJwtException ex) {
                 log.error("만료된 토큰");
-              //  throw new TokenException("토큰 기한 만료");
             } catch (UnsupportedJwtException ex) {
                 log.error("지원하지 않는 토큰");
-               // throw new TokenException("지원하지 않는 토큰");
             } catch (IllegalArgumentException ex) {
                 log.error("유효하지 않은 토큰");
-               // throw new TokenException("유효하지 않은 토큰");
             }
             return false;
         }

@@ -1,8 +1,6 @@
-package com.example.Plowithme.dto.request.user;
+package com.example.Plowithme.dto.user;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
@@ -11,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
+
     @NotEmpty
     private String email;
 

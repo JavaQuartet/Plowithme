@@ -1,7 +1,7 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.mypage.MessageFindDto;
-import com.example.Plowithme.dto.request.mypage.MessageSandDto;
+import com.example.Plowithme.dto.mypage.MessageFindDto;
+import com.example.Plowithme.dto.mypage.MessageSandDto;
 import com.example.Plowithme.entity.Message;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -19,17 +19,15 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
-    private final ImageService imageService;
 
     //쪽지 쓰기
     @Transactional
     public void writeMessage(Long id, MessageSandDto messageSandDto) {
-        User sender = userRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
-        User receiver = userRepository.findById(messageSandDto.getReceiverId()).orElseThrow(() -> {
-            return new ResourceNotFoundException("유저를 찾을 수 없습니다.");
-        });
+        User sender = userRepository.findById(id).orElseThrow(() ->
+             new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+        User receiver = userRepository.findById(messageSandDto.getReceiverId()).orElseThrow(() ->
+                new ResourceNotFoundException("유저를 찾을 수 없습니다."));
+
         Message message = Message.builder()
                 .receiver(receiver)
                 .sender(sender)
@@ -41,12 +39,12 @@ public class MessageService {
         messageRepository.save(message);
 
     }
+
+
     //쪽지 상세 조회
     @Transactional(readOnly = true)
     public MessageFindDto findMessage(Long id) {
-        Message message = messageRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundException("쪽지를 찾을 수 없습니다.");
-        });
+        Message message = messageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("쪽지를 찾을 수 없습니다."));
 
 
         MessageFindDto messageFindDto = MessageFindDto.toDto(message);
@@ -55,9 +53,7 @@ public class MessageService {
     }
 
 
-
     //받은 쪽지 조회
-
     @Transactional(readOnly = true)
     public List<MessageFindDto> receivedMessage(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
@@ -77,7 +73,6 @@ public class MessageService {
     }
 
 
-
     // 받은 쪽지 삭제
     @Transactional
     public Object deleteMessageByReceiver(Long id, User currentUser) {
@@ -95,9 +90,9 @@ public class MessageService {
             message.deleteByReceiver();
             if (message.isDeleted()) {
                 messageRepository.delete(message);
-                return "양쪽 모두 삭제";
+                return "양쪽 삭제";
             }
-            return "한쪽만 삭제";
+            return "한쪽 삭제";
         } else {
             return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
         }
@@ -107,7 +102,7 @@ public class MessageService {
     //보낸 쪽지 조회
     @Transactional(readOnly = true)
     public List<MessageFindDto> sentMessage(User user) {
-        // 한 유저가 받은 모든 메시지
+
         List<Message> messages = messageRepository.findAllBySender(user);
         List<MessageFindDto> messageFindDtos = new ArrayList<>();
 
@@ -135,13 +130,12 @@ public class MessageService {
             if (message.isDeleted()) {
                 // 전체 삭제
                 messageRepository.delete(message);
-                return "양쪽 모두 삭제";
+                return "양쪽 삭제";
             }
-            return "한쪽만 삭제";
+            return "한쪽 삭제";
         } else {
             return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
         }
-
 
     }
 }

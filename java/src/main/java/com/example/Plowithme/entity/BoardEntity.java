@@ -1,6 +1,6 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.request.community.BoardDto;
+import com.example.Plowithme.dto.community.BoardDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -17,7 +17,7 @@ public class ClassNoticeEntity {
     private Long notice_id;
 
     @Column
-    private String notice;
+    private String notice; //공지내용
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id")

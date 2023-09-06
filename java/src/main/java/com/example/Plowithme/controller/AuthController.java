@@ -1,9 +1,9 @@
 package com.example.Plowithme.controller;
 
-import com.example.Plowithme.dto.request.user.LoginDto;
-import com.example.Plowithme.dto.request.user.RegisterDto;
+import com.example.Plowithme.dto.user.LoginDto;
+import com.example.Plowithme.dto.user.RegisterDto;
 import com.example.Plowithme.dto.response.CommonResponse;
-import com.example.Plowithme.dto.response.JWTAuthResponse;
+import com.example.Plowithme.dto.response.JwtAuthResponse;
 import com.example.Plowithme.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-//@CrossOrigin(origins = "http://43.200.172.177:8080, http://localhost:3000")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,11 +27,10 @@ public class AuthController {
     public ResponseEntity<CommonResponse> login(@Valid @RequestBody LoginDto loginDto) {
         String token = authService.login(loginDto);
 
-        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JWTAuthResponse(token) );
+        CommonResponse response = new CommonResponse(HttpStatus.OK.value(), "로그인 성공", new JwtAuthResponse(token) );
         log.info("로그인 완료");
         return ResponseEntity.ok().body(response);
     }
-
 
 
     @PostMapping(value = "/sign-up")

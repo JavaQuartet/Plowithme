@@ -1,6 +1,6 @@
 package com.example.Plowithme.entity;
 
-import com.example.Plowithme.dto.request.community.CommentDto;
+import com.example.Plowithme.dto.community.CommentDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;

@@ -1,7 +1,9 @@
 package com.example.Plowithme.service;
 
-
-import com.example.Plowithme.dto.request.meeting.*;
+import com.example.Plowithme.dto.meeting.ClassDTO;
+import com.example.Plowithme.dto.meeting.ClassFindDto;
+import com.example.Plowithme.dto.meeting.ClassSaveDto;
+import com.example.Plowithme.dto.meeting.ClassUpdateDto;
 import com.example.Plowithme.entity.*;
 import com.example.Plowithme.exception.custom.ClassException;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -26,29 +28,9 @@ public class ClassService {
     private final ClassParticipantRepository classParticipantRepository;
     private final UserRepository userRepository;
     private final ClassNoticeRepository classNoticeRepository;
-    private final ImageService imageService;
 
-//    public ClassEntity save(ClassDTO classDTO, User user_id) throws IOException {
-///*        if(classDTO.getClassFile().isEmpty()){*/
-//            ClassEntity classEntity = ClassEntity.toSaveEntity(classDTO, user_id);
-//            classRepository.save(classEntity);
-//            return classEntity;
-/*        }else{
-            MultipartFile classFile = classDTO.getClassFile();
-            String originalFilename = classFile.getOriginalFilename();
-            String storedFilename = System.currentTimeMillis() + "_" + originalFilename;
-            String savePath = "C:/plowithme_img/" + storedFilename;
-            classFile.transferTo(new File(savePath));
 
-            ClassEntity classEntity = ClassEntity.toSaveFileEntity(classDTO, user_id);
-            Long savedId = classRepository.save(classEntity).getId();
-            ClassEntity Class = classRepository.findById(savedId).get();
-
-            ClassFileEntity classFileEntity = ClassFileEntity.toClassFileEntity(Class, originalFilename, storedFilename);
-            classFileRepository.save(classFileEntity);
-        }*/
-//    }
-
+    //모임 저장
     public ClassEntity saveClass(ClassSaveDto classSaveDto, User user) {
         ClassEntity classEntity = ClassEntity.builder()
                 .title(classSaveDto.getTitle())
@@ -73,6 +55,7 @@ public class ClassService {
     }
 
 
+    //모임 리스트 조회
     public List<ClassDTO> findAll() {
         List<ClassEntity> classEntityList = classRepository.findAll();
         List<ClassDTO> classDTOList = new ArrayList<>();
@@ -82,31 +65,23 @@ public class ClassService {
         return classDTOList;
     }
 
-//    public List<JoinedClassProfileFindDto> makePartiUser(User user, @RequestParam("i") Long id) {
-//            for (int i = 0; i < 3; i++) {
-//            JoinedClassProfileFindDto chosenUserDto=UserService.findProfile((long)i);
-//            List<User> PartiUserList = new ArrayList<>();
-//            for (User chosenUserDto:PartiUserList) {
-//                PartiUserList.add(chosenUserDto.get());
-//            }
-//            ClassParticipantsEntity classParticipantsEntity = ClassParticipantsEntity.toSaveParticiantEntity(classEntity, user);
-//            classParticipantRepository.save(classParticipantsEntity);
-//            return PartiUserList;
-//
-//        }
 
-
+    //모임 현재 유저 수 증가
     @Transactional
     public void updatestatus(Long id) {
         classRepository.updateStatus(id);
     }
 
+
+    //모임 현재 유저 수 감소
     @Transactional
     public void downstatus(Long id) {
         classRepository.downStatus(id);
     }
 
 
+    //dto 변환
+    @Transactional
     public ClassDTO findById(Long id) {
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
         if (classEntity.getId().equals(id)) {
@@ -118,7 +93,6 @@ public class ClassService {
     }
 
 
-
     // 모임 공지
     public void notice(ClassEntity classEntity, String notice){
         ClassNoticeEntity classNoticeEntity = ClassNoticeEntity.toSaveNoticeEntity(classEntity, notice);
@@ -126,6 +100,7 @@ public class ClassService {
     }
 
 
+    //모임 참여
     public void participant(ClassEntity classEntity, User user){
         if(classEntity.getMember_current()>=classEntity.getMember_max()){
             throw new ClassException("정원이 초과되어 가입할 수 없습니다.");
@@ -134,9 +109,10 @@ public class ClassService {
         classParticipantRepository.save(classParticipantsEntity);
     }
 
+
+    //모임 나가기
     @Transactional
     public void deleteparticipant(ClassEntity classEntity, User user) {// 모임 참여 취소 할때 사용
-        //classRepository.deleteClassEntityByUseridAndMeetingid(user.getId(), classEntity.getId());
         if(classEntity.getMaker_id().equals(user.getId())){
             throw new ClassException("모임장이므로 모임에서 나갈 수 없습니다.");
         }
@@ -147,57 +123,15 @@ public class ClassService {
 
     }
 
-    /*    public void deleteAllParticipant(){
 
-        }*/
-    @Transactional //모임 삭제
+    //모임 삭제
+    @Transactional
     public void delete(ClassEntity classEntity) {
         classParticipantRepository.deleteClassParticipantsEntitiesByClassEntity(classEntity);
         classRepository.deleteById(classEntity.getId());
     }
 
 
-    //모임 수정
-/*    @Transactional
-    public ClassDTO update(ClassEntity Class, User user_id) {
-        ClassEntity classEntity = ClassEntity.toUpdateEntity(Class, user_id);
-        classRepository.save(classEntity);
-        return findById(Class.getId());
-    }*/
-
-/*    public Long patchUpdate(Long id, ClassDTO classDTO) throws SQLException {
-
-        ClassEntity classEntity = classRepository.findById(id)
-                .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
-
-        List<ClassDTO> list = new ArrayList<>();
-        list.add(classDTO);
-
-
-        for (int i=0;i< list.size();i++) {
-            if (list.get(i).getDistance() != null) {
-                classEntity.setDistance(list.get(i).getDistance());
-            }
-        }
-
-        classRepository.save(classEntity);
-
-        return id;
-    }*/
-
-
-
-
-
-    //    @Transactional
-//    public List<ClassSearchDto> searchClass(String keyword) {
-//        List<ClassEntity> classEntities = classRepository.findAllSearch(keyword).stream()
-//                .map(ClassSearchDto::new)
-//                .collect(Collectors.toList());
-//
-//
-//        return
-//    }
     //회원 지역 기준 모임 조회
     @Transactional
     public List<ClassDTO> findClassByRegion(Pageable pageable, User currentUser) {
@@ -222,18 +156,6 @@ public class ClassService {
         return classDtos;
     }
 
-/*    public List<ClassDTO> findByUserAndStatus(Long user_id){
-        List<ClassDTO> classDTOList = new ArrayList<>();
-        List<ClassEntity> classEntityList = classRepository.findAllByMaker_idAndStatus(user_id, 0);
-
-        for (ClassEntity classEntity : classEntityList){
-            ClassDTO classDTO = findById(classEntity.getId());
-            classDTOList.add(classDTO);
-        }
-
-        return classDTOList;
-    }*/
-
 
     //모임 검색
     @Transactional
@@ -251,12 +173,11 @@ public class ClassService {
     }
 
 
+    //모임 수정
     @Transactional
     public ClassDTO updated(Long id, ClassUpdateDto classDTO) {
         ClassEntity entity = classRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("모임을 찾을 수 없습니다."));
 
-
-        /*User user = userRepository.findById(user_id.getId());*/
 
         if (classDTO.getTitle() != null) {
             entity.setTitle(classDTO.getTitle());
@@ -300,6 +221,8 @@ public class ClassService {
         return classDTO1;
     }
 
+
+    //모임 종료
     @Transactional
     public void end_class(ClassDTO classDTO, Long id) {
         ClassEntity classEntity = classRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
@@ -314,6 +237,8 @@ public class ClassService {
         }
     }
 
+
+    //현재 유저 모임 조회
     @Transactional
     public List<ClassFindDto> findMyClasses(User currentUser, Integer category) {
         if (!(category == 0 || category == 1 || category == 2 || category == 3)) {

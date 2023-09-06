@@ -1,4 +1,4 @@
-package com.example.Plowithme.dto.request.mypage;
+package com.example.Plowithme.dto.mypage;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MessageSandDto {
+
     @NotEmpty
     @Size(max=150)
     private String content;

@@ -1,8 +1,11 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.meeting.JoinedClassProfileFindDto;
-import com.example.Plowithme.dto.request.mypage.*;
-import com.example.Plowithme.dto.request.user.CurrentUserDto;
+import com.example.Plowithme.dto.meeting.JoinedClassProfileFindDto;
+import com.example.Plowithme.dto.mypage.AccountInfoFindDto;
+import com.example.Plowithme.dto.mypage.AccountInfoUpdateDto;
+import com.example.Plowithme.dto.mypage.ProfileFindDto;
+import com.example.Plowithme.dto.mypage.ProfileUpdateDto;
+import com.example.Plowithme.dto.user.CurrentUserDto;
 import com.example.Plowithme.entity.ClassEntity;
 import com.example.Plowithme.entity.ClassParticipantsEntity;
 import com.example.Plowithme.entity.User;
@@ -16,13 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +39,7 @@ public class UserService {
         return new CurrentUserDto(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
 
     }
+
 
     //회원 계정 설정 조회
     @Transactional
@@ -87,6 +87,7 @@ public class UserService {
 
     }
 
+
     //모임 총 횟수 조회
     @Transactional
     public int classCount(Long id) {
@@ -94,6 +95,7 @@ public class UserService {
 
         return user.getClass_count();
     }
+
 
     //모임 총 거리 조회
     @Transactional
@@ -103,10 +105,8 @@ public class UserService {
         return Double.parseDouble(String.format("%.2f", user.getClass_distance()));
     }
 
+
     //프로필 설정 조회
-
-    private final Path root = Paths.get("uploads/profiles");
-
     @Transactional
     public void updateProfileInfo(Long id, ProfileUpdateDto profileUpdateDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
@@ -127,36 +127,7 @@ public class UserService {
     public void updateProfileImage(MultipartFile file, Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
-
         user.setProfile(imageService.updateImage(file, user.getProfile()));
-
-//        if (file.isEmpty()) {
-//            throw new FileException("파일이 없습니다.");
-//        }
-//
-//        //확장자 제한
-//        String fileName = file.getOriginalFilename();
-//        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-//        if (!ext.equals("jpeg") && !ext.equals("jpg") && !ext.equals("png")) {
-//            throw new FileException("업로드가 불가능한 확장자입니다.");
-//        }
-//
-//        String profileName = UUID.randomUUID() + file.getOriginalFilename();
-//        try {
-//
-//            if (!user.getProfile().equals("default-image.png")) { //기본 이미지
-//                //원래 사진 삭제
-//                Path files = root.resolve(user.getProfile());
-//                Files.deleteIfExists(files);
-//            }
-//            //프로필 사진 추가
-//            Files.copy(file.getInputStream(), this.root.resolve(profileName));
-//
-//            user.setProfile(profileName);
-//
-//        } catch (Exception e) {
-//            throw new FileException("파일을 수정할 수 없습니다.");
-//        }
 
     }
 
@@ -168,7 +139,6 @@ public class UserService {
         try {
             ProfileFindDto profileFindDto = ProfileFindDto.builder()
                     .profile_url(user.getProfile())
-                   // .profile_url(Paths.get("uploads/profiles").resolve(user.getProfile()).toUri().toURL().toString())
                     .nickname(user.getNickname())
                     .introduction(user.getIntroduction())
                     .build();
@@ -190,7 +160,7 @@ public class UserService {
         for (ClassParticipantsEntity classParticipantsEntity : joinList) {
             User user = userRepository.findById(classParticipantsEntity.getUserid()).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
-            joinedClassProfileFindDtos.add(JoinedClassProfileFindDto.toDto(user, user.getProfile()));
+            joinedClassProfileFindDtos.add(JoinedClassProfileFindDto.toDto(user));
         }
         return joinedClassProfileFindDtos;
     }

@@ -1,14 +1,5 @@
 package com.example.Plowithme;
 
-import com.example.Plowithme.controller.ClassController;
-import com.example.Plowithme.dto.request.meeting.ClassDTO;
-import com.example.Plowithme.entity.ClassEntity;
-import com.example.Plowithme.entity.User;
-import com.example.Plowithme.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.*;
 
 public class dumy {

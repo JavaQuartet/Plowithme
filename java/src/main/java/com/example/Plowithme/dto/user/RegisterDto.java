@@ -1,14 +1,11 @@
-package com.example.Plowithme.dto.request.user;
+package com.example.Plowithme.dto.user;
 
 import com.example.Plowithme.entity.Region;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -27,7 +24,6 @@ public class RegisterDto {
     @NotEmpty(message = "이름을 입력해주세요.")
     @Size(min=2, max = 10)
     private String name;
-
 
     private Region region;
 

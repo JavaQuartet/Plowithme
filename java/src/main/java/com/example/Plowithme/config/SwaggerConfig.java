@@ -11,35 +11,17 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@SecurityScheme(
-//        name = "bearerAuth",
-//        description = "JWT auth description",
-//        scheme = "bearer",
-//        type = SecuritySchemeType.HTTP,
-//        bearerFormat = "JWT",
-//        in = SecuritySchemeIn.HEADER
-//)
+
 @OpenAPIDefinition(
         info =@Info(
                 title = "Plowithme API",
                 version = "${api.version}",
                 contact = @Contact(
-                        name = "Plowithme",  url = "수정할거"
+                        name = "Plowithme",  url = "http://43.200.172.177:8080"
                 ),
-                license = @License(
-                        name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"
-                ),
-                termsOfService = "${tos.uri}",
                 description = "${api.description}"
         )
-//        servers = @Server(
-//                url = "${api.server.url}",
-//                description = "Production"
-//        )
 )
-
 @Configuration
 public class SwaggerConfig {
-
-
 }

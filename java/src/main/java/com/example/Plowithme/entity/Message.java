@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -24,16 +22,16 @@ public class Message{
     private Long id;
 
     @Column(nullable = false)
-    private String content;
+    private String content; //내용
 
     @Column(nullable = false)
-    private boolean deletedBySender;
+    private boolean deletedBySender; //보낸 쪽 쪽지 삭제
 
     @Column(nullable = false)
-    private boolean deletedByReceiver;
+    private boolean deletedByReceiver; // 받은 쪽 쪽지 삭제
 
     @CreationTimestamp
-    private LocalDateTime create_date;
+    private LocalDateTime create_date; //생성 날짜
 
 
     @ManyToOne(fetch = FetchType.LAZY)

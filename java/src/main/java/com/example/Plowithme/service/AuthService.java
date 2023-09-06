@@ -1,14 +1,13 @@
 package com.example.Plowithme.service;
 
-import com.example.Plowithme.dto.request.user.LoginDto;
-import com.example.Plowithme.dto.request.user.RegisterDto;
+import com.example.Plowithme.dto.user.LoginDto;
+import com.example.Plowithme.dto.user.RegisterDto;
 import com.example.Plowithme.entity.Role;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.UserEmailAlreadyExistException;
 import com.example.Plowithme.repository.UserRepository;
 import com.example.Plowithme.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -32,7 +31,7 @@ public class AuthService {
 
     //회원가입
     @Transactional
-    public Long register(RegisterDto registerDto) {
+    public void register(RegisterDto registerDto) {
 
 
         if(userRepository.findByEmail(registerDto.getEmail()).isPresent()){
@@ -59,9 +58,6 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
-
-
-        return user.getId();
 
 
     }

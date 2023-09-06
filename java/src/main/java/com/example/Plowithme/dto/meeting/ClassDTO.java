@@ -1,10 +1,8 @@
-package com.example.Plowithme.dto.request.meeting;
+package com.example.Plowithme.dto.meeting;
 
 import com.example.Plowithme.entity.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,21 +16,18 @@ public class ClassDTO {
 
     private Long class_Id;
 
-    // 모임 수정에 사용
+    /** 모임 수정에 사용 */
     private String title;
 
-    /*private LocalDateTime inst_date;*/
-    // public LocalDateTime updt_date; 모임에 수정날짜는 불필요 하지 않나요?
-
-    private Integer member_max; // 설정해둔 인원수
+    private Integer member_max;
 
     private Integer member_current;
 
     private int status;
 
-    private String startRegion; //출발 위치
+    private String startRegion;
 
-    private String end_region; //도착 위치
+    private String end_region;
 
     private String description;
 
@@ -46,23 +41,15 @@ public class ClassDTO {
 
     private Integer start_day;
 
-/*    private MultipartFile classFile; // save.html -> Controller 파일 담는 용도
+    private Long maker_id;
 
-    private String origialFileName; // 원본 파일 이름
+    /** 모임 상세 페이지에서 사용 */
+    private String notice;
 
-    private String storedFileName; // 서버 저장용 파일 이름*/
-
-
-
-    private Long maker_id; // 모임 만든사람 아이디
-
-    // 모임 상세 페이지에서 사용
-    private String notice; //모임 공지사항
-
-    private Double distance; // 걸은 거리
+    private Double distance;
 
 
-    // 참여자 모임
+    /** 참여자 모임 */
     private List<ClassParticipantsEntity> classParticipantsEntityList = new ArrayList<>();
 
     private List<ClassNoticeEntity> classNoticeEntityList = new ArrayList<>();
