@@ -71,7 +71,7 @@ public class BoardController {
 
     @PatchMapping("/board/{postId}")
     @Operation(summary = "게시글 수정")
-    public ResponseEntity<CommonResponse> update(@PathVariable("postId") Long postId, @CurrentUser User currentUser, @Valid @ModelAttribute BoardUpdateDto boardUpdateDto) {
+    public ResponseEntity<CommonResponse> update(@PathVariable("postId") Long postId, @CurrentUser User currentUser, @Valid @RequestBody BoardUpdateDto boardUpdateDto) {
         BoardEntity boardEntity = boardRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("못 찾음"));
         boardService.updatePost(currentUser, boardEntity, boardUpdateDto);
 
