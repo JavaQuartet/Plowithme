@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&color=008100&height=200&section=header&text=Plowithme&fontSize=90" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=008100&height=200&section=header&text=Plowithme&fontSize=90"/>
 <h4>plogging + with + me</h4>
 <h4>작은 활동들이 모여 환경을 변화시킵니다</h4></br>
 
@@ -11,7 +11,7 @@
 <a href="https://github.com/pqpq0420">[수빈]</a>
 <a href="https://github.com/gusdk45">[현아]</a></br>
 #백엔드</br>
-<a href="https://github.com/ykimnida">[김연경]<a>
+<a href="https://github.com/ykimnida">[yk]<a>
 <a href="https://github.com/sor999">[박현제]<a>
 <a href="https://github.com/dmsqor">[홍정표]<a>
 
@@ -30,28 +30,37 @@
 
 #데이터 저장 및 관리</br>
 <img src="https://img.shields.io/badge/MariaDB-003545?style=flat&logo=MariaDB&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
+<img src="https://img.shields.io/badge/AWS RDS-527FFF?style=flat&logo=Amazon RDS&logoColor=white"/>
+<img src="https://img.shields.io/badge/AWS S3 bucket-569A31?style=flat&logo=Amazon S3&logoColor=white"/>
 
 #IDE</br>
 <img src="https://img.shields.io/badge/IntelliJ IDEA-000000?style=flat&logo=IntelliJ IDEA&logoColor=white"/>
 <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat&logo=Visual Studio Code&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
+<img src="https://img.shields.io/badge/HeldiSQL-569A31?style=flat&logo=&logoColor=white"/>
 <img src="https://img.shields.io/badge/Git-F05032?style=flat&logo=Git&logoColor=white"/>
 
 #개발 도구</br>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
+<img src="https://img.shields.io/badge/Lombok-D9000D?style=flat&logo=&logoColor=white"/>
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
-<img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=로고이름&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring Boot DevTool-6DB33F?style=flat&logo=&logoColor=white"/>
 
 #API</br>
 <img src="https://img.shields.io/badge/Kakao Maps API-FFCD00?style=flat&logo=Kakao&logoColor=white"/>
 <img src="https://img.shields.io/badge/Pixabay API-2EC66D?style=flat&logo=Pixabay&logoColor=white"/>
+
+#라이브러리</br>
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=Axios&logoColor=white"/>
+<img src="https://img.shields.io/badge/React daum postcode-D9000D?style=flat&logo=&logoColor=white"/>
+<img src="https://img.shields.io/badge/Font Awesome-F47C00?style=flat&logo=Font Awesome&logoColor=white"/>
 
 #프로젝트 형상관리</br>
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white"/>
 
 #웹 디자인 설계</br>
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
+
+#협업툴</br>
+<img src="https://img.shields.io/badge/Notion(프로젝트 관리)-000000?style=flat&logo=Notion&logoColor=white"/>
+<img src="https://img.shields.io/badge/KakaoTalk(일정 조율)-FFCD00?style=flat&logo=KakaoTalk&logoColor=white"/>
+<img src="https://img.shields.io/badge/Discord(화상회의)-5865F2?style=flat&logo=Discord&logoColor=white"/>
