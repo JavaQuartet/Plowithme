@@ -1,11 +1,17 @@
 <div align="center">
 <img src="https://capsule-render.vercel.app/api?type=waving&color=008100&height=200&section=header&text=Plowithme&fontSize=90"/>
 <h4>plogging + with + me</h4>
-<h4>작은 활동들이 모여 환경을 변화시킵니다</h4></br>
+</br>
 
-<h3>개발 기간</h3>
+<h3>[프로젝트 설명]</h3>
+<a>'Plowithme'는 조깅을 하면서 길가의 쓰레기를 수거하는 ‘플로깅’ 모임에 참여할 수 있는 웹사이트입니다.</a></br>
+<a>운동과 자연 보호 행동이 합쳐진 활동을 통해 환경 보호에 동참하고 사람들과 소통해보세요!</a>
+
+<h3>[주요 기능]</h3>
+
+<h3>[개발 기간]</h3>
 <a>2023.07.17~2023.09.07</a></br>
-<h3>개발 인원</h3>
+<h3>[개발 인원]</h3>
 #프론트엔드</br>
 <a href="https://github.com/sj102300">[이승주]</a>
 <a href="https://github.com/pqpq0420">[수빈]</a>
@@ -15,7 +21,7 @@
 <a href="https://github.com/sor999">[박현제]<a>
 <a href="https://github.com/dmsqor">[홍정표]<a>
 
-<h3>개발 환경</h3>
+<h3>[개발 환경]</h3>
 #언어</br>
 <img src="https://img.shields.io/badge/Java(JDK 17)-F80000?style=flat&logo=Oracle&logoColor=white"/>
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white"/>
