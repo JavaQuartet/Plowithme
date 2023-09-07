@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageSandDto {
+public class MessageSaveDto {
 
     @NotEmpty
     @Size(max=150)

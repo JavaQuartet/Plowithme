@@ -3,6 +3,7 @@ package com.example.Plowithme.dto.community;
 import java.time.LocalDateTime;
 
 import com.example.Plowithme.entity.BoardEntity;
+import com.example.Plowithme.entity.User;
 import lombok.*;
 
 @Getter
@@ -16,7 +17,7 @@ public class BoardDto {
 
     private String title;
 
-    private Long writerId;
+    private String writer;
 
     private String contents;
 
@@ -31,10 +32,11 @@ public class BoardDto {
     private long postHits;
 
     public static BoardDto toboardDto(BoardEntity boardEntity) {
+
         BoardDto boardDto = new BoardDto();
         boardDto.setPostId(boardEntity.getPostId());
         boardDto.setTitle(boardEntity.getTitle());
-        boardDto.setWriterId(boardEntity.getWriterId());
+        boardDto.setWriter(boardEntity.getWriter());
         boardDto.setContents(boardEntity.getContents());
         boardDto.setPostHits(boardEntity.getPostHits());
         boardDto.setCreateDate(boardEntity.getCreateDate());

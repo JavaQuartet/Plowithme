@@ -1,7 +1,7 @@
 package com.example.Plowithme.service;
 
 import com.example.Plowithme.dto.mypage.MessageFindDto;
-import com.example.Plowithme.dto.mypage.MessageSandDto;
+import com.example.Plowithme.dto.mypage.MessageSaveDto;
 import com.example.Plowithme.entity.Message;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.exception.custom.ResourceNotFoundException;
@@ -22,16 +22,16 @@ public class MessageService {
 
     //쪽지 쓰기
     @Transactional
-    public void writeMessage(Long id, MessageSandDto messageSandDto) {
+    public void writeMessage(Long id, MessageSaveDto messageSaveDto) {
         User sender = userRepository.findById(id).orElseThrow(() ->
              new ResourceNotFoundException("유저를 찾을 수 없습니다."));
-        User receiver = userRepository.findById(messageSandDto.getReceiverId()).orElseThrow(() ->
+        User receiver = userRepository.findById(messageSaveDto.getReceiverId()).orElseThrow(() ->
                 new ResourceNotFoundException("유저를 찾을 수 없습니다."));
 
         Message message = Message.builder()
                 .receiver(receiver)
                 .sender(sender)
-                .content(messageSandDto.getContent())
+                .content(messageSaveDto.getContent())
                 .deletedByReceiver(false)
                 .deletedBySender(false)
                 .build();

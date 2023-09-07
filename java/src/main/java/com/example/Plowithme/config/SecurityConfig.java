@@ -75,7 +75,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/class/search","/class/region").permitAll()
                                 .requestMatchers("/auth/login", "/auth/**").permitAll()
-
+                                .requestMatchers("").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
@@ -100,6 +100,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://3.39.75.222");
         config.addAllowedOrigin("http://3.39.75.222:8080");
+        config.addAllowedOrigin("http://3.39.75.222:3000");
         config.addAllowedOrigin("http://localhost:3000");
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
@@ -110,20 +111,6 @@ public class SecurityConfig {
         return source;
     }
 
-
-//    public UserDetailsService userDetailsService() {
-//        //인메모리에 username, password, role 설정
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("pwd")
-//                        .roles("USER")
-//                        .build();
-//
-//        System.out.println("password : " + user.getPassword());
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
 
 
 }

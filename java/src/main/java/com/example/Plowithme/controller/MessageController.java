@@ -1,7 +1,7 @@
 package com.example.Plowithme.controller;
 
 import com.example.Plowithme.dto.mypage.MessageFindDto;
-import com.example.Plowithme.dto.mypage.MessageSandDto;
+import com.example.Plowithme.dto.mypage.MessageSaveDto;
 import com.example.Plowithme.dto.CommonResponse;
 import com.example.Plowithme.entity.User;
 import com.example.Plowithme.security.CurrentUser;
@@ -25,8 +25,8 @@ public class MessageController {
 
     @PostMapping("/messages")
     @Operation(summary = "쪽지 전송")
-    public ResponseEntity<CommonResponse> sendMessage(@Valid @RequestBody MessageSandDto messageSandDto, @CurrentUser User currentUser ) {
-        messageService.writeMessage(currentUser.getId(),messageSandDto);
+    public ResponseEntity<CommonResponse> sendMessage(@Valid @RequestBody MessageSaveDto messageSaveDto, @CurrentUser User currentUser ) {
+        messageService.writeMessage(currentUser.getId(), messageSaveDto);
 
         CommonResponse response = new CommonResponse(HttpStatus.CREATED.value(), "쪽지 전송 완료");
         log.info("쪽지 전송 완료");

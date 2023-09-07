@@ -48,7 +48,7 @@ public class BoardService {
         });
 
         BoardEntity boardEntity= new BoardEntity();
-        boardEntity.setWriterId(currentUser.getId());
+        boardEntity.setWriter(currentUser.getNickname());
         boardEntity.setUser(currentUser);
         boardEntity.setContents(boardSaveDto.getContents());
         boardEntity.setCategory(boardSaveDto.getCategory());
@@ -73,6 +73,7 @@ public class BoardService {
     //게시글 조회기능
     public List<BoardDto> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
+
         List<BoardDto> boardDtoList = new ArrayList<>();
         for (BoardEntity boardEntity : boardEntityList) {
             boardDtoList.add(BoardDto.toboardDto(boardEntity));
@@ -92,6 +93,7 @@ public class BoardService {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(postId);
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity= optionalBoardEntity.get();
+
             BoardDto boardDto = BoardDto.toboardDto(boardEntity);
             return boardDto;
         } else {
@@ -109,7 +111,7 @@ public class BoardService {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
-        if (boardEntity.getWriterId()==currentUser.getId()) {
+        if (boardEntity.getUser().getId()==currentUser.getId()) {
 
             if(boardEntity.getImagePath() != null) {
                 imageService.deleteImage(boardEntity.getImagePath());
@@ -132,7 +134,7 @@ public class BoardService {
     //게시글 수정 기능
     @Transactional
     public void updatePost(User currentUser,BoardEntity boardEntity, BoardUpdateDto boardUpdateDto) {
-        if (boardEntity.getWriterId().equals(currentUser.getId())) {
+        if (boardEntity.getUser().getId().equals(currentUser.getId())) {
 
             if (boardUpdateDto.getTitle() != null) {
                 boardEntity.setTitle(boardUpdateDto.getTitle());

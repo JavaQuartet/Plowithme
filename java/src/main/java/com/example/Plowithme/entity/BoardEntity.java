@@ -23,7 +23,7 @@ public class BoardEntity extends BaseEntity {
     private Long postId;
 
     @Column
-    private Long writerId; //작성자 id
+    private String writer; //작성자 id
 
     @Column(length = 100) //크기 50
     private String title; //게시글 제목
