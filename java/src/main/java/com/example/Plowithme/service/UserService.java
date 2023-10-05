@@ -35,7 +35,7 @@ public class UserService {
 
     private final ImageService imageService;
 
-
+    //현재 유저 조회
     @Transactional
     public CurrentUserDto getCurrentUser(User currentUser) {
         return new CurrentUserDto(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
@@ -125,6 +125,7 @@ public class UserService {
 
     }
 
+    //프로필 이미지 수정
     @Transactional
     public void updateProfileImage(MultipartFile file, Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("유저를 찾을 수 없습니다."));

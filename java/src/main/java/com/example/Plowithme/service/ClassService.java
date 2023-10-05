@@ -252,7 +252,17 @@ public class ClassService {
         }
 
         List<ClassFindDto> classFindDtos = new ArrayList<>();
-        List<ClassEntity> classEntities = user.getClassEntities();
+        List<ClassEntity> classRepositoryAll = classRepository.findAll();
+        System.out.println("classRepositoryAll = " + classRepositoryAll);
+        List<ClassEntity> classEntities = new ArrayList<>();
+        for(ClassEntity classEntity : classRepositoryAll) {
+
+
+            if(!classParticipantRepository.findClassParticipantsEntityByUseridAndClassEntity(id, classEntity).isEmpty()) {
+                Long classId = classParticipantRepository.findClassParticipantsEntityByUseridAndClassEntity(id, classEntity).orElseThrow(()-> new ResourceNotFoundException("모임을 찾을 수 업습니다.")).getClassEntity().getId();
+                classEntities.add(classRepository.findById(classId).orElseThrow(()-> new ResourceNotFoundException("모임을 찾을 수 업습니다.")));
+            }
+        }
 
         if (category == 0) {//내 모임
             for (ClassEntity classEntity : classEntities) {
